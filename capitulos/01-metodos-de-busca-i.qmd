@@ -6,6 +6,8 @@ format:
   html: default
   ipynb: default
 jupyter: python3
+execute:
+  enabled: true
 ---
 
 ## Ajustando ambiente

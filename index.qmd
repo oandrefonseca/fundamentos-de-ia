@@ -1,5 +1,7 @@
 ---
 page-layout: full
+execute:
+  enabled: false
 ---
 
 # Introdução à Inteligência Artificial {.unnumbered}
