@@ -528,7 +528,7 @@ window.Quarto = {
 <hr>
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="8f612d42" class="cell">
+<div id="8bc7e90f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -561,7 +561,7 @@ window.Quarto = {
 <p>Para ilustrar os algoritmos, utilizaremos novamente o <strong>problema das 8-Rainhas</strong>. O objetivo é posicionar oito rainhas em um tabuleiro de xadrez 8x8 de forma que nenhuma rainha ataque outra. Isso significa que não pode haver duas rainhas na mesma linha, coluna ou diagonal. No final, iremos contabilizar quantas rainhas estão <strong>apaziguadas</strong>. Como ja discutido, a solução ideal é aquela em que o valor chega a <code>8</code>.</p>
 <section id="função-de-objetivo" class="level3">
 <h3 class="anchored" data-anchor-id="função-de-objetivo">Função de Objetivo</h3>
-<div id="7ed90994" class="cell">
+<div id="4ab16c9f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_peaceful_queens(board):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Conta quantas rainhas nao atacam nenhuma outra rainha no tabuleiro."""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    peaceful_queens <span class="op">=</span> <span class="dv">0</span></span>
@@ -588,7 +588,7 @@ window.Quarto = {
 </section>
 <section id="função-para-gerar-tabuleiro" class="level3">
 <h3 class="anchored" data-anchor-id="função-para-gerar-tabuleiro">Função para gerar tabuleiro</h3>
-<div id="fdc7efff" class="cell">
+<div id="887a4557" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_random_board(n_queen <span class="op">=</span> <span class="dv">8</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Gera um tabuleiro aleatório para o problema das N-Rainhas.</span></span>
@@ -599,7 +599,7 @@ window.Quarto = {
 </section>
 <section id="função-para-visualizar-tabuleiro" class="level3">
 <h3 class="anchored" data-anchor-id="função-para-visualizar-tabuleiro">Função para visualizar tabuleiro</h3>
-<div id="2c376ea1" class="cell">
+<div id="d719b282" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_board(board):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Gera e exibe uma representacao visual do tabuleiro de xadrez como uma imagem.</span></span>
@@ -640,7 +640,7 @@ window.Quarto = {
 <section id="local-beam-search" class="level3">
 <h3 class="anchored" data-anchor-id="local-beam-search">Local Beam Search</h3>
 <p>O <strong>Local Beam Search</strong> é uma extensão do Hill Climbing que mantém <code>k</code> estados em vez de apenas um. Em cada passo, ele gera todos os sucessores de todos os <code>k</code> estados atuais e, em seguida, seleciona os <code>k</code> melhores sucessores para serem os novos estados atuais. Isso permite que o algoritmo explore múltiplas partes do espaço de busca simultaneamente, reduzindo a chance de ficar preso em um ótimo local.</p>
-<div id="02939e63" class="cell">
+<div id="899c2586" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> local_beam_search(k, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Implementa a Busca em Feixe Local (Local Beam Search) para as N-Rainhas.</span></span>
@@ -714,7 +714,7 @@ Explicação
 <li><code>best_fitness, best_board = beam[0]</code> / <code>return best_board, best_fitness</code> &gt; Retorna o melhor resultado encontrado (tabuleiro e fitness) ao final do processo, na mesma ordem usada pelo retorno antecipado do passo 11.
 <details></details></li>
 </ol>
-<div id="0339b9f3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299297406,&quot;user_tz&quot;:180,&quot;elapsed&quot;:187,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="cb2ca545" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299297406,&quot;user_tz&quot;:180,&quot;elapsed&quot;:187,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>best_board_lbs, best_fitness_lbs <span class="op">=</span> local_beam_search(k<span class="op">=</span><span class="dv">4</span>, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Resultados do Local Beam Search ---"</span>)</span>
@@ -734,7 +734,7 @@ Explicação
 <section id="stochastic-beam-search" class="level3">
 <h3 class="anchored" data-anchor-id="stochastic-beam-search">Stochastic Beam Search</h3>
 <p>O Stochastic Beam Search é uma variação do Local Beam Search. Em vez de selecionar os k melhores sucessores de forma determinística, ele seleciona os k sucessores de forma estocástica (probabilística), onde a probabilidade de um sucessor ser escolhido é proporcional à sua qualidade (ou inversamente proporcional ao número de ataques, no nosso caso). Isso ajuda a evitar ótimos locais, permitindo que o algoritmo explore estados menos promissores que podem levar a soluções melhores a longo prazo.</p>
-<div id="ee68bdb4" class="cell">
+<div id="3da4105e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stochastic_beam_search(k, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Adiciona o componente estocástico na Busca Local em Feixe para as N-Rainhas.</span></span>
@@ -928,7 +928,7 @@ Explicação
 <p>Retorna o melhor estado encontrado (tupla fitness e tabuleiro) ao final de todas as iterações.</p>
 </blockquote>
 </details>
-<div id="7890e098" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299298195,&quot;user_tz&quot;:180,&quot;elapsed&quot;:786,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="2131f7de" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299298195,&quot;user_tz&quot;:180,&quot;elapsed&quot;:786,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>best_fitness_sbs, best_board_sbs <span class="op">=</span> stochastic_beam_search(k<span class="op">=</span><span class="dv">4</span>, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Resultados do Stochastic Beam Search ---"</span>)</span>
@@ -960,7 +960,7 @@ Explicação
 <section id="aptidão" class="level4">
 <h4 class="anchored" data-anchor-id="aptidão">Aptidão</h4>
 <p>Para definir a função de Aptidão utilizamos a pontuação máxima de 28 porque a avaliação baseia-se no <strong>número de pares de rainhas que não se atacam</strong> (valor calculado pela fórmula <span class="math inline">\(8 \times 7 / 2 = 28\)</span>). Tal aspecto permitirá produzir notas com maior granularidade, as quais permitem que a Seleção e a Recombinação consigam guiar a população passo a passo em direção à solução perfeita (o pico máximo).</p>
-<div id="4ec76941" class="cell">
+<div id="8cf2451a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_non_attacking_pairs(chromosome):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula a aptidão avaliando o número de pares de rainhas que não se atacam.</span></span>
@@ -999,7 +999,7 @@ Explicação
 <li><strong>O Giro:</strong> Um número aleatório é sorteado no intervalo de 0 até o valor do <em>fitness</em> total. Este número simula o local exato onde o ponteiro da roleta irá parar.</li>
 <li><strong>A Escolha:</strong> A roleta é percorrida (somando-se o <em>fitness</em> de cada indivíduo sequencialmente) até que a soma acumulada atinja ou ultrapasse o número sorteado. O indivíduo no qual esse limite é atingido torna-se o pai selecionado para a próxima etapa de evolução, a recombinação (<em>crossover</em>).</li>
 </ol>
-<div id="10714175" class="cell">
+<div id="5e378be0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_roulette(population, fitness_function <span class="op">=</span> count_non_attacking_pairs):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Roleta. A probabilidade de seleção é proporcional ao fitness.</span></span>
@@ -1089,7 +1089,7 @@ Explicação
 <li><strong>Competição:</strong> A aptidão (<em>fitness</em>) de cada um desses <span class="math inline">\(n\)</span> competidores sorteados é calculada e comparada.</li>
 <li><strong>O Vencedor:</strong> O indivíduo com o melhor <em>fitness</em> (a maior aptidão) entre os selecionados é declarado o vencedor. Este vencedor é escolhido como o pai que irá fornecer seus “genes” para a próxima fase, a recombinação (<em>crossover</em>).</li>
 </ol>
-<div id="2a19a680" class="cell">
+<div id="58e4d525" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_tournament(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Torneio genérica. Escolhe o melhor entre 'k_tournament' indivíduos.</span></span>
@@ -1139,7 +1139,7 @@ Explicação
 </section>
 <section id="função-para-selecionar-métodos" class="level4">
 <h4 class="anchored" data-anchor-id="função-para-selecionar-métodos">Função para selecionar métodos</h4>
-<div id="5650a856" class="cell">
+<div id="27d52dcd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> selection(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, method<span class="op">=</span><span class="st">"roulette"</span>, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleciona um indivíduo (pai) da população atual para reprodução.</span></span>
@@ -1159,7 +1159,7 @@ Explicação
 <section id="recombinação" class="level4">
 <h4 class="anchored" data-anchor-id="recombinação">Recombinação</h4>
 <p>A Recombinação é o principal motor da exploração eficiente. O objetivo é combinar características de dois pais para gerar novos indivíduos, permitindo que o algoritmo teste novas soluções que herdam as “boas partes” de dois indivíduos distintos. Esta troca de material genético possibilita grandes saltos no espaço de busca e acelera a convergência ao unir blocos de soluções de alta qualidade.</p>
-<div id="110c6852" class="cell">
+<div id="20ec9710" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recombination(parent1, parent2):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Recombinação de Ponto Único (Single-Point Crossover).</span></span>
@@ -1186,7 +1186,7 @@ Como a Recombinação acelera a convergência nos Algoritmos Genéticos e qual �
 <section id="mutação" class="level4">
 <h4 class="anchored" data-anchor-id="mutação">Mutação</h4>
 <p>A Mutação é o mecanismo de segurança que garante a <strong>diversidade</strong> e evita a estagnação. Seu objetivo é introduzir pequenas alterações aleatórias no código genético (cromossomo) dos filhos. Essa variabilidade é crucial para que o algoritmo não se prenda a um ótimo local (local optimum), garantindo que novas áreas do espaço de busca possam ser testadas e que o AG consiga, eventualmente, encontrar o ótimo global.</p>
-<div id="3aba91df" class="cell">
+<div id="d27d7374" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mutation(chromosome, mutation_rate):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Mutação: Altera o valor (linha) de um gene (coluna) aleatoriamente.</span></span>
@@ -1203,7 +1203,7 @@ Como a Recombinação acelera a convergência nos Algoritmos Genéticos e qual �
 </section>
 <section id="função-para-executar-ag-básico" class="level4">
 <h4 class="anchored" data-anchor-id="função-para-executar-ag-básico">Função para executar AG Básico</h4>
-<div id="35fafa95" class="cell">
+<div id="1e8d241f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> running_genetic_algorithm(n_queens<span class="op">=</span><span class="dv">8</span>, population_size<span class="op">=</span><span class="dv">100</span>, max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                      mutation_rate<span class="op">=</span><span class="fl">0.1</span>, selection_method<span class="op">=</span><span class="st">"tournament"</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, use_elitism <span class="op">=</span> <span class="va">False</span>):</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -1410,7 +1410,7 @@ Qual é a função do elitismo em um Algoritmo Genético?
 <section id="cenário-1---a-busca-sem-rumo" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-1---a-busca-sem-rumo">Cenário 1 - A Busca Sem Rumo</h3>
 <p>Para iniciarmos os testes, definiremos uma configuração inicial baseada no método de seleção por Roleta com parâmetros de mutação padrão e ausência de elitismo. Aqui, a probabilidade de um indivíduo ser escolhido como progenitor é proporcional à sua desvantagem, mas não há garantias de que os membros mais aptos da geração atual sobrevivam para a próxima iteração.</p>
-<div id="aa30d5e5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299538716,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54197,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="226ada2a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299538716,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54197,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
@@ -1427,7 +1427,7 @@ Qual é a função do elitismo em um Algoritmo Genético?
 <section id="cenário-2---aumento-na-taxa-mutacional" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-2---aumento-na-taxa-mutacional">Cenário 2 - Aumento na taxa mutacional</h3>
 <p>Nesta etapa, elevamos a taxa de mutação a níveis extremos. O objetivo é observar o comportamento do algoritmo quando alterações aleatórias são aplicadas a uma vasta parcela dos descendentes em cada ciclo, testando a capacidade de exploração global do espaço de busca.</p>
-<div id="b76c7cd8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299580386,&quot;user_tz&quot;:180,&quot;elapsed&quot;:6281,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="f954969f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299580386,&quot;user_tz&quot;:180,&quot;elapsed&quot;:6281,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
@@ -1450,7 +1450,7 @@ Como a mutação de 0.5 ajudou a escapar do máximo local?
 <section id="cenário-3---com-eletismo" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-3---com-eletismo">Cenário 3 - Com Eletismo</h3>
 <p>Neste experimento, iremos combinar uma mutação elevada com a técnica de elitismo. Ao preservar obrigatoriamente os indivíduos de maior pontuação na transição de gerações, asseguramos que o melhor fitness alcançado pelo sistema seja mantido, impedindo retrocessos na evolução da solução.</p>
-<div id="6dca570a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299758901,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54379,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="624bdd7c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299758901,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54379,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
@@ -1467,7 +1467,7 @@ Como a mutação de 0.5 ajudou a escapar do máximo local?
 <section id="cenário-4---pressão-seletiva-roleta-vs.-torneio" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-4---pressão-seletiva-roleta-vs.-torneio">Cenário 4 - Pressão Seletiva (Roleta vs.&nbsp;Torneio)</h3>
 <p>Agora, vamos dar foco ao mecanismo de seleção, substituiremos a Roleta pela seleção por Torneio. Ao classificar grupos de k indivíduos e selecionar apenas os mais fortes de cada embate, apresentamos uma pressão competitiva rigorosa, acelerando a convergência em direção a soluções com maiores valores de aptidão.</p>
-<div id="0fb521ec" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299849853,&quot;user_tz&quot;:180,&quot;elapsed&quot;:1199,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div id="fac9a9d9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299849853,&quot;user_tz&quot;:180,&quot;elapsed&quot;:1199,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
@@ -1496,7 +1496,7 @@ O torneio com k=2 seria mais lento que o de k=5?
 <section id="cenário-5---comparação-exaustiva" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-5---comparação-exaustiva">Cenário 5 - Comparação exaustiva</h3>
 <p>Finalmente, realizaremos uma análise comparativa profunda entre todos os experimentos anteriores. O objetivo é avaliar qual conjunto de parâmetros oferece o melhor equilíbrio entre diversidade e velocidade de convergência, identificando a configuração mais eficiente para solucionar o problema das rainhas sob diferentes condições de estresse algorítmico.</p>
-<div id="967b9926" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924061,&quot;user_tz&quot;:180,&quot;elapsed&quot;:863558,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
+<div id="39b06eb1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924061,&quot;user_tz&quot;:180,&quot;elapsed&quot;:863558,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NUM_EXECUCOES <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>MAX_GERACOES <span class="op">=</span> <span class="dv">1000</span> <span class="co"># Valor retornado caso fique preso em um máximo local</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1529,7 +1529,7 @@ O torneio com k=2 seria mais lento que o de k=5?
 <span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    _, _, gen4 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"tournament"</span>, mutation_rate<span class="op">=</span><span class="fl">0.1</span>, use_elitism<span class="op">=</span><span class="va">False</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 4"</span>].append(gen4)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="41fb647b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924818,&quot;user_tz&quot;:180,&quot;elapsed&quot;:755,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
+<div id="92422f56" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924818,&quot;user_tz&quot;:180,&quot;elapsed&quot;:755,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Eixo X será as múltiplas execuções de 1 a 100</span></span>
