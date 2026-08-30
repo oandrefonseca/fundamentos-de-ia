@@ -381,6 +381,12 @@ window.Quarto = {
  <span class="menu-text">2. Métodos de Busca II</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/02b-avaliacao-metodos-de-busca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Avaliação de Desempenho e Completude</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -395,13 +401,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/03-ambientes-complexos-i.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Ambientes Complexos I</span></a>
+ <span class="menu-text">4. Ambientes Complexos I</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/04-ambientes-complexos-ii.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Ambientes Complexos II</span></a>
+ <span class="menu-text">5. Ambientes Complexos II</span></a>
   </div>
 </li>
       </ul>
@@ -418,13 +424,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/05-busca-competitiva-i.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Minimax e Alpha-Beta</span></a>
+ <span class="menu-text">6. Minimax e Alpha-Beta</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/06-busca-competitiva-ii.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">6. Monte Carlo Tree Search</span></a>
+ <span class="menu-text">7. Monte Carlo Tree Search</span></a>
   </div>
 </li>
       </ul>
@@ -441,31 +447,31 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/07-agentes-logicos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">7. Agentes Lógicos</span></a>
+ <span class="menu-text">8. Agentes Lógicos</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/08-agentes-probabilisticos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">8. Agentes Probabilísticos</span></a>
+ <span class="menu-text">9. Agentes Probabilísticos</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/09-naive-bayes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">9. Naive Bayes</span></a>
+ <span class="menu-text">10. Naive Bayes</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/10-redes-bayesianas.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">10. Redes Bayesianas</span></a>
+ <span class="menu-text">11. Redes Bayesianas</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/11-cadeias-de-markov.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">11. Cadeias de Markov</span></a>
+ <span class="menu-text">12. Cadeias de Markov</span></a>
   </div>
 </li>
       </ul>
@@ -532,7 +538,7 @@ window.Quarto = {
 
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="9dac7890" class="cell" data-execution_count="1">
+<div id="6897d9a2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -558,7 +564,7 @@ window.Quarto = {
 <section id="representação-do-ambiente" class="level3">
 <h3 class="anchored" data-anchor-id="representação-do-ambiente">Representação do ambiente</h3>
 <p>Assim como no capítulo anterior, o ambiente é só um dicionário: cada cidade aponta para suas vizinhas (com o custo de cada aresta).</p>
-<div id="b630072b" class="cell" data-execution_count="2">
+<div id="5fda6c7f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
@@ -579,7 +585,7 @@ window.Quarto = {
 <section id="funções-auxiliares" class="level3">
 <h3 class="anchored" data-anchor-id="funções-auxiliares">Funções auxiliares</h3>
 <p>Cada candidato na fronteira de busca é o <strong>caminho percorrido até ali</strong> (uma lista de cidades), não um objeto <code>Node</code>. O estado atual é <code>path[-1]</code>.</p>
-<div id="7fd65bda" class="cell" data-execution_count="3">
+<div id="31b6b4a8" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(graph, path):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Soma o custo das arestas percorridas em um caminho."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(graph[a][b] <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(path, path[<span class="dv">1</span>:]))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -590,7 +596,7 @@ window.Quarto = {
 <section id="exemplo-prático" class="level2">
 <h2 class="anchored" data-anchor-id="exemplo-prático">Exemplo prático</h2>
 <p>Agora vamos aplicar essas funções em um cenário concreto, com um estado inicial <code>Natal</code> e um objetivo <code>Pipa</code>.</p>
-<div id="c7d4595f" class="cell" data-execution_count="4">
+<div id="7facb685" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> environment</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>estado_inicial <span class="op">=</span> <span class="st">'Natal'</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>objetivo <span class="op">=</span> <span class="st">'Pipa'</span></span>
@@ -607,7 +613,7 @@ Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amaran
 <section id="definindo-heurística" class="level3">
 <h3 class="anchored" data-anchor-id="definindo-heurística">Definindo heurística</h3>
 <p>Aqui iremos definir o dicionário relacionado à heurística da distância em linha reta (informalmente associada à ideia da distância do ‘voo do pássaro’). Em síntese, a heurística da distância em linha reta (<span class="math inline">\(h_{SLD}\)</span>) se baseia em estimar o custo do caminho mais barato do estado atual até o objetivo calculando a distância física direta (geométrica) entre os dois pontos no mapa.</p>
-<div id="a99446c6" class="cell" data-execution_count="5">
+<div id="5cc53bfb" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>heuristics <span class="op">=</span> {</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: <span class="dv">76</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: <span class="dv">64</span>,</span>
@@ -629,7 +635,7 @@ Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amaran
 <section id="relembrando-a-busca-em-profundidade" class="level3">
 <h3 class="anchored" data-anchor-id="relembrando-a-busca-em-profundidade">Relembrando a busca em profundidade</h3>
 <p>Para entender a implementação da Busca Gulosa pela Melhor Escolha (<em>Greedy Best-First Search</em> ou GBFS), vale relembrar a busca em profundidade (DFS) do capítulo anterior. Embora o algoritmo de DFS seja um método de busca <strong>não informada</strong>, seu funcionamento serve como fundamento essencial para a compreensão de certos métodos de busca informada, sobretudo devido à sua mecânica de “mergulhar” profundamente explorando um único caminho por vez e ao seu uso <strong>extremamente econômico de memória</strong>.</p>
-<div id="4fbb951d" class="cell" data-execution_count="6">
+<div id="2ab8ba6b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_search(graph, start, goal, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade: expande o caminho mais recente primeiro (pilha)."""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
@@ -660,7 +666,7 @@ Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amaran
 <h3 class="anchored" data-anchor-id="greedy-best-first-search">Greedy Best-First Search</h3>
 <p>A busca gananciosa pela melhor escolha (<em>Greedy best-first search</em>) é uma estratégia de busca informada na qual o nó que aparenta estar mais próximo do estado objetivo é expandido primeiro. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados com base exclusivamente em uma estimativa heurística (<span class="math inline">\(f(n) = h(n)\)</span>), permitindo que os nós com os menores valores (mais promissores) sejam posicionados no topo da fila e expandidos antes dos demais. Por focar apenas no benefício imediato de se aproximar da meta a cada iteração e ignorar completamente o custo das ações passadas, a busca gananciosa não é ótima (podendo gerar soluções mais caras) e é incompleta em espaços de estados infinitos, embora costume guiar a exploração de forma veloz e eficiente na maioria dos casos práticos.</p>
 <p>A ideia é a mesma da DFS (fronteira tratada como lista, teste de objetivo ao retirar um caminho), com uma única mudança: em vez de tirar o último caminho adicionado (<code>pop()</code>), ordenamos a fronteira pela heurística do estado atual e tiramos sempre o mais promissor (<code>pop(0)</code> depois de ordenar).</p>
-<div id="1760e157" class="cell" data-execution_count="7">
+<div id="a1b513bf" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greedy_best_first_search(graph, start, goal, heuristics, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
 <span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca gulosa: expande sempre o caminho cujo estado atual parece mais perto do objetivo (h(n))."""</span></span>
 <span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
@@ -694,7 +700,7 @@ Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amaran
 </dl>
 </div>
 </div>
-<div id="91bfe93e" class="cell" data-execution_count="8">
+<div id="e54d2d01" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>resultado_gbfs, expansoes_gbfs <span class="op">=</span> greedy_best_first_search(graph, estado_inicial, objetivo, heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (GBFS):'</span>, resultado_gbfs)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão GBFS:'</span>, expansoes_gbfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -707,7 +713,7 @@ Ordem de expansão GBFS: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goiani
 <section id="a-star-search" class="level3">
 <h3 class="anchored" data-anchor-id="a-star-search">A-star Search</h3>
 <p>A busca A* (A-estrela) é a estratégia de busca informada mais comum, na qual o nó selecionado para expansão é aquele que apresenta o menor custo total estimado do início até o objetivo. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados pela função de avaliação <span class="math inline">\(f(n) = g(n) + h(n)\)</span>, que combina o custo exato do caminho percorrido até o momento (<span class="math inline">\(g(n)\)</span>) com a estimativa heurística do custo restante (<span class="math inline">\(h(n)\)</span>). Por equilibrar o peso entre o custo das ações passadas e a aproximação da meta. A busca A* é completa e garante encontrar uma solução perfeitamente ótima, desde que a heurística utilizada seja admissível (ou seja, otimista, nunca superestimando o custo real para se atingir o objetivo). O principal desafio desse algoritmo, no entanto, reside no uso excessivo de espaço computacional, visto que ele precisa armazenar todos os nós gerados na memória, o que pode esgotar os recursos rapidamente em problemas de complexidade exponencial.</p>
-<div id="f98a6b47" class="cell" data-execution_count="9">
+<div id="a1de1a50" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>environment_with_distance <span class="op">=</span> {</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: {<span class="st">"Ielmo Marinho"</span>: <span class="dv">26</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">21</span>},</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: {<span class="st">"Natal"</span>: <span class="dv">25</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">17</span>},</span>
@@ -736,7 +742,7 @@ Ações possíveis em Natal: ['Extremoz', 'Macaíba', 'Parnamirim', 'São Gonça
 </div>
 </div>
 <p>A distância entre as cidades está representada nos valores do dicionário interno, que representa as arestas do grafo — é a partir dele que <code>path_cost</code> calcula <span class="math inline">\(g(n)\)</span> para cada caminho.</p>
-<div id="51b6a379" class="cell" data-execution_count="10">
+<div id="cff63a4d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> astar_search(graph, start, goal, heuristics, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
 <span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A*: expande sempre o caminho de menor custo total estimado (g(n) + h(n))."""</span></span>
 <span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
@@ -782,7 +788,7 @@ Ações possíveis em Natal: ['Extremoz', 'Macaíba', 'Parnamirim', 'São Gonça
 </dl>
 </div>
 </div>
-<div id="bc1e4cd1" class="cell" data-execution_count="11">
+<div id="4d56e6e4" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (A*):'</span>, resultado_astar)</span>
@@ -806,7 +812,7 @@ Ordem de expansão A*: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinh
 </section>
 <section id="ajustando-heurística" class="level3">
 <h3 class="anchored" data-anchor-id="ajustando-heurística">Ajustando heurística</h3>
-<div id="31319016" class="cell" data-execution_count="12">
+<div id="1f1e7529" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>new_heuristics <span class="op">=</span> {</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">74</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">61</span>,</span>
@@ -823,7 +829,7 @@ Ordem de expansão A*: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinh
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: <span class="dv">0</span>,</span>
 <span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="92f779cd" class="cell" data-execution_count="13">
+<div id="5b1ecc16" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> []</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> city <span class="kw">in</span> <span class="bu">sorted</span>(heuristics.keys()):</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    old_h <span class="op">=</span> heuristics.get(city, <span class="dv">0</span>)  <span class="co"># Use 0 as default if not found</span></span>
@@ -953,7 +959,7 @@ Explicação
 <p>Como a literatura de Inteligência Artificial estabelece, <strong>é geralmente preferível utilizar uma função heurística com valores mais altos</strong>, desde que ela continue sendo admissível e consistente (ou seja, nunca superestimando o custo real da viagem). Ao refinar esses valores para que fiquem mais precisos e próximos da realidade, os contornos da busca do algoritmo A* deixam de se espalhar em todas as direções e passam a se focar de forma muito mais estreita e direcionada para a meta.</p>
 <p>Na prática, isso significa que cidades irrelevantes ou que representam “andar para trás” receberão rapidamente estimativas de custo total (<span class="math inline">\(f(n)\)</span>) superiores ao custo do caminho ótimo real. Isso permite que o algoritmo <strong>pode (elimine) esses caminhos desnecessários da árvore de exploração sem precisar sequer visitá-los</strong>. O resultado direto de uma heurística mais fidedigna é um ganho substancial de eficiência, pois o algoritmo expande uma quantidade significativamente menor de nós e resolve o problema consumindo menos tempo e memória.</p>
 </details>
-<div id="5fed2a18" class="cell" data-execution_count="14">
+<div id="1d4267ce" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, new_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (A*):'</span>, resultado_astar)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -975,7 +981,7 @@ Ordem de expansão A*: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinh
 <section id="então-o-greedy-é-melhor" class="level2">
 <h2 class="anchored" data-anchor-id="então-o-greedy-é-melhor">Então, o Greedy é melhor?</h2>
 <p>Para evidenciar as fraquezas do Greedy Best-First Search, vamos usar uma heurística propositalmente enganosa. Ela faz alguns estados parecerem muito promissores localmente, mesmo quando isso não produz o melhor caminho global.</p>
-<div id="6bf0bbc9" class="cell" data-execution_count="15">
+<div id="5e0ec31e" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>misleading_heuristics <span class="op">=</span> {</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">40</span>,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">35</span>,</span>
@@ -1012,7 +1018,7 @@ Tibau do Sul -&gt; h = 6
 Pipa -&gt; h = 0</code></pre>
 </div>
 </div>
-<div id="c1e2f352" class="cell" data-execution_count="16">
+<div id="6a16f9cc" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>resultado_greedy_ruim, expansoes_greedy_ruim <span class="op">=</span> greedy_best_first_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>resultado_astar_ruim, expansoes_astar_ruim <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1033,7 +1039,7 @@ Tibau do Sul                 74      6     80
 Pipa                         83      0     83</code></pre>
 </div>
 </div>
-<div id="41a30811" class="cell" data-execution_count="17">
+<div id="e83e8f24" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Greedy com heurística enganosa:'</span>, resultado_greedy_ruim)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão Greedy:'</span>, expansoes_greedy_ruim)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
@@ -1047,7 +1053,7 @@ A* com a mesma heurística: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goi
 Ordem de expansão A*: ['Natal', 'Macaíba', 'São Gonçalo do Amarante', 'Extremoz', 'Parnamirim', 'Ceará-Mirim', 'Vera Cruz', 'Ielmo Marinho', 'São José de Mipibu', 'Monte Alegre', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
 </div>
 </div>
-<div id="8e5469e2" class="cell" data-execution_count="18">
+<div id="371889f9" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>acoes_astar <span class="op">=</span> resultado_astar[<span class="dv">1</span>:] <span class="cf">if</span> resultado_astar <span class="cf">else</span> []</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com A*'</span>)</span>
@@ -1085,7 +1091,7 @@ Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau
 <li><span class="math inline">\(w = 2.0\)</span></li>
 </ul></li>
 </ol>
-<div id="788ca1fe" class="cell" data-execution_count="19">
+<div id="95663e32" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weighted_astar_search(graph, start, goal, heuristics, w<span class="op">=</span><span class="fl">1.0</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A* ponderada: expande sempre o caminho de menor g(n) + w * h(n)."""</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
