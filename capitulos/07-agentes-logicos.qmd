@@ -1,0 +1,1652 @@
+---
+title: Laboratório — Agentes Lógicos no Wumpus World
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+---
+
+
+
+## Ajustando Ambiente
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499525, user_tz: 180, elapsed: 5459, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+%%capture
+!pip install sympy
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499531, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+import itertools
+from collections import defaultdict
+from sympy import symbols, Symbol
+from sympy.logic.boolalg import And, Or, Not, Implies, Equivalent
+from sympy.logic.inference import satisfiable, to_cnf
+```
+
+## Motivação
+
+O estudo de **agentes lógicos** é motivado pela necessidade de superar a inflexibilidade dos agentes de busca atômica, buscando emular a inteligência humana que se baseia no conhecimento de fatos sobre o mundo para derivar conclusões e tomar decisões fundamentadas. Ao contrário de algoritmos puramente procedurais, os **agentes baseados em conhecimento** utilizam uma **base de conhecimento** composta por **sentenças** em uma linguagem de representação formal, permitindo que o agente realize **inferências** para descobrir informações ocultas e se adapte a novos objetivos de maneira **declarativa**. Historicamente, esse campo foi impulsionado pela visão de John McCarthy em 1958 sobre "programas com senso comum" e pelos debates das décadas de 1970 e 1980 entre as abordagens procedurais e declarativas, estabelecendo a lógica como o pilar para agentes que, como no clássico **Mundo do Wumpus**, precisam raciocinar sobre estados internos e regras complexas para sobreviver e atingir seus objetivos. A estrutura de um agente baseado em conhecimento é definida pela interação dinâmica entre sua **Base de Conhecimento (KB)** — um conjunto de sentenças em uma linguagem de representação — e as operações fundamentais **TELL** e **ASK**, que permitem ao agente registrar percepções e consultar decisões no chamado "**nível de conhecimento**". O "coração" algorítmico desse sistema são os **motores de inferência**, cujo objetivo é derivar novas sentenças para estabelecer o que é logicamente **acarretado** ($\alpha \models \beta$) pela KB, garantindo que as conclusões sejam necessariamente verdadeiras em todos os **modelos** (mundos possíveis) onde as premissas se sustentam. Neste tutorial, exploraremos técnicas que variam desde o **Model Checking**, que verifica a verdade através da enumeração exaustiva de modelos, até a **prova de teoremas**, que utiliza regras sintáticas como o **Modus Ponens** para tratar o raciocínio como um problema de busca eficiente, capaz de ignorar informações irrelevantes mesmo em bases de conhecimento extensas.
+
+## Objetivos de Aprendizagem
+
+*   **Representar formalmente o conhecimento** de um ambiente parcialmente observável utilizando a biblioteca **SymPy**, convertendo percepções e regras físicas do mundo em sentenças estruturadas de lógica proposicional.
+*   **Implementar a arquitetura de um agente lógico**, compreendendo o ciclo dinâmico entre a Base de Conhecimento (KB) e as operações fundamentais **TELL** (para registrar percepções) e **ASK** (para consultar decisões no nível de conhecimento).
+*   **Analisar a eficácia de motores de inferência**, distinguindo a busca exaustiva por modelos (**Model Checking**) da manipulação sintática eficiente através da prova de teoremas.
+*   **Dominar o raciocínio orientado a dados** através do algoritmo **Forward Chaining**, aplicando-o em bases de conhecimento restritas a **Cláusulas de Horn** para obter deduções em tempo linear.
+*   **Executar provas por contradição** utilizando o método de **Resolução por Refutação**, integrando a padronização de sentenças para a **Forma Normal Conjuntiva (CNF)** e a busca pela cláusula vazia.
+*   **Otimizar a verificação de satisfatibilidade (SAT)** por meio do algoritmo **DPLL**, explorando heurísticas de poda e o mecanismo de **Propagação Unitária** para superar o fenômeno da explosão combinatória.
+*   **Avaliar a tomada de decisão do agente** em cenários de incerteza, garantindo que as ações escolhidas sejam baseadas em conclusões logicamente **acarretadas** pela base de conhecimento.
+
+## Implementação
+
+Para a prática, utilizaremos o Wumpus World, uma grade 4x4 onde um agente busca ouro enquanto evita poços e uma fera letal. O ambiente é parcialmente observável, o que exige que o agente use as pistas recebidas para inferir o estado das salas vizinhas.
+
+### Funções auxiliares
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499533, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def display_mental_map(kb_agent, current_room):
+    """Exibe o mapa mental do agente com base no seu conhecimento atual."""
+    print(f"\n--- MAPA MENTAL DO AGENTE (Sala Atual: {current_room}) ---")
+
+    grid = [[" ? " for _ in range(4)] for _ in range(4)]
+
+    def get_coords(room_id):
+        row = 3 - ((room_id - 1) // 4)
+        col = (room_id - 1) % 4
+        return row, col
+
+    for i in range(1, 17):
+        r, c = get_coords(i)
+
+        # Verifica conhecimento na KB
+        is_safe = any(str(s) == f"Not(P{i})" for s in kb_agent) and any(str(s) == f"Not(W{i})" for s in kb_agent)
+        has_breeze = any(str(s) == f"B{i}" for s in kb_agent)
+        no_breeze = any(str(s) == f"Not(B{i})" for s in kb_agent)
+        has_stench = any(str(s) == f"S{i}" for s in kb_agent)
+        no_stench = any(str(s) == f"Not(S{i})" for s in kb_agent)
+        has_glimmer = any(str(s) == f"L{i}" for s in kb_agent)
+
+        cell_text = f"{i:02}"
+        status = ""
+
+        if i == current_room:
+            status += "A" # Agente está aqui
+        elif is_safe:
+            status += "S" # Sabemos que é Segura
+
+        if has_breeze: status += "B"
+        elif no_breeze: status += ".b"
+
+        if has_stench: status += "F"
+        elif no_stench: status += ".f"
+
+        if has_glimmer: status += "G"
+
+        grid[r][c] = (cell_text + status).center(5)
+
+    print(" +-----+-----+-----+-----+")
+    for row in grid:
+        print(f" |{'|'.join(row)}|")
+        print(" +-----+-----+-----+-----+")
+    print(" Legenda: A=Agente, S=Segura, B=Brisa, .b=Sem Brisa, F=Fedor, .f=Sem Fedor, G=Ouro, ?=Desconhecido")
+```
+
+### Lógica Proposicional
+
+Para o tutorial, iremos utilizar o **Wumpus World**. Nesse exemplo, o agente lógico irá encontrar diferentes pistas, como **Brisa** (indicando poços próximos), **Fedor** (perto do temível Wumpus) e **Brilho** (na sala com o ouro), para superar sua ignorância inicial sobre a configuração da caverna. Diferente de sistemas de busca atômica que tratam estados de forma simplista, esse **agente baseado em conhecimento** utiliza uma **Base de Conhecimento (KB)** — um conjunto de **sentenças** em uma linguagem de representação formal — para armazenar fatos e regras internas sobre o seu ambiente. Através do processo de **inferência**, o agente consegue derivar novas informações e garantias de segurança a partir de suas percepções, decidindo quais ações tomar com base em um raciocínio lógico que assegura conclusões corretas.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148499547, user_tz: 180, elapsed: 13, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Definindo as variáveis proposicionais (as "letras" da lógica)
+p, q = symbols('p q')
+
+# Criando uma fórmula (A negação de uma conjunção)
+# Em lógica: ¬(p ∧ q)
+left_formula = Not(And(p, q))
+
+# Criando a fórmula equivalente pela Lei de De Morgan
+# Em lógica: ¬p ∨ ¬q
+right_formula = Or(Not(p), Not(q))
+
+# Juntando as duas em uma equivalência lógica: ¬(p ∧ q) ↔ (¬p ∨ ¬q)
+theorem = Equivalent(left_formula, right_formula)
+
+print(f"Fórmula Analisada: {theorem}")
+```
+
+Nesse momento, utilizaremos um mapa simplificado com apenas brisas. O agente inicia sua jornada na sala #1 e pode se mover para as salas adjacentes. O mapa abaixo ilustra a disposição das salas e as conexões (caminhos) disponíveis para o agente. A numeração permite uma expansão modular e uma referência clara para os símbolos lógicos $P_n$ e $B_n$.
+
+
+| Index |        1        |       2          |      3          |       4      |
+| :--: | :------------: | :-------------: | :------------: | :---------: |
+| 4 | **Sala 13**  |   **Sala 14**   |   **Sala 15**  | **Sala 16** |
+| 3 | **Sala 9**   | **Sala 10 (B)** |   **Sala 11**  | **Sala 12** |
+| 2 |**Sala 5 (B)** |  **Sala 6 (P)** | **Sala 7 (B)** |  **Sala 8** |
+| 1 |**Sala 1**   |  **Sala 2 (B)** |   **Sala 3**   |  **Sala 4** |
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148499582, user_tz: 180, elapsed: 32, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Definindo símbolos para Poços (P) e Brisas (B) nas salas 1, 2, 3 e 4
+P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16 = symbols('P1:17')
+B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11, B12, B13, B14, B15, B16 = symbols('B1:17')
+
+# Símbolos para indicar se uma sala é Segura (Safe)
+Safe1, Safe2, Safe3, Safe4, Safe5, Safe6, Safe7, Safe8, Safe9, Safe10, Safe11, Safe12, Safe13, Safe14, Safe15, Safe16 = symbols('Safe1:17')
+
+print(f"Exemplo de símbolos: {P1} (Poço em 1), {B2} (Brisa em 2)")
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499584, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Inicializando a Base de Conhecimento (KB)
+kb = []
+
+# Regras de Segurança: Safe_x se e somente se NÃO P_x
+kb.append(Equivalent(Safe1, Not(P1)))
+kb.append(Equivalent(Safe2, Not(P2)))
+kb.append(Equivalent(Safe3, Not(P3)))
+kb.append(Equivalent(Safe4, Not(P4)))
+kb.append(Equivalent(Safe5, Not(P5)))
+kb.append(Equivalent(Safe6, Not(P6)))
+kb.append(Equivalent(Safe7, Not(P7)))
+kb.append(Equivalent(Safe8, Not(P8)))
+kb.append(Equivalent(Safe9, Not(P9)))
+kb.append(Equivalent(Safe10, Not(P10)))
+kb.append(Equivalent(Safe11, Not(P11)))
+kb.append(Equivalent(Safe12, Not(P12)))
+kb.append(Equivalent(Safe13, Not(P13)))
+kb.append(Equivalent(Safe14, Not(P14)))
+kb.append(Equivalent(Safe15, Not(P15)))
+kb.append(Equivalent(Safe16, Not(P16)))
+
+# Regras de Vizinhança (Física do Mundo)
+kb.append(Equivalent(B1,  Or(P2, P5)))
+kb.append(Equivalent(B2,  Or(P1, P3, P6)))
+kb.append(Equivalent(B3,  Or(P2, P4, P7)))
+kb.append(Equivalent(B4,  Or(P3, P8)))
+kb.append(Equivalent(B5,  Or(P1, P6, P9)))
+kb.append(Equivalent(B6,  Or(P2, P5, P7, P10)))
+kb.append(Equivalent(B7,  Or(P3, P6, P8, P11)))
+kb.append(Equivalent(B8,  Or(P4, P7, P12)))
+kb.append(Equivalent(B9,  Or(P5, P10, P13)))
+kb.append(Equivalent(B10, Or(P6, P9, P11, P14)))
+kb.append(Equivalent(B11, Or(P7, P10, P12, P15)))
+kb.append(Equivalent(B12, Or(P8, P11, P16)))
+kb.append(Equivalent(B13, Or(P9, P14)))
+kb.append(Equivalent(B14, Or(P10, P13, P15)))
+kb.append(Equivalent(B15, Or(P11, P14, P16)))
+kb.append(Equivalent(B16, Or(P12, P15)))
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148499590, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print("Base de Conhecimento (KB) estruturada:")
+for sentence in kb:
+    print(f"- {sentence}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148499612, user_tz: 180, elapsed: 21, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(f"Base de Conhecimento (KB) finalizada com {len(kb)} sentenças explícitas.")
+```
+
+<details>
+    <summary>Explicação</summary>
+
+Esta tabela define a "vizinhança" de cada sala, o que é fundamental para as regras de inferência sobre as brisas.
+
+| Sala Atual | Salas Adjacentes (Vizinhas) | Conexão Lógica (Brisa $\iff$ Poço na Vizinha)                |
+| :--------- | :-------------------------- | :----------------------------------------------------------- |
+| **1**      | 2, 5                        | $B\_1 \iff (P\_2 \lor P\_5)$                                 |
+| **2**      | 1, 3, 6                     | $B\_2 \iff (P\_1 \lor P\_3 \lor P\_6)$                       |
+| **3**      | 2, 4, 7                     | $B\_3 \iff (P\_2 \lor P\_4 \lor P\_7)$                       |
+| **4**      | 3, 8                        | $B\_4 \iff (P\_3 \lor P\_8)$                                 |
+| **5**      | 1, 6, 9                     | $B\_5 \iff (P\_1 \lor P\_6 \lor P\_9)$                       |
+| **6**      | 2, 5, 7, 10                 | $B\_6 \iff (P\_2 \lor P\_5 \lor P\_7 \lor P\_{10})$          |
+| **7**      | 3, 6, 8, 11                 | $B\_7 \iff (P\_3 \lor P\_6 \lor P\_8 \lor P\_{11})$          |
+| **8**      | 4, 7, 12                    | $B\_8 \iff (P\_4 \lor P\_7 \lor P\_{12})$                    |
+| **9**      | 5, 10, 13                   | $B\_9 \iff (P\_5 \lor P\_{10} \lor P\_{13})$                 |
+| **10**     | 6, 9, 11, 14                | $B\_{10} \iff (P\_6 \lor P\_9 \lor P\_{11} \lor P\_{14})$    |
+| **11**     | 7, 10, 12, 15               | $B\_{11} \iff (P\_7 \lor P\_{10} \lor P\_{12} \lor P\_{15})$ |
+| **12**     | 8, 11, 16                   | $B\_{12} \iff (P\_8 \lor P\_{11} \lor P\_{16})$              |
+| **13**     | 9, 14                       | $B\_{13} \iff (P\_9 \lor P\_{14})$                           |
+| **14**     | 10, 13, 15                  | $B\_{14} \iff (P\_{10} \lor P\_{13} \lor P\_{15})$           |
+| **15**     | 11, 14, 16                  | $B\_{15} \iff (P\_{11} \lor P\_{14} \lor P\_{16})$           |
+| **16**     | 12, 15                      | $B\_{16} \iff (P\_{12} \lor P\_{15})$                        |
+
+</details>
+
+### Model Checking
+
+O Model Checking (ou Verificação de Modelos) é o motor de inferência mais fundamental da lógica. Ele funciona através da exaustão: o agente imagina todos os "mundos possíveis" (combinações de poços e brisas) e verifica em quais deles a sua KB é verdadeira. Dizemos que uma conclusão é logicamente verdadeira se, em todos os mundos onde a sua KB funciona, essa conclusão também for verdadeira.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499630, user_tz: 180, elapsed: 16, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def get_all_symbols(formulas):
+    """Auxiliar: Identifica todos os símbolos (P1, B2, etc.) presentes nas fórmulas"""
+    symbols_set = set()
+    for formula in formulas:
+        # atoms(Symbol) busca por todos os objetos do tipo símbolo na expressão
+        symbols_set.update(formula.atoms(Symbol))
+    return list(symbols_set)
+
+def model_check(kb, query):
+    """Motor de Inferência: Testa todos os mundos possíveis e explica o processo"""
+    kb_formula = And(*kb)
+    relevant_symbols = get_all_symbols(kb + [query])
+
+    print(f"--- INICIANDO INFERÊNCIA ---")
+    print(f"Objetivo: Provar se '{query}' é consequência da KB.")
+    print(f"Símbolos relevantes: {relevant_symbols}")
+    print(f"Mundos possíveis: 2^{len(relevant_symbols)} = {2**len(relevant_symbols)}\n")
+
+    counter_examples = []
+    kb_true_count = 0
+
+    # O loop abaixo substitui a necessidade da função recursiva check_all
+    for i, values in enumerate(itertools.product([True, False], repeat=len(relevant_symbols)), 1):
+        model = dict(zip(relevant_symbols, values))
+
+        # Verificamos se este mundo é compatível com o que o agente já sabe (KB)
+        if kb_formula.subs(model):
+            kb_true_count += 1
+            query_result = query.subs(model)
+
+            if query_result:
+                print(f"Mundo #{i:02}: [KB: SIM] | [Query: SIM] -> OK.")
+            else:
+                print(f"Mundo #{i:02}: [KB: SIM] | [Query: NÃO] -> !!! CONTRA-EXEMPLO !!!")
+                counter_examples.append(model)
+        # Mundos onde a KB é falsa são ignorados, pois não representam a realidade do agente
+
+    print(f"\n--- RESULTADO FINAL ---")
+    if not counter_examples and kb_true_count > 0:
+        print(f"SUCESSO: '{query}' é uma certeza lógica!")
+        return True
+    else:
+        print(f"FALHA: Não podemos afirmar '{query}'.")
+        if counter_examples:
+            print(f"Motivo: Encontramos situações onde a KB é verdade mas a query é falsa.")
+        return False
+```
+
+### Criando Wumpus World
+
+Abaixo, implementaremos a função que será a nossa "fábrica" de conhecimento sobre o ambiente. Em vez de declarar manualmente cada regra e fato, esta função gera programaticamente a Base de Conhecimento (KB) completa para um mundo de Wumpus 4x4 com um layout padrão fixo de perigos (poços e Wumpus) e recompensas (ouro). Essa abordagem é crucial para a didática, pois nos permite focar no funcionamento dos motores de inferência sem nos perdermos na complexidade da construção da KB. Além disso, ela será fundamental para a exemplificação de motores mais poderosos, como Forward Chaining e a Resolução por Refutação, o qual podem lidar com a riqueza de informações que essa KB completa oferece.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499681, user_tz: 180, elapsed: 49, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def create_wumpus_kb_standard_world():
+    """Gera a Base de Conhecimento universal para o Wumpus World 4x4
+    com um layout padrão fixo de perigos e ouro, e exibe o mapa.
+    """
+    kb = []
+
+    # 1. Definição dos Símbolos para as 16 salas
+    P = [symbols(f'P{i}') for i in range(1, 17)] # Pit (Poço)
+    B = [symbols(f'B{i}') for i in range(1, 17)] # Breeze (Brisa)
+    W = [symbols(f'W{i}') for i in range(1, 17)] # Wumpus
+    S = [symbols(f'S{i}') for i in range(1, 17)] # Stench (Fedor)
+    G = [symbols(f'G{i}') for i in range(1, 17)] # Gold (Ouro)
+    L = [symbols(f'L{i}') for i in range(1, 17)] # Glimmer (Brilho)
+    Safe = [symbols(f'Safe{i}') for i in range(1, 17)] # Safe Room (Sala Segura)
+
+    def get_coords(room_id):
+        row = (room_id - 1) // 4
+        col = (room_id - 1) % 4
+        return row, col
+
+    def get_room_id(row, col):
+        if 0 <= row < 4 and 0 <= col < 4:
+            return row * 4 + col + 1
+        return None
+
+    def get_neighbors(room_id):
+        r, c = get_coords(room_id)
+        neighbors = []
+        for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nr, nc = r + dr, c + dc
+            neighbor_id = get_room_id(nr, nc)
+            if neighbor_id is not None:
+                neighbors.append(neighbor_id)
+        return neighbors
+
+    # --- REGRAS UNIVERSAIS DO MUNDO DE WUMPUS ---
+    for i in range(16):
+        room_id = i + 1
+
+        # Regras de Segurança: Sala é segura se não tem Poço NEM Wumpus
+        kb.append(Equivalent(Safe[i], And(Not(P[i]), Not(W[i]))))
+
+        # Regras de Percepção: Brisa (B) <=> Poço (P) em vizinhos
+        neighbor_pits = [P[n-1] for n in get_neighbors(room_id)]
+        if neighbor_pits:
+            kb.append(Equivalent(B[i], Or(*neighbor_pits)))
+            # Adicionando regras para Forward Chaining: Not(B) => Not(P_vizinho)
+            for np in neighbor_pits:
+                kb.append(Implies(Not(B[i]), Not(np)))
+        else:
+            kb.append(Not(B[i]))
+
+        # Regras de Percepção: Fedor (S) <=> Wumpus (W) em vizinhos
+        neighbor_wumpus = [W[n-1] for n in get_neighbors(room_id)]
+        if neighbor_wumpus:
+            kb.append(Equivalent(S[i], Or(*neighbor_wumpus)))
+            # Adicionando regras para Forward Chaining: Not(S) => Not(W_vizinho)
+            for nw in neighbor_wumpus:
+                kb.append(Implies(Not(S[i]), Not(nw)))
+        else:
+            kb.append(Not(S[i]))
+
+        # Regras de Percepção: Brilho (L) <=> Ouro (G) na mesma sala
+        kb.append(Equivalent(L[i], G[i]))
+
+    # --- LAYOUT PADRÃO DO MUNDO (Fatos Iniciais) ---
+    pit_locations = [6, 13]
+    wumpus_location = 12
+    gold_location = 4
+
+    for i in range(1, 17):
+        if i in pit_locations: kb.append(P[i-1])
+        else: kb.append(Not(P[i-1]))
+
+        if i == wumpus_location: kb.append(W[i-1])
+        else: kb.append(Not(W[i-1]))
+
+        if i == gold_location: kb.append(G[i-1])
+        else: kb.append(Not(G[i-1]))
+
+    # --- EXIBIÇÃO VISUAL DO MUNDO CRIADO ---
+    print("\n--- MAPA DO MUNDO PADRÃO (Ground Truth) ---")
+    grid = [["     " for _ in range(4)] for _ in range(4)]
+
+    def get_display_coords(room_id):
+        row = 3 - ((room_id - 1) // 4)
+        col = (room_id - 1) % 4
+        return row, col
+
+    for i in range(1, 17):
+        r, c = get_display_coords(i)
+        cell_text = f"{i:02}"
+        status = ""
+
+        if i in pit_locations: status += "P"
+        if i == wumpus_location: status += "W"
+        if i == gold_location: status += "G"
+
+        if not status:
+            status = "." # Sala vazia
+
+        grid[r][c] = (cell_text + status).center(5)
+
+    print(" +-----+-----+-----+-----+")
+    for row in grid:
+        print(f" |{'|'.join(row)}|")
+        print(" +-----+-----+-----+-----+")
+    print(" Legenda: P=Poço, W=Wumpus, G=Ouro, .=Vazia")
+    print(f" KB gerada com {len(kb)} sentenças lógicas.")
+
+    return kb, P, B, W, S, G, L, Safe
+```
+
+### Forward Chaining
+
+Para implementar o Forward Chaining (FC) iremos focar em bases de conhecimento compostas exclusivamente por **cláusulas de Horn**. **Forward Chaining é um algoritmo** de **raciocínio direcionado a dados** (*data-driven*) que inicia sua execução a partir dos **fatos conhecidos** (literais positivos) já presentes na base de conhecimento. O processo funciona de forma iterativa: se todas as premissas de uma implicação forem confirmadas como verdadeiras, a sua conclusão é extraída e adicionada ao conjunto de fatos conhecidos, disparando novas possíveis inferências até que a **consulta (*query*)** seja provada ou que não existam mais dados para processar. Uma característica fundamental deste motor de inferência é a sua alta eficiência, sendo capaz de decidir a acarretação em **tempo linear** em relação ao tamanho da base de conhecimento.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499819, user_tz: 180, elapsed: 133, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def is_literal(expr):
+    """Verifica se uma expressão é um literal (símbolo ou sua negação)."""
+    return isinstance(expr, Symbol) or (isinstance(expr, Not) and isinstance(expr.args[0], Symbol))
+
+def to_horn_clauses(formula):
+    """Converte uma fórmula lógica em uma lista de Cláusulas de Horn.
+    Retorna uma lista de cláusulas de Horn. Se uma parte não for Horn, ela é ignorada
+    ou tratada de forma simplificada para a demonstração do FC.
+    """
+    horn_clauses = []
+
+    if isinstance(formula, Implies):
+        # Implies(antecedent, consequent)
+        antecedent = formula.args[0]
+        consequent = formula.args[1]
+
+        # Uma Implicação é uma Cláusula de Horn se o consequente é um literal
+        # e o antecedente é um literal, uma conjunção de literais, ou True.
+        if is_literal(consequent):
+            # Se o antecedente é um literal ou uma conjunção de literais, é Horn.
+            if is_literal(antecedent) or \
+               (isinstance(antecedent, And) and all(is_literal(arg) for arg in antecedent.args)) or \
+               (antecedent == True): # Caso de fato direto (True >> Literal)
+                horn_clauses.append(formula)
+            else:
+                # Antecedente complexo que não é uma conjunção de literais
+                # Para FC, não podemos processar diretamente. Ignoramos para esta demo.
+                pass
+        else:
+            # Consequente não é um literal. Não é uma Cláusula de Horn.
+            pass
+
+    elif isinstance(formula, Equivalent):
+        # Equivalent(A, B) é equivalente a (A >> B) AND (B >> A)
+        A = formula.args[0]
+        B = formula.args[1]
+
+        # Tentamos converter as duas implicações resultantes
+        # Note que Implies(A, B) e Implies(B, A) podem não ser Horn clauses
+        # dependendo da complexidade de A e B.
+        # Para FC, precisamos que A e B sejam literais ou conjunções de literais.
+
+        # Convertemos para Implies e tentamos adicionar
+        # Implies(A, B)
+        if is_literal(B) and (is_literal(A) or (isinstance(A, And) and all(is_literal(arg) for arg in A.args)) or (A == True)):
+            horn_clauses.append(Implies(A, B))
+
+        # Implies(B, A)
+        if is_literal(A) and (is_literal(B) or (isinstance(B, And) and all(is_literal(arg) for arg in B.args)) or (B == True)):
+            horn_clauses.append(Implies(B, A))
+
+    elif is_literal(formula):
+        # Um literal é uma cláusula de Horn (Implies(True, Literal))
+        horn_clauses.append(Implies(True, formula))
+
+    else:
+        # Outros tipos de fórmulas (Or, Not de And, etc.) não são Cláusulas de Horn simples
+        # para o propósito desta demonstração de FC.
+        pass
+
+    return horn_clauses
+```
+
+<details>
+    <summary>O que são Cláusulas de Horn?</summary>
+
+As Cláusulas de Horn são uma forma restrita de lógica proposicional que permite uma inferência extremamente veloz. Elas são compostas por cláusulas definitivas, que possuem exatamente um literal positivo (ex: se P e Q são verdade s, então R é verdade).
+
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499821, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def forward_chain(kb_facts, kb_rules_original, query):
+    """Motor de Inferência: Forward Chaining para Cláusulas de Horn"""
+    # kb_facts: lista de símbolos que são fatos conhecidos (e.g., Not(B1))
+    # kb_rules_original: lista de regras originais da KB (Equivalent, Implies)
+    # query: o símbolo que queremos provar (e.g., Safe2)
+
+    # Converte todas as regras originais em Cláusulas de Horn
+    rules_to_process = []
+    for rule in kb_rules_original:
+        horn_forms = to_horn_clauses(rule)
+        for h_rule in horn_forms:
+            # Apenas adiciona se for uma Implicação válida para FC
+            if isinstance(h_rule, Implies):
+                rules_to_process.append(h_rule)
+
+    count = defaultdict(int)
+    inferred = set(kb_facts)
+    agenda = list(kb_facts)
+
+    parsed_rules = []
+    for rule in rules_to_process:
+        head = rule.args[1]
+        body = rule.args[0]
+        if isinstance(body, And):
+            body_literals = list(body.args)
+        elif body == True: # Caso de fato direto
+            body_literals = []
+        else:
+            body_literals = [body]
+
+        parsed_rules.append({"original_rule": rule, "head": head, "body": body_literals})
+        count[rule] = len(body_literals)
+
+    print(f"--- INICIANDO FORWARD CHAINING ---")
+    print(f"Fatos iniciais: {[str(f) for f in inferred]}")
+
+    horn_rule_strings = [f"{str(r['body'])} >> {str(r['head'])}" for r in parsed_rules]
+    print(f"Regras de Horn (convertidas): {horn_rule_strings}")
+    print(f"Query: {query}\n")
+
+    while agenda:
+        p = agenda.pop(0)
+        print(f"Processando fato: {p}")
+
+        # O FC é baseado em uma fila
+        if p == query:
+            print(f"SUCESSO: Query \'{query}\' provada por Forward Chaining!")
+            return True
+
+        for rule_info in parsed_rules:
+            original_rule = rule_info["original_rule"]
+
+            # Verifica se 'p' é uma premissa desta regra e se a regra ainda não foi totalmente satisfeita
+            if p in rule_info["body"] and count[original_rule] > 0:
+                count[original_rule] -= 1
+
+                # Se todas as premissas da regra foram satisfeitas
+                if count[original_rule] == 0:
+                    conclusion = rule_info["head"]
+                    if conclusion not in inferred:
+                        inferred.add(conclusion)
+                        agenda.append(conclusion)
+                        print(f"  -> Regra \'{original_rule}\' satisfeita. Inferido: {conclusion}")
+
+    print(f"FALHA: Query \'{query}\' não pode ser provada por Forward Chaining.")
+    return False
+```
+
+<details>
+ <summary>Explicação</summary>
+
+1. `def forward_chain(kb_facts, kb_rules_original, query):`
+
+> Define a assinatura da função do motor de inferência, recebendo os fatos conhecidos (`kb_facts`), as regras lógicas originais da Base de Conhecimento (`kb_rules_original`) e o objetivo que se deseja provar (`query`).
+
+2. `rules_to_process = []`
+
+> Inicializa uma lista vazia para armazenar as regras decompostas que forem válidas para o processo de encadeamento.
+
+3. `for rule in kb_rules_original:`
+
+> Inicia um laço de repetição para iterar por cada uma das regras brutas contidas na Base de Conhecimento.
+
+4. `horn_forms = to_horn_clauses(rule)`
+
+> Invoca uma função auxiliar para transformar a regra atual (mesmo que complexa) em uma ou mais Cláusulas de Horn equivalentes.
+
+5. `for h_rule in horn_forms:`
+
+> Inicia um laço interno para avaliar individualmente cada subcláusula de Horn gerada pela conversão.
+
+6. `if isinstance(h_rule, Implies):`
+
+> Condicional que verifica se a cláusula de Horn atual é de fato uma instância de implicação lógica ($\implies$).
+
+7. `rules_to_process.append(h_rule)`
+
+> Adiciona a regra de implicação validada à lista de trabalho `rules_to_process`.
+
+8. `count = defaultdict(int)`
+
+> Inicializa um dicionário padrão onde cada regra mapeará para um número inteiro, representando quantas premissas ainda faltam ser provadas para que ela possa disparar.
+
+9. `inferred = set(kb_facts)`
+
+> Cria um conjunto contendo os fatos conhecidos para rastrear tudo o que já foi provado, garantindo busca em tempo constante e evitando loops infinitos.
+
+10. `agenda = list(kb_facts)`
+
+> Inicializa a agenda de execução como uma cópia em lista dos fatos iniciais, funcionando como a fila de propagação de dados.
+
+11. `parsed_rules = []`
+
+> Inicializa uma lista para guardar as regras pré-processadas e estruturadas em forma de dicionários de fácil acesso.
+
+12. `for rule in rules_to_process:`
+
+> Inicia um laço para extrair a estrutura interna de cada implicação que foi isolada para processamento.
+
+13. `head = rule.args[1]`
+
+> Extrai o segundo argumento da implicação, que corresponde ao consequente da regra (a cabeça da cláusula de Horn / conclusão).
+
+14. `body = rule.args[0]`
+
+> Extrai o primeiro argumento da implicação, que corresponde ao antecedente da regra (o corpo da cláusula / premissas).
+
+15. `if isinstance(body, And):`
+
+> Verifica se o corpo da regra é uma conjunção contendo múltiplos literais conectados pelo operador lógico `And` ($\land$).
+
+16. `body_literals = list(body.args)`
+
+> Se for uma conjunção, extrai todos os seus operandos e os armazena como uma lista de literais a serem validados.
+
+17. `elif body == True:`
+
+> Estrutura condicional para tratar regras cujo antecedente é uma tautologia pura (`True`).
+
+18. `body_literals = []`
+
+> Define o corpo como vazio, significando que nenhuma premissa pendente é necessária para validar esta conclusão.
+
+19. `else:`
+
+> Caso de escape para quando o corpo da regra possui apenas um único literal atômico isolado.
+
+20. `body_literals = [body]`
+
+> Insere o literal único dentro de uma lista unitária para manter a consistência do tipo de dados.
+
+21. `parsed_rules.append({"original_rule": rule, "head": head, "body": body_literals})`
+
+> Adiciona o mapeamento estruturado da regra (referência original, cabeça e lista de premissas do corpo) à coleção `parsed_rules`.
+
+22. `count[rule] = len(body_literals)`
+
+> Define o contador de pendências da regra como a quantidade total de literais necessários em seu antecedente.
+
+23. `print(f"--- INICIANDO FORWARD CHAINING ---")`
+
+> Exibe no console o marcador visual de início da execução do motor de inferência.
+
+24. `print(f"Fatos iniciais: {[str(f) for f in inferred]}")`
+
+> Imprime na tela a lista textual com todos os fatos que o sistema assume como verdadeiros no ponto zero.
+
+25. `horn_rule_strings = [f"{str(r['body'])} >> {str(r['head'])}" for r in parsed_rules]`
+
+> Cria uma representação em string legível de cada regra de Horn estruturada para fins de depuração em formato simplificado.
+
+26. `print(f"Regras de Horn (convertidas): {horn_rule_strings}")`
+
+> Exibe no terminal a listagem de todas as regras que o motor consultará durante o encadeamento.
+
+27. `print(f"Query: {query}\n")`
+
+> Imprime no console o objetivo (`query`) que o algoritmo está tentando provar.
+
+28. `while agenda:`
+
+> Inicia o laço de inferência principal, que rodará de forma contínua enquanto houver fatos não processados dentro da `agenda`.
+
+29. `p = agenda.pop(0)`
+
+> Remove e retorna o primeiro fato da fila da agenda, aplicando rigorosamente a estratégia FIFO (Busca em Largura).
+
+30. `print(f"Processando fato: {p}")`
+
+> Exibe no terminal qual fato está sendo analisado na iteração atual para expandir suas consequências.
+
+31. `if p == query:`
+
+> Avalia se o fato recém-extraído da agenda é exatamente a meta que queríamos provar.
+
+32. `print(f"SUCESSO: Query \'{query}\' provada por Forward Chaining!")`
+
+> Se a query foi alcançada, exibe uma mensagem comemorativa de sucesso no console.
+
+33. `return True`
+
+> Retorna o booleano `True`, encerrando a função com a comprovação do teorema.
+
+34. `for rule_info in parsed_rules:`
+
+> Caso a query não tenha sido atingida, inicia uma varredura por todas as regras para propagar o impacto do fato `p`.
+
+35. `original_rule = rule_info["original_rule"]`
+
+> Recupera a referência do objeto da regra lógica associada àquela iteração de metadados.
+
+36. `if p in rule_info["body"] and count[original_rule] > 0:`
+
+> Condicional que valida se o fato `p` está listado nas premissas da regra e se o contador desta regra ainda está ativo.
+
+37. `count[original_rule] -= 1`
+
+> Decrementa em uma unidade o contador de pendências da regra, já que uma de suas condições foi satisfeita por `p`.
+
+38. `if count[original_rule] == 0:`
+
+> Verifica se o contador de condições pendentes da regra zerou completamente.
+
+39. `conclusion = rule_info["head"]`
+
+> Isola a conclusão (cabeça) da regra que foi totalmente satisfeita pelas premissas.
+
+40. `if conclusion not in inferred:`
+
+> Verifica se esta conclusão obtida já não faz parte do nosso conjunto de fatos conhecidos.
+
+41. `inferred.add(conclusion)`
+
+> Registra a nova conclusão deduzida dentro do conjunto `inferred` para marcar que ela agora é uma verdade conhecida.
+
+42. `agenda.append(conclusion)`
+
+> Adiciona a nova conclusão ao final da fila da agenda para que suas próprias consequências nas demais regras sejam testadas futuramente.
+
+43. `print(f"  -> Regra \'{original_rule}\' satisfeita. Inferido: {conclusion}")`
+
+> Imprime um log detalhado demonstrando qual regra disparou e qual novo fato ela gerou para a base.
+
+44. `print(f"FALHA: Query \'{query}\' não pode ser provada por Forward Chaining.")`
+
+> Linha executada caso a agenda se esvazie completamente sem que o objetivo seja tocado; emite alerta de falha.
+
+45. `return False`
+
+> Retorna o booleano `False`, finalizando o algoritmo e indicando que a meta não é dedutível a partir da KB enviada.
+
+</details>
+
+#### Demonstração
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148499839, user_tz: 180, elapsed: 21, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+A, B, C, D = symbols('A B C D')
+
+kb_exemplo = [
+    A,                          # Fato: A é verdadeiro
+    Implies(A, B),              # Regra: Se A, então B
+    Equivalent(B, And(C, D)),   # Regra: B se e somente se C E D
+]
+
+print("\n--- KB Convertida para Cláusulas de Horn ---")
+converted_kb = []
+for formula in kb_exemplo:
+    horn_forms = to_horn_clauses(formula)
+    if horn_forms:
+        for hf in horn_forms:
+            converted_kb.append(hf)
+    else:
+        print(f"[IGNORADO] Fórmula não convertida para Horn: {formula}")
+
+for i, formula in enumerate(converted_kb):
+    print(f"{i+1}. {formula}")
+```
+
+## Resolução por Refutação
+
+Enquanto o Forward Chaining é excelente para deduções diretas, ele falha quando o conhecimento envolve incertezas (como saber que um poço está em uma sala *ou* outra, sem saber qual). Para resolver qualquer problema na lógica proposicional, utilizamos a **Resolução por Refutação**. A **Resolução por Refutação** é um método para provar o **acarretamento lógico** ($\text{KB} \models \alpha$) através da verificação de **insatisfatibilidade**. O conceito fundamental que une esses termos é que provar que uma consulta $\alpha$ é verdadeira a partir de uma Base de Conhecimento (KB) é logicamente equivalente a mostrar que a sentença $(\text{KB} \wedge \neg \alpha)$ é **insatisfatível**, ou seja, não possui nenhum modelo que a torne verdadeira.
+
+Esse processo baseia-se na técnica matemática de ***reductio ad absurdum*** (redução ao absurdo), na qual assumimos temporariamente que o que queremos provar é falso ($\neg \alpha$) e buscamos uma contradição com os fatos conhecidos. Na prática, a relação entre esses conceitos ocorre da seguinte forma:
+
+*   **Conversão para CNF:** Para que o motor de resolução funcione, a KB e a negação da consulta ($\neg \alpha$) são convertidas para a **Forma Normal Conjuntiva (CNF)**, um padrão de conjunção de cláusulas.
+*   **Busca por Contradição:** O algoritmo aplica a regra de resolução em busca da **cláusula vazia**. A cláusula vazia é um símbolo de falsidade absoluta e sua derivação é a prova definitiva de que o conjunto de cláusulas original é **insatisfatível**.
+*   **Uso de SAT Solvers:** Muitos sistemas modernos utilizam algoritmos de satisfatibilidade (SAT), como o **DPLL**, para realizar essa verificação. O DPLL busca exaustivamente por um modelo que satisfaça a sentença; se o algoritmo retornar que a sentença é **insatisfatível**, o agente conclui com certeza que a consulta $\alpha$ é acarretada pela KB.
+
+Em resumo, a Resolução por Refutação funciona "refutando" a possibilidade de a consulta ser falsa, transformando um problema de prova lógica em um problema de verificar a **ausência de modelos satisfatíveis** para a negação dessa prova.
+
+<details>
+    <summary> Como funciona a prova por contradição? </summary>
+
+Imaginem, que o agente percebe que **não há brisa** na sala atual. Ele quer saber se a sala vizinha é **segura**.
+
+1.  **A suposição:** O agente assume o contrário do que quer provar: "Existe um poço na sala vizinha".
+2.  **A regra:** A física do mundo diz: "Se há um poço na vizinha, deve haver brisa na sala atual".
+3.  **A contradição:** O agente combina a suposição ("há poço") com a regra e conclui: "Logo, deveria haver brisa". Mas ele sabe, por percepção direta, que **não há brisa**.
+4.  **Conclusão:** Como a suposição levou a um absurdo (brisa e não-brisa ao mesmo tempo), é impossível haver um poço ali. A sala é declarada **segura**.
+   
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499842, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def get_symbol(literal):
+    """Retorna o símbolo base de um literal (ex: P de Not(P))."""
+    if isinstance(literal, Not):
+        return literal.args[0]
+    return literal
+
+def negate_literal(literal):
+    """Retorna a negação de um literal."""
+    if isinstance(literal, Not):
+        return literal.args[0]
+    return Not(literal)
+
+def to_set_of_literals(clause):
+    """Converte uma cláusula SymPy (literal ou Or) para um conjunto de literais."""
+    if isinstance(clause, Or):
+        return set(clause.args)
+    return {clause}
+
+def to_cnf_clauses(formula):
+    """Converte uma fórmula SymPy para um conjunto de conjuntos de literais (CNF).
+    Retorna uma lista de conjuntos de literais, onde cada conjunto é uma cláusula.
+    """
+    cnf_form = to_cnf(formula)
+    if isinstance(cnf_form, And):
+        return [to_set_of_literals(clause) for clause in cnf_form.args]
+    return [to_set_of_literals(cnf_form)]
+```
+
+Para lidar com problemas de satisfatibilidade em escala, utilizamos o **algoritmo DPLL** (*Davis-Putnam-Logemann-Loveland*), que melhora drasticamente a busca por retrocesso (*backtracking*) através de heurísticas inteligentes. O DPLL é essencialmente uma **busca em profundidade no espaço** de modelos parciais. A implementação do **Algoritmo DPLL** é projetada para verificar a satisfatibilidade de sentenças em **Forma Normal Conjuntiva (CNF)**. Enquanto o Model Checking tradicional (TT-ENTAILS?) enumera exaustivamente $2^n$ modelos, o DPLL é significativamente mais eficiente por utilizar heurísticas que podam o espaço de busca. O algoritmo fundamenta-se em três pilares técnicos: a **Terminação Antecipada**, que interrompe a busca assim que uma cláusula é violada ou todas são satisfeitas; a **Heurística de Símbolos Puros**, que identifica variáveis que aparecem com apenas uma polaridade (sempre positivas ou sempre negativas) e as atribui de forma a satisfazer suas cláusulas; e a **Heurística de Cláusula Unitária**, que identifica atribuições obrigatórias.
+
+*O Poder da Propagação Unitária*
+
+Um dos mecanismos mais vitais do DPLL é a **Propagação Unitária**, que ocorre quando uma cláusula possui apenas um literal não atribuído e todos os seus demais literais já foram definidos como falsos pelo modelo parcial atual. Nesses cenários, a atribuição do literal restante torna-se obrigatória para evitar que a cláusula — e, consequentemente, toda a sentença — se torne falsa.
+
+Este processo frequentemente gera um efeito dominó:
+*   **Cascata de Deduções:** A atribuição "forçada" de um símbolo em uma cláusula unitária pode simplificar outras cláusulas complexas, transformando-as também em unitárias.
+*   **Eficiência Computacional:** Essa sucessão de atribuições obrigatórias, conhecida como uma "cascata" de propagação unitária, permite que o algoritmo preencha grandes partes do modelo sem precisar recorrer a tentativas e erros (backtracking).
+*   **Relação com Motores de Regras:** Tecnicamente, se a base de conhecimento contiver apenas cláusulas definitivas, o processo de propagação unitária do DPLL funciona de forma análoga ao **Forward Chaining**, derivando fatos a partir de premissas satisfeitas.
+
+No **Mundo do Wumpus**, a propagação unitária é o que permite ao agente deduzir rapidamente que, se uma sala tem brisa e todos os vizinhos, exceto um, são conhecidos como seguros, então aquele vizinho restante deve obrigatoriamente conter um poço. Graças a esses detalhes técnicos e a otimizações modernas como o aprendizado de cláusulas de conflito, o DPLL e seus sucessores conseguem resolver problemas com milhões de variáveis, sendo a base tecnológica para verificação de hardware e segurança de sistemas.
+
+<details>
+    <summary>O que é satisfatibilidade?</summary>
+
+A **satisfatibilidade** é uma propriedade fundamental da lógica que determina se uma sentença (ou um conjunto de sentenças) pode ser verdadeira em algum cenário possível. Uma sentença é considerada satisfatível se existe pelo menos um **modelo** (ou "mundo possível") no qual ela é avaliada como verdadeira.
+
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499885, user_tz: 180, elapsed: 42, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def dpll(clauses, assignment=None):
+    """
+    Implementa o algoritmo DPLL para verificar a satisfatibilidade de um conjunto de cláusulas CNF.
+    """
+    if assignment is None:
+        assignment = {}
+
+    # Simplificação (Unit Propagation e Pure Literal Elimination)
+    # Copia as cláusulas para não modificar a lista original durante a recursão
+    current_clauses = [c.copy() for c in clauses]
+    current_assignment = assignment.copy()
+
+    while True:
+        # Unit Propagation
+        unit_clause_found = False
+        for clause in current_clauses:
+            if len(clause) == 1:
+                literal = list(clause)[0]
+                symbol = get_symbol(literal)
+                value = True if not isinstance(literal, Not) else False
+
+                if symbol in current_assignment and current_assignment[symbol] != value:
+                    return False # Contradição
+
+                if symbol not in current_assignment:
+                    current_assignment[symbol] = value
+                    unit_clause_found = True
+                    # Propagar a atribuição: remover cláusulas satisfeitas e literais negados
+                    new_current_clauses = []
+                    for c in current_clauses:
+                        if literal in c: # Cláusula satisfeita
+                            continue
+                        if negate_literal(literal) in c: # Remover literal negado
+                            c.remove(negate_literal(literal))
+                            if not c: # Cláusula vazia após remoção = contradição
+                                return False
+                        new_current_clauses.append(c)
+                    current_clauses = new_current_clauses
+                    break # Recomeçar Unit Propagation com as cláusulas atualizadas
+
+        if unit_clause_found: # Se houve propagação, continua o loop de simplificação
+            continue
+
+        # Pure Literal Elimination (simplificação mais simples, pode ser omitida para clareza didática)
+        # Para este exemplo, vamos focar na Unit Propagation e na busca.
+        break # Nenhuma unit clause encontrada, sair do loop de simplificação
+
+    # Verificação
+    if not current_clauses: # Todas as cláusulas satisfeitas
+        return current_assignment
+
+    if any(not c for c in current_clauses): # Cláusula vazia encontrada
+        return False
+
+    # 3. Escolha de Variável (Heurística simples: primeira variável não atribuída)
+    unassigned_symbols = set()
+    for clause in current_clauses:
+        for literal in clause:
+            symbol = get_symbol(literal)
+            if symbol not in current_assignment:
+                unassigned_symbols.add(symbol)
+
+    if not unassigned_symbols:
+        return current_assignment # Todas as variáveis atribuídas e sem contradição
+
+    # Escolhe a primeira variável não atribuída
+    p = unassigned_symbols.pop()
+
+    # Busca Recursiva (tentar True)
+    # Atribuir p = True (literal p)
+    result_true = dpll(current_clauses + [to_set_of_literals(p)], {**current_assignment, p: True})
+    if result_true is not False:
+        return result_true
+
+    # Retroceder e tentar p = False (literal Not(p))
+    result_false = dpll(current_clauses + [to_set_of_literals(Not(p))], {**current_assignment, p: False})
+    if result_false is not False:
+        return result_false
+
+    return False # Ambas as tentativas falharam
+```
+
+<details>
+    <summary>Explicação</summary>
+
+1. `def dpll(clauses, assignment=None):`
+> Implementa o algoritmo DPLL para verificar a satisfatibilidade de um conjunto de cláusulas. O DPLL é uma busca em profundidade no espaço de modelos parciais.
+
+2. `if assignment is None:`
+> Verifica se é a chamada inicial do algoritmo, onde o modelo (atribuição) ainda não foi definido.
+
+3. `assignment = {}`
+> Inicializa o dicionário de atribuições como vazio, representando que nenhum símbolo recebeu valor de verdade ainda.
+
+4. `current_clauses = [c.copy() for c in clauses]`
+> Copia as cláusulas para não modificar a lista original durante a recursão. Isso é essencial para o processo de backtracking.
+
+5. `current_assignment = assignment.copy()`
+> Cria uma cópia local do modelo atual para esta ramificação da busca.
+
+6. `while True:`
+> Inicia um loop para realizar a simplificação da base de conhecimento, focando na **Propagação Unitária**.
+
+7. `unit_clause_found = False`
+> Flag para indicar se uma cláusula unitária foi identificada na iteração atual.
+
+8. `for clause in current_clauses:`
+> Itera sobre todas as cláusulas para buscar oportunidades de simplificação.
+
+9. `if len(clause) == 1:`
+> Identifica uma **cláusula unitária**, definida como uma cláusula com apenas um literal não atribuído.
+
+10. `literal = list(clause)`
+> Extrai o único literal presente na cláusula unitária.
+
+11. `symbol = get_symbol(literal)`
+> Obtém o símbolo atômico (ex: P) a partir do literal (ex: Not(P)).
+
+12. `value = True if not isinstance(literal, Not) else False`
+> Determina o valor de verdade obrigatório: se o literal for positivo, o símbolo deve ser True; se for uma negação, deve ser False.
+
+13. `if symbol in current_assignment and current_assignment[symbol] != value:`
+> Verificamos se este mundo é compatível com o que o agente já sabe. Se o símbolo já tiver um valor diferente, encontramos uma contradição.
+
+14. `return False`
+> Retorna Falso, sinalizando que o caminho atual é insatisfatível devido à contradição encontrada.
+
+15. `if symbol not in current_assignment:`
+> Se o símbolo ainda não foi atribuído, ele recebe o valor necessário para satisfazer a cláusula unitária.
+
+16. `current_assignment[symbol] = value`
+> Registra a atribuição no modelo parcial.
+
+17. `unit_clause_found = True`
+> Marca que uma propagação ocorreu, o que pode gerar novas cláusulas unitárias (efeito cascata).
+
+18. `new_current_clauses = []`
+> Prepara uma nova lista para armazenar as cláusulas após a propagação da nova atribuição.
+
+19. `for c in current_clauses:`
+> Itera novamente para aplicar a atribuição e simplificar o conjunto de cláusulas.
+
+20. `if literal in c:`
+> Verifica se a cláusula contém o literal que acabamos de tornar verdadeiro.
+
+21. `continue`
+> Cláusula satisfeita. Ela é removida da análise atual, pois já é verdadeira no modelo.
+
+22. `if negate_literal(literal) in c:`
+> Verifica se a cláusula contém o literal oposto ao que foi atribuído como verdadeiro.
+
+23. `c.remove(negate_literal(literal))`
+> Remover literal falso da cláusula. A cláusula é encurtada, pois esse literal não pode mais torná-la verdadeira.
+
+24. `if not c:`
+> Verifica se a remoção resultou em uma "cláusula vazia".
+
+25. `return False`
+> Cláusula vazia após remoção = contradição. Uma cláusula vazia é equivalente a Falso.
+
+26. `new_current_clauses.append(c)`
+> Adiciona a cláusula simplificada (ou inalterada) ao novo conjunto.
+
+27. `current_clauses = new_current_clauses`
+> Atualiza o conjunto de trabalho com as cláusulas simplificadas.
+
+28. `break`
+> Recomeçar Unit Propagation com as cláusulas atuais, para aproveitar novas simplificações geradas.
+
+29. `if unit_clause_found:`
+> Se houve progresso na simplificação, o loop continua buscando mais cláusulas unitárias.
+
+30. `continue`
+> Retorna ao início do loop `while` para nova iteração de propagação.
+
+31. `break`
+> Sai do loop de simplificação quando nenhuma cláusula unitária adicional for encontrada.
+
+32. `if not current_clauses:`
+> Verifica se todas as cláusulas foram satisfeitas e removidas.
+
+33. `return current_assignment`
+> Todas as cláusulas satisfeitas. Retorna o modelo (atribuição) que prova a satisfatibilidade.
+
+34. `if any(not c for c in current_clauses):`
+> Verifica se resta alguma cláusula vazia no conjunto.
+
+35. `return False`
+> Cláusula vazia encontrada. Retorna Falso, indicando insatisfatibilidade nesta ramificação.
+
+36. `unassigned_symbols = set()`
+> Inicializa um conjunto para identificar símbolos que ainda não possuem valor.
+
+37. `for clause in current_clauses:`
+> Varre as cláusulas restantes para encontrar variáveis pendentes.
+
+38. `for literal in clause:`
+> Analisa cada literal dentro das cláusulas não satisfeitas.
+
+39. `symbol = get_symbol(literal)`
+> Extrai o símbolo do literal.
+
+40. `if symbol not in current_assignment:`
+> Verifica se o símbolo ainda não foi contemplado no modelo parcial.
+
+41. `unassigned_symbols.add(symbol)`
+> Adiciona o símbolo à lista de candidatos para a próxima escolha de atribuição.
+
+42. `if not unassigned_symbols:`
+> Caso não existam mais símbolos para atribuir.
+
+43. `return current_assignment`
+> Todas as variáveis atribuídas e sem contradição.
+
+44. `p = unassigned_symbols.pop()`
+> Escolhe a primeira variável não atribuída. É o ponto de decisão (branching) da busca.
+
+45. `result_true = dpll(current_clauses + [to_set_of_literals(p)], {**current_assignment})`
+> Busca Recursiva (tentar True). Tenta resolver o problema assumindo que o símbolo escolhido é verdadeiro.
+
+46. `if result_true is not False:`
+> Se a tentativa com True retornar um modelo válido, a busca termina com sucesso.
+
+47. `return result_true`
+> Retorna o modelo encontrado pela recursão.
+
+48. `result_false = dpll(current_clauses + [to_set_of_literals(Not(p))], {**current_assignment})`
+> "Retroceder e tentar p = False". Se a tentativa com True falhou, o backtracking tenta o valor oposto.
+
+49. `if result_false is not False:`
+> Se a tentativa com False retornar um modelo válido, a satisfatibilidade está provada.
+
+50. `return result_false`
+> Retorna o modelo encontrado pela segunda ramificação.
+
+51. `return False`
+> "Ambas as tentativas falharam". O conjunto de cláusulas original é insatisfatível.
+
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148499889, user_tz: 180, elapsed: 3, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def prove_with_dpll(kb_formulas, query_symbol):
+    """Tenta provar uma query usando o algoritmo DPLL manual.
+    Retorna True se a query é provada, False caso contrário.
+    """
+    # 1. Coletar todas as sentenças da KB do agente e a negação da query
+    all_formulas = kb_formulas + [Not(query_symbol)]
+
+    # 2. Converter todas as fórmulas para CNF (lista de conjuntos de literais)
+    dpll_clauses = []
+    for formula in all_formulas:
+        cnf_parts = to_cnf_clauses(formula)
+        dpll_clauses.extend(cnf_parts)
+
+    print(f"  Tentando provar: {query_symbol}")
+    print(f"  Verificando a satisfatibilidade de: KB AND (NOT {query_symbol}) usando DPLL")
+
+    # 3. Chamar o DPLL
+    result = dpll(dpll_clauses)
+
+    if result is False:
+        print(f"  SUCESSO: KB AND (NOT {query_symbol}) é insatisfatível. {query_symbol} é provado!")
+        return True
+    else:
+        print(f"  FALHA: KB AND (NOT {query_symbol}) é satisfatível. {query_symbol} NÃO é provado.")
+        # print(f"  Modelo de satisfatibilidade: {result}") # Opcional: mostra o modelo
+        return False
+
+```
+
+#### Demonstração
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500006, user_tz: 180, elapsed: 7, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Definindo alguns símbolos
+A, B, C = symbols('A, B, C')
+
+# Fórmulas de exemplo
+formula1 = Implies(A, B) # A -> B
+formula2 = Equivalent(A, B) # A <-> B
+formula3 = Not(A >> B) # Not(A -> B)
+formula4 = Or(A, And(B, C)) # A or (B and C)
+
+print(f"Fórmula Original: {formula1} | CNF: {to_cnf_clauses(formula1)}")
+print(f"Fórmula Original: {formula2} | CNF: {to_cnf_clauses(formula2)}")
+print(f"Fórmula Original: {formula3} | CNF: {to_cnf_clauses(formula3)}")
+print(f"Fórmula Original: {formula4} | CNF: {to_cnf_clauses(formula4)}")
+```
+
+## Exemplos práticos
+
+### Cenário 01 - Dedução com lógica proposicional
+
+Para darmos início às demonstrações, trabalharemos a inferência a partir da Lógica Proposicional, o tipo mais simples de lógica e a base fundamental para a representação do conhecimento na inteligência artificial.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500011, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Percepção Inicial. O agente começa na Sala 1 (Segura e sem brisa)
+kb.append(Not(P1)) # Não há poço na Sala 1
+kb.append(Not(B1)) # Não há brisa na Sala 1
+
+display_mental_map(kb, current_room=1)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500031, user_tz: 180, elapsed: 19, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(f"Base de Conhecimento (KB) finalizada com {len(kb)} sentenças explícitas.")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500046, user_tz: 180, elapsed: 14, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# O agente move-se para a Sala 2 (Segura, mas sente brisa)
+kb.append(Not(P2)) # Não há poço na Sala 2
+kb.append(B2) # Há brisa na Sala 2
+
+display_mental_map(kb, current_room=2)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500047, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(f"Base de Conhecimento (KB) finalizada com {len(kb)} sentenças explícitas.")
+```
+
+Para simular esse movimento de "ida e volta" e exploração de uma nova rota, precisamos atualizar a Base de Conhecimento (KB) com as percepções de cada nova sala visitada e atualizar o parâmetro current_room na nossa função de visualização. Seguindo o nosso cenário (onde há um poço na Sala 6), o agente sentirá brisa na Sala 5 (pois os vizinhos de 5 são 1, 6 e 9, e o poço na 6 causaria brisa na 5).
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500063, user_tz: 180, elapsed: 15, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+display_mental_map(kb, current_room=1)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500069, user_tz: 180, elapsed: 5, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Adicionamos os novos fatos sobre a Sala 5 à KB:
+kb.append(Not(P5))  # O agente entrou na Sala 5 e está seguro
+kb.append(B5)       # Percepção: Ele sente uma brisa na Sala 5! (causada pelo poço na 6)
+
+# Visualizamos o novo estado do mapa mental
+display_mental_map(kb, current_room=5)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500092, user_tz: 180, elapsed: 22, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(f"Base de Conhecimento (KB) finalizada com {len(kb)} sentenças explícitas.")
+```
+
+<details>
+    <summary>Qual relação entre a instrução `append` e a operação TELL?</summary>
+
+Na teoria dos agentes lógicos, a interação com a Base de Conhecimento (KB) ocorre através de duas operações fundamentais: **TELL** e **ASK**.
+
+1.  **O que é o TELL?** É a operação de "contar" ou "informar" à base de conhecimento novas asserções sobre o mundo. O objetivo é adicionar sentenças que representem percepções do agente ou regras gerais (axiomas) do ambiente.
+2.  **Implementação Prática:** Em nosso código, a lista `kb` atua como o repositório físico dessas sentenças. Quando executamos um comando como `kb.append(Not(P1))`, estamos realizando uma operação **TELL** em nível de implementação.
+3.  **Abordagem Declarativa:** Ao usar o `append` para inserir fatos e regras, estamos seguindo a **abordagem declarativa** para a construção de sistemas. Em vez de programar cada movimento do agente, nós "contamos" a ele como o mundo funciona e o que ele está percebendo, permitindo que o motor de inferência decida o que fazer.
+4.  **Ciclo de Vida:** No ciclo de um agente baseado em conhecimento, o **TELL** é usado duas vezes a cada passo: primeiro para registrar a percepção atual (`MAKE-PERCEPT-SENTENCE`) e depois para registrar a ação que o agente efetivamente escolheu realizar (`MAKE-ACTION-SENTENCE`).
+
+Dessa forma, cada `kb.append()` que você vê no laboratório é uma instrução para que o agente atualize seu "estado mental" e expanda o que ele sabe sobre o Mundo do Wumpus.
+
+</details>
+
+### Cenário 02 - Model Checking
+
+Para o próximo cenário, usaremos o Model Checking para avaliar o "status" de segurança da Sala 6. Para isso, dizemos que uma sentença (como "A Sala 6 tem um poço") é uma consequência lógica da Base de Conhecimento (KB) se, e somente se, em todos os cenários onde a KB é verdadeira, a ciência também por verdadeira. Se o algoritmo encontrar um único cenário (um "contra-exemplo") onde as pistas do agente funcionam mas a conclusão é falsa, o agente admitirá: "Não tenho certeza".
+
+Note que iremos reduzir a Base de Conhecimento original. Ao invés das 16 salas, iremos utilizar apenas uma pequena parte do mapa do Wumpus World. Tal decisão se deve ao fenômeno chamado Explosão Combinatória. Por exemplo:
+
+* O Cálculo: Em uma grade 4x4, temos 16 salas para poços ($P_1 \dots P_{16}$) e 16 para brisas ($B_1 \dots B_{16}$), totalizando 32 símbolos.
+* A Estimativa: O Model Checking precisa testar $2^{32}$ combinações. Isso equivale a 4.294.967.296 mundos possíveis.
+* O Tempo: Mesmo que seu computador processe 100.000 mundos por segundo, ele levaria cerca de 12 horas de processamento ininterrupto para responder a uma pergunta simples como "A Sala 2 é segura?".
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148500096, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+kb_local = [
+    # Regras essenciais para o raciocínio atual
+    Equivalent(B1, Or(P2, P5)),
+    Equivalent(B2, Or(P1, P3, P6)),
+    Equivalent(B5, Or(P1, P6, P9)),
+
+    # Percepções coletadas
+    Not(P1), Not(B1), # Sala 1: Segura e sem brisa
+    Not(P2), B2,      # Sala 2: Segura e com brisa
+    Not(P5), B5       # Sala 5: Segura e com brisa
+]
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500106, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+kb_local
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500215, user_tz: 180, elapsed: 100, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(">>> O agente está perguntando à KB: 'A Sala 6 tem um poço?'\n")
+is_pit_6 = model_check(kb_local, P6)
+
+print(f"Resposta da Inferência: {'SIM' if is_pit_6 else 'NÃO TENHO CERTEZA'}")
+```
+
+<details>
+ <summary>Explicação</summary>
+
+O agente, ao tentar provar que a Sala 6 tem um poço (P6) usando o Model Checking, encontrou um contra-exemplo (Mundo #311). Isso significa que, mesmo com todas as percepções e regras que o agente possuía (kb_local), existia pelo menos um cenário (um "mundo possível") onde a Base de Conhecimento era verdadeira, mas a Sala 6 não tinha um poço. Esse contra-exemplo impediu o agente de ter 100% de certeza, forçando-o a concluir "NÃO TENHO CERTEZA", demonstrando a rigorosidade da lógica: se há uma única possibilidade de a conclusão ser falsa, ela não pode ser afirmada como consequência lógica.
+
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148500216, user_tz: 180, elapsed: 10, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# --- AGORA O AGENTE ENTRA NA SALA 9 ---
+print(">>> Agente entrando na Sala 9...")
+
+# Ele descobre a "física" da Sala 9
+kb_local.append(Equivalent(B9, Or(P5, P10, P13)))
+
+# Ele recebe as percepções da Sala 9
+kb_local.append(Not(P9)) # Está vivo, logo P9 é falso
+kb_local.append(Not(B9)) # Não sente brisa na 9
+
+# Visualizamos o progresso
+display_mental_map(kb_local, current_room=9)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148501367, user_tz: 180, elapsed: 1132, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+is_pit_6 = model_check(kb_local, P6)
+
+if is_pit_6:
+    print("\nCONCLUSÃO DO AGENTE: 'Agora eu tenho CERTEZA! A Sala 6 é um poço!'")
+```
+
+<details>
+ <summary>Explicação</summary>
+
+Este sucesso foi possível porque o agente acumulou informações suficientes para eliminar todas as outras possibilidades. Lembre-se das pistas:
+
+* Brisa na Sala 2 ($B_2$): Implica poço em $P_1 \lor P_3 \lor P_6$.
+* Brisa na Sala 5 ($B_5$): Implica poço em $P_1 \lor P_6 \lor P_9$.
+* Segurança da Sala 1 ($\neg P_1$): O agente começou aqui.
+* Segurança da Sala 9 ($\neg P_9$): O agente visitou e não encontrou poço.
+
+Ao combinar essas informações, o agente deduziu:
+* Dado $B_2$ e $\neg P_1$: O poço está em $P_3 \lor P_6$.
+* Dado $B_5$, $\neg P_1$ e $\neg P_9$: O poço DEVE estar em $P_6$.
+
+O Model Checking, ao varrer todos os mundos, confirmou que a única maneira de todas as percepções e regras serem verdadeiras é se $P_6$ também for verdadeiro. O agente, finalmente, tem a informação crucial para evitar o perigo.
+
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504792, user_tz: 180, elapsed: 3427, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(">>> O agente está perguntando à KB: 'A Sala 3 é segura?'")
+is_safe_3 = model_check(kb_local, Safe3) # Lembre-se: Safe3 é equivalente a Not(P3)
+print(f"Resposta da Inferência: {'SIM' if is_safe_3 else 'NÃO, PODE SER PERIGOSA'}")
+```
+
+<details>
+ <summary>Explicação</summary>
+
+Mesmo sabendo que a Sala 6 tem um poço (pelas brisas na 2 e 5), a brisa na Sala 2 ($B_2$) ainda poderia ser explicada por um poço na Sala 3 ALÉM do poço na Sala 6. Ou seja, o agente sabe que $B_2 \iff (P_1 \lor P_3 \lor P_6)$. Como ele sabe $\neg P_1$ e agora sabe $P_6$, a brisa em $B_2$ é explicada por $P_6$. Mas isso não impede que $P_3$ também seja verdadeiro! O agente não tem nenhuma informação que descarte $P_3$. Para o agente ter certeza sobre a Sala 3, ele precisaria de mais uma pista, talvez uma percepção de uma sala vizinha à Sala 3 que não sentisse brisa.
+
+</deitals>
+
+### Cenário 03 - Forward Chaining
+
+O Model Checking provou ser uma ferramenta poderosa para garantir a certeza lógica, permitindo que nosso agente desvendasse o mistério da Sala 6 com rigor matemático. No entanto, como observamos, sua natureza exaustiva o torna computacionalmente inviável para Bases de Conhecimento muito grandes, devido à explosão combinatória. Para um agente que precisa reagir rapidamente em um ambiente dinâmico, testar bilhões de mundos a cada nova percepção não é prático. É nesse ponto que motores de inferência mais eficientes, como o Forward Chaining (Encadeamento para Frente), se tornam essenciais. Em vez de verificar todos os mundos possíveis, o Forward Chaining adota uma abordagem mais direta, propagando a verdade a partir dos fatos conhecidos e aplicando regras de forma incremental, o que o torna significativamente mais rápido para um tipo específico de sentenças lógicas: as Cláusulas de Horn.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504821, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+kb_standard, P_sym, B_sym, W_sym, S_sym, G_sym, L_sym, Safe_sym = create_wumpus_kb_standard_world()
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148504849, user_tz: 180, elapsed: 27, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Fatos iniciais do agente (percepções na Sala 1)
+# O agente começa na Sala 1, que é segura e não tem brisa nem fedor (no mundo padrão)
+initial_percepts = [
+    Not(P_sym[0]), # Agente está na Sala 1, então não há poço
+    Not(W_sym[0]), # Agente está na Sala 1, então não há Wumpus
+    Not(B_sym[0]), # Não sente brisa na Sala 1
+    Not(S_sym[0])  # Não sente fedor na Sala 1
+]
+
+# Preparar as regras para o Forward Chaining
+# Precisamos das regras da kb_standard que podem ser convertidas em Horn clauses.
+# Vamos filtrar as regras que são Implies ou Equivalent e passá-las para to_horn_clauses.
+
+fc_rules_original = []
+for rule in kb_standard:
+    if isinstance(rule, Implies) or isinstance(rule, Equivalent):
+        fc_rules_original.append(rule)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504878, user_tz: 180, elapsed: 31, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+fc_rules_original
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504891, user_tz: 180, elapsed: 13, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+display_mental_map(initial_percepts, current_room=1)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504922, user_tz: 180, elapsed: 33, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executar o Forward Chaining para inferir Safe2
+print(">>> O agente quer saber: A Sala 2 é segura (Safe2)?")
+forward_chain(initial_percepts, fc_rules_original, Safe_sym[1])
+```
+
+<details>
+ <summary>Explicação</summary>
+
+O output mostra o processo do algoritmo Forward Chaining tentando provar que a Sala 2 é segura (`Safe2`), a partir das percepções iniciais do agente na Sala 1.
+
+**1. Configuração Inicial (Linhas 1-5):**
+
+*   **Linha 3: `Fatos iniciais: [\'~W1\', \'~P1\', \'~B1\', \'~S1\']`**:
+    *   Estes são os fatos que o agente conhece ao iniciar na Sala 1. Ele sabe que não há Wumpus (`~W1`), não há Poço (`~P1`), não há Brisa (`~B1`) e não há Fedor (`~S1`) na Sala 1. Esses fatos são adicionados à `agenda` (fila de fatos a serem processados) e ao conjunto `inferred` (fatos já inferidos).
+*   **Linha 4: `Regras de Horn (convertidas): [...]`**:
+    *   Esta linha mostra a lista de regras da Base de Conhecimento (KB) que foram convertidas para o formato de Cláusulas de Horn, prontas para serem usadas pelo Forward Chaining. As regras mais relevantes para esta prova são:
+        *   `[~B1] >> ~P2` (Se não há brisa na Sala 1, então não há poço na Sala 2).
+        *   `[~B1] >> ~P5` (Se não há brisa na Sala 1, então não há poço na Sala 5).
+        *   `[~S1] >> ~W2` (Se não há fedor na Sala 1, então não há Wumpus na Sala 2).
+        *   `[~S1] >> ~W5` (Se não há fedor na Sala 1, então não há Wumpus na Sala 5).
+        *   `[~P2, ~W2] >> Safe2` (Se não há poço na Sala 2 E não há Wumpus na Sala 2, então a Sala 2 é segura).
+        *   `[~P5, ~W5] >> Safe5` (Se não há poço na Sala 5 E não há Wumpus na Sala 5, então a Sala 5 é segura).
+*   **Linha 5: `Query: Safe2`**:
+    *   O objetivo do Forward Chaining é determinar se `Safe2` pode ser inferido a partir dos fatos e regras atuais.
+
+**2. Processamento dos Fatos (Linhas 7-24):**
+
+O algoritmo retira um fato da `agenda` por vez e verifica quais regras podem ser ativadas por ele.
+
+*   **Linhas 7-8: `Processando fato: ~P1`, `Processando fato: ~W1`**
+    *   Estes fatos são processados. A **Linha 9** mostra que a regra `Implies(~P1 & ~W1, Safe1)` é satisfeita, inferindo `Safe1` (a Sala 1 é segura). Este é um fato importante, mas não diretamente para `Safe2`.
+*   **Linha 10: `Processando fato: ~B1`**
+    *   Este fato é crucial. Ele ativa duas regras:
+        *   **Linha 11: `-> Regra 'Implies(~B1, ~P5)' satisfeita. Inferido: ~P5`**:
+            *   Como `~B1` é verdadeiro, e a regra `~B1 ⇒ ~P5` está na KB, o Forward Chaining infere que `~P5` (não há poço na Sala 5) é verdadeiro. `~P5` é adicionado a `inferred` e à `agenda`.
+        *   **Linha 12: `-> Regra 'Implies(~B1, ~P2)' satisfeita. Inferido: ~P2`**:
+            *   Pelo mesmo motivo, `~P2` (não há poço na Sala 2) é inferido e adicionado.
+*   **Linha 13: `Processando fato: ~S1`**
+    *   Este fato também é crucial e ativa duas regras:
+        *   **Linha 14: `-> Regra 'Implies(~S1, ~W5)' satisfeita. Inferido: ~W5`**:
+            *   Como `~S1` é verdadeiro, e a regra `~S1 ⇒ ~W5` está na KB, `~W5` (não há Wumpus na Sala 5) é inferido e adicionado.
+        *   **Linha 15: `-> Regra 'Implies(~S1, ~W2)' satisfeita. Inferido: ~W2`**:
+            *   Pelo mesmo motivo, `~W2` (não há Wumpus na Sala 2) é inferido e adicionado.
+*   **Linhas 16-19: `Processando fato: Safe1`, `~P5`, `~P2`, `~W5`**
+    *   Estes fatos são processados. A **Linha 20** mostra que `~P5` e `~W5` (ambos inferidos) satisfazem a regra `Implies(~P5 & ~W5, Safe5)`, inferindo `Safe5` (a Sala 5 é segura).
+*   **Linha 21: `Processando fato: ~W2`**
+    *   Este fato é a **segunda premissa** da regra `~P2 ∧ ~W2 ⇒ Safe2`. Como `~P2` já foi processado (Linha 18), agora **ambas as premissas** (`~P2` e `~W2`) da regra `~P2 ∧ ~W2 ⇒ Safe2` foram satisfeitas.
+        *   **Linha 22: `-> Regra 'Implies(~P2 & ~W2, Safe2)' satisfeita. Inferido: Safe2`**:
+            *   A conclusão `Safe2` (a Sala 2 é segura) é inferida e adicionada a `inferred` e à `agenda`.
+
+**3. Verificação da Query e Sucesso (Linhas 23-25):**
+
+*   **Linhas 23-24: `Processando fato: Safe5`, `Processando fato: Safe2`**:
+    *   Quando `Safe2` é retirado da `agenda` para ser processado, o algoritmo verifica se a `query` (`Safe2`) está no conjunto `inferred`. Sim, está!
+*   **Linha 25: `SUCESSO: Query 'Safe2' provada por Forward Chaining!`**:
+    *   O algoritmo termina com sucesso, pois a query foi inferida.
+
+**Conclusão**: Este output demonstra que o Forward Chaining, com as regras de Horn adequadamente formuladas na KB, é capaz de inferir a segurança de salas vizinhas a partir das percepções do agente. A ausência de brisa e fedor na Sala 1 permite inferir a ausência de poços e Wumpus nas salas adjacentes (Sala 2 e Sala 5), e a combinação dessas ausências leva à conclusão de que essas salas são seguras. Este é um exemplo clássico de como o Forward Chaining constrói conhecimento a partir de fatos básicos e regras de inferência.
+
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148504985, user_tz: 180, elapsed: 28, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executar o Forward Chaining para inferir Safe5
+print("\n>>> O agente quer saber: A Sala 5 é segura (Safe5)?")
+forward_chain(initial_percepts, fc_rules_original, Safe_sym[4])
+```
+
+Novamente, vamos simular o movimento (Sala #1 para Sala #6). Para isso, precisamos atualizar a Base de Conhecimento (KB) com as percepções de cada nova sala visitada e atualizar o parâmetro current_room na nossa função de visualização.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148505088, user_tz: 180, elapsed: 102, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Agente se move para a Sala 2
+current_room_scenario2 = 2
+
+# Atualizar as percepções com base na nova sala (Sala 2)
+perceptions_room2 = [
+    Not(P_sym[1]), # Agente está na Sala 2, então não há poço
+    Not(W_sym[1]), # Agente está na Sala 2, então não há Wumpus
+    B_sym[1],      # Sente brisa na Sala 2 (por causa do poço na Sala 6)
+    Not(S_sym[1])  # Não sente fedor na Sala 2
+]
+
+# Combinar todos os fatos conhecidos até agora
+all_known_facts_scenario2 = list(set(initial_percepts + perceptions_room2))
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505115, user_tz: 180, elapsed: 100, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+display_mental_map(all_known_facts_scenario2, current_room=current_room_scenario2)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505133, user_tz: 180, elapsed: 46, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executar o Forward Chaining para inferir Safe3
+print("\n>>> O agente quer saber: A Sala 3 é segura (Safe3)?")
+forward_chain(all_known_facts_scenario2, fc_rules_original, Safe_sym[2])
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505157, user_tz: 180, elapsed: 22, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executar o Forward Chaining para inferir Safe6
+print("\n>>> O agente quer saber: A Sala 6 é segura (Safe6)?")
+forward_chain(all_known_facts_scenario2, fc_rules_original, Safe_sym[5])
+```
+
+<details>
+ <summary>Explicação</summary>
+
+Agora, estamos observando o algoritmo Forward Chaining tentando provar que a Sala 6 é segura (`Safe6`), após o agente ter visitado a Sala 1 e a Sala 2. O agente tem as percepções de ambas as salas.
+
+**1. Configuração Inicial (Linhas 1-5):**
+
+*   **Linha 3: `Fatos iniciais: [\"~W1\", \"~W2\", \"~S1\", \"~P2\", \"~S2\", \"B2\", \"~P1\", \"~B1\"]`**:
+    *   Estes são os fatos que o agente conhece, combinando as percepções da Sala 1 (`~W1`, `~P1`, `~B1`, `~S1`) e da Sala 2 (`~P2`, `~W2`, `B2`, `~S2`). Note que `~P2` e `~W2` são fatos diretos da Sala 2, e `B2` (Brisa na Sala 2) e `~S2` (não há Fedor na Sala 2) são as percepções.
+*   **Linha 4: `Regras de Horn (convertidas): [...]`**:
+    *   Esta lista é a mesma do cenário anterior, contendo todas as regras universais do Wumpus World convertidas para Cláusulas de Horn. As regras relevantes para `Safe6` seriam:
+        *   `[~S2] >> ~W6` (Se não há fedor na Sala 2, não há Wumpus na Sala 6).
+        *   `[~B2] >> ~P6` (Se não há brisa na Sala 2, não há poço na Sala 6).
+        *   `[~P6, ~W6] >> Safe6` (Se não há poço na Sala 6 E não há Wumpus na Sala 6, então a Sala 6 é segura).
+*   **Linha 5: `Query: Safe6`**:
+    *   O objetivo é determinar se `Safe6` pode ser inferido.
+
+**2. Processamento dos Fatos (Linhas 7-24):**
+
+O algoritmo processa os fatos na `agenda`:
+
+*   **Linhas 7-10: `Processando fato: ~W1`, `~W2`, `~P2`**
+    *   **Linha 11: `-> Regra 'Implies(~P2 & ~W2, Safe2)' satisfeita. Inferido: Safe2`**:
+        *   Como `~P2` e `~W2` são fatos conhecidos, `Safe2` é inferido. (Isso é consistente com o Ground Truth, onde a Sala 2 é segura).
+*   **Linhas 12-13: `Processando fato: ~S1`**
+    *   **Linha 14: `-> Regra 'Implies(~S1, ~W5)' satisfeita. Inferido: ~W5`**:
+        *   `~W5` é inferido a partir de `~S1`.
+*   **Linha 15: `Processando fato: ~S2`**
+    *   Este fato é crucial para `Safe6`.
+    *   **Linha 16: `-> Regra 'Implies(~S2, ~W6)' satisfeita. Inferido: ~W6`**:
+        *   Como `~S2` (não há fedor na Sala 2) é um fato, e a Sala 6 é vizinha da Sala 2, o Forward Chaining infere corretamente que `~W6` (não há Wumpus na Sala 6). `~W6` é adicionado à `agenda`.
+*   **Linha 17: `Processando fato: B2`**
+    *   Este fato é a percepção de Brisa na Sala 2. As vizinhas da Sala 2 são 1, 3, 6. A regra é `B2 <=> Or(P1, P3, P6)`. Como o agente sabe `~P1`, isso implica `Or(P3, P6)`. No entanto, o Forward Chaining **não consegue inferir `~P6` a partir de `B2`** porque `B2` indica a *presença* de um poço em `P3` ou `P6`, não a ausência. O Forward Chaining não tem uma regra de Horn que, a partir de `B2` e `~P1`, possa inferir `~P6` diretamente.
+*   **Linhas 18-21: `Processando fato: ~P1`, `~B1`, `Safe2`, `~W5`**
+    *   Esses fatos são processados, levando à inferência de `~P5` e `Safe5` (similar ao Cenário 1).
+*   **Linha 22: `Processando fato: ~W6`**
+    *   Este fato é processado. Ele é uma das premissas da regra `~P6 ∧ ~W6 ⇒ Safe6`.
+
+**3. Falha na Query (Linha 25):**
+
+*   `FALHA: Query 'Safe6' não pode ser provada por Forward Chaining.`
+
+**Conclusão:** O Forward Chaining **falha em provar `Safe6`** neste cenário, mesmo com as percepções da Sala 2. A razão é que, embora ele consiga inferir `~W6` (não há Wumpus na Sala 6) a partir de `~S2` (não há fedor na Sala 2), ele **não consegue inferir `~P6` (não há poço na Sala 6)**. A percepção `B2` (Brisa na Sala 2) indica que há um poço em `P3` ou `P6`. O Forward Chaining, com sua natureza *data-driven* e restrito a Cláusulas de Horn, não tem a capacidade de fazer o raciocínio por exclusão necessário para determinar `~P6` a partir dessa disjunção.
+
+Esta falha é consistente com o Ground Truth (onde a Sala 6 tem um poço, `P6`), e demonstra uma limitação fundamental do Forward Chaining para inferências que exigem raciocínio com disjunções ou por contradição, o que nos leva à necessidade de algoritmos como o DPLL (ou SAT Solvers).
+
+</details>
+
+Sabemos que a Sala #3 e #6 não podem ser seguras, o agente retorna a busca para a Sala #5. Aqui, iniciaremos mais uma vez, porém o se demonstra muito promissor devido às evidencias.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505220, user_tz: 180, elapsed: 66, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+current_room_scenario3 = 5 # Agente se move para a Sala 5
+
+perceptions_room5 = [
+    Not(P_sym[4]), # Agente está na Sala 5, então não há poço
+    Not(W_sym[4]), # Agente está na Sala 5, então não há Wumpus
+    B_sym[4],      # Sente brisa na Sala 5 (por causa do poço na Sala 6)
+    Not(S_sym[4])  # Não sente fedor na Sala 5
+]
+
+# Combinar todos os fatos conhecidos até agora
+all_known_facts_scenario3 = list(set(all_known_facts_scenario2 + perceptions_room5))
+display_mental_map(all_known_facts_scenario3, current_room=current_room_scenario3)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505297, user_tz: 180, elapsed: 76, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print(">>> O agente quer saber: A Sala 9 é segura (Safe9)?")
+forward_chain(all_known_facts_scenario3, fc_rules_original, Safe_sym[8])
+```
+
+### Cenário 04 - Resolução por Refutação
+
+O Forward Chaining é eficaz para inferir consequências diretas de fatos e regras (Cláusulas de Horn), mas, como vimos, ele falha em provar conclusões que exigem raciocínio por exclusão ou com disjunções complexas, como determinar a segurança de salas vizinhas quando há brisa ou fedor. Ele é data-driven, mas não goal-driven de forma eficiente para todas as queries. Para superar essas limitações e permitir inferências mais complexas, incluindo a prova de negações e o raciocínio por contradição, introduzimos a Resolução por Refutação. Este método, que opera com sentenças em Forma Normal Conjuntiva (CNF), oferece uma abordagem mais poderosa e completa para a inferência lógica, capaz de resolver os desafios que o Forward Chaining não consegue abordar diretamente.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505307, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+kb_standard, P_sym, B_sym, W_sym, S_sym, G_sym, L_sym, Safe_sym = create_wumpus_kb_standard_world()
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779148505332, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Agente se move para a Sala 5 e obtém novas percepções
+initial_percepts_room1 = [
+    Not(P_sym[0]), Not(W_sym[0]), Not(B_sym[0]), Not(S_sym[0])
+]
+
+perceptions_room2 = [
+    Not(P_sym[1]), # Sala 2 é segura (agente está nela)
+    Not(W_sym[1]),
+    B_sym[1],      # Sente brisa na Sala 2
+    Not(S_sym[1])  # Não sente fedor na Sala 2
+]
+
+# KB do Cenário 2
+kb_agent_scenario2 = list(set(kb_standard + initial_percepts_room1 + perceptions_room2))
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779148505671, user_tz: 180, elapsed: 337, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+current_room_scenario3 = 5 # Agente se move para a Sala 5
+perceptions_room5 = [
+    Not(P_sym[4]), # Agente está na Sala 5, então não há poço
+    Not(W_sym[4]), # Agente está na Sala 5, então não há Wumpus
+    B_sym[4],      # Sente brisa na Sala 5 (por causa do poço na Sala 6)
+    Not(S_sym[4])  # Não sente fedor na Sala 5
+]
+
+# Combinar todos os fatos conhecidos até agora (KB do agente)
+kb_agent_scenario3 = list(set(kb_agent_scenario2 + perceptions_room5))
+
+# Query 2: Provar Safe9 (que falhou no Forward Chaining e na Resolução manual)
+print("\n>>> O agente quer saber: A Sala 9 é segura (Safe9)?")
+prove_with_dpll(kb_agent_scenario3, Safe_sym[8])
+```
+
+<details>
+ <summary>Explicação</summary>
+
+O output demonstra o algoritmo DPLL sendo usado para provar que a Sala 9 é segura (`Safe9`), após o agente ter visitado as Salas 1, 2 e 5. O agente tem as percepções de todas essas salas.
+
+**1. Configuração do Cenário 3:**
+
+*   **`current_room_scenario3 = 5`**: O agente se moveu para a Sala 5.
+*   **`perceptions_room5 = [...]`**: Estas são as percepções do agente na Sala 5:
+    *   `Not(P_sym[4])`: Não há poço na Sala 5.
+    *   `Not(W_sym[4])`: Não há Wumpus na Sala 5.
+    *   `B_sym[4]`: Há brisa na Sala 5 (devido ao poço na Sala 6 no Ground Truth).
+    *   `Not(S_sym[4])`: Não há fedor na Sala 5.
+*   **`kb_agent_scenario3 = list(set(kb_agent_scenario2 + perceptions_room5))`**: A Base de Conhecimento do agente é atualizada, combinando as regras universais (`kb_standard`), as percepções da Sala 1, as percepções da Sala 2 e agora as percepções da Sala 5.
+
+**2. Query e Processo de Prova (Linhas de Output):**
+
+*   **`>>> O agente quer saber: A Sala 9 é segura (Safe9)?`**:
+    *   O objetivo é determinar se `Safe9` pode ser inferido a partir da `kb_agent_scenario3`.
+*   **`Tentando provar: Safe9`**:
+    *   O método `prove_with_dpll` é invocado com a KB atualizada e a query `Safe9`.
+*   **`Verificando a satisfatibilidade de: KB AND (NOT Safe9) usando DPLL`**:
+    *   Conforme o princípio da Resolução por Refutação, o DPLL tenta encontrar uma atribuição de valores verdade que satisfaça a conjunção da `kb_agent_scenario3` e a negação da query (`Not(Safe9)`).
+    *   Se essa conjunção for insatisfatível, significa que `Not(Safe9)` é inconsistente com a KB, e, portanto, `Safe9` deve ser verdadeiro.
+*   **`SUCESSO: KB AND (NOT Safe9) é insatisfatível. Safe9 é provado!`**:
+    *   O algoritmo DPLL conseguiu determinar que não existe nenhuma atribuição de valores verdade para os símbolos que torne a `KB AND (NOT Safe9)` verdadeira. Isso significa que a negação de `Safe9` é contraditória com o conhecimento do agente.
+    *   Portanto, `Safe9` é uma consequência lógica da `kb_agent_scenario3` e é provado como verdadeiro.
+
+### Por que o DPLL consegue provar `Safe9` onde o Forward Chaining falhou?
+
+O Forward Chaining falhou em provar `Safe9` porque, embora ele pudesse inferir `~W9` (não há Wumpus na Sala 9) a partir de `~S5` (não há fedor na Sala 5), ele não conseguia inferir `~P9` (não há poço na Sala 9) a partir de `B5` (brisa na Sala 5) e `~P1` (não há poço na Sala 1). A brisa em 5 implica `Or(P6, P9)`, e o FC não lida bem com inferências por exclusão de disjunções.
+
+O DPLL, por outro lado, é um algoritmo de busca com retrocesso que opera em CNF e utiliza técnicas como **Unit Propagation** e **Pure Literal Elimination** de forma muito mais eficaz:
+
+1.  **`~W9`:** O fato `~S5` (não há fedor na Sala 5) e as regras universais (que incluem `Implies(Not(S5), Not(W9))`) levam o DPLL a atribuir `W9 = False` (ou `Not(W9) = True`) através de Unit Propagation.
+2.  **`~P9`:** Este é o ponto crucial. A KB do agente contém:
+    *   `B5` (brisa na Sala 5).
+    *   `Equivalent(B5, Or(P1, P6, P9))` (regra universal).
+    *   `Not(P1)` (agente sabe que não há poço na Sala 1).
+    *   `B2` (brisa na Sala 2).
+    *   `Equivalent(B2, Or(P1, P3, P6))` (regra universal).
+    *   `Not(P1)` (agente sabe que não há poço na Sala 1).
+
+    A combinação dessas informações permite ao DPLL, através de sua busca sistemática e propagação de restrições, deduzir que a única forma de satisfazer a KB sem contradizer `Not(Safe9)` (que é `Or(P9, W9)`) é se `P9` for falso. Ele pode, por exemplo, atribuir `P9 = True` e ver que isso leva a uma contradição com outras partes da KB (como a necessidade de `P6` para explicar `B2` e `B5` sem `P9`). Ao descartar `P9 = True`, ele conclui `P9 = False` (ou `Not(P9) = True`).
+
+**Conclusão:** O sucesso do DPLL em provar `Safe9` demonstra sua capacidade de realizar inferências lógicas complexas de forma eficiente, superando as limitações do Forward Chaining. Ele consegue raciocinar com disjunções e por exclusão, utilizando a estrutura CNF da KB para encontrar uma atribuição de verdade consistente ou provar a insatisfatibilidade, confirmando que `Safe9` é uma consequência lógica do conhecimento do agente.
+
+</details>
+
+## Discussão
+
+1. No tutorial, vimos que o **Forward Chaining** é extremamente rápido (tempo linear), mas falha em provar sentenças que exigem raciocínio por exclusão (como a segurança da Sala 6 no Cenário 2). Por outro lado, o **DPLL** e a **Resolução** são completos, mas enfrentam o desafio da explosão combinatória. **Pergunta:** Em um sistema de missão crítica em tempo real (como um carro autônomo), seria preferível utilizar um motor de inferência incompleto porém rápido, ou um motor completo que pode demorar para responder? Como o design da Base de Conhecimento pode mitigar esse dilema?
+
+2. O tutorial destaca que agentes lógicos são **declarativos**: nós dizemos ao agente *o que* é verdade sobre o mundo, e ele descobre *como* agir através da inferência. **Pergunta:** Quais são as vantagens de manter as regras do mundo (como a física da brisa) separadas do algoritmo de decisão do agente? Em que cenários uma abordagem puramente procedural (como um conjunto de regras `if-then-else` fixas) seria superior a um motor de inferência lógica?
+
+3. Vimos que, quando o agente sente brisa na Sala 2, ele infere que existe um poço na Sala 3 **OU** na Sala 6. Para um agente lógico, se ele não consegue provar que uma sala é `Safe`, ele a trata como potencialmente perigosa e para sua exploração se não houver outras opções garantidas. **Pergunta:** Como a introdução de **Agentes Probabilísticos** mudaria o comportamento do agente nesse cenário de incerteza? Se o agente soubesse que a probabilidade de um poço na Sala 3 é de 10% e na Sala 6 é de 80%, como isso alteraria sua tomada de decisão em comparação com o rigor binário (Verdadeiro/Falso) da lógica proposicional?
+
+## Key Takeaways
+
+*   **Agentes Baseados em Conhecimento:** Diferente de agentes de busca simples, esses agentes mantêm uma representação interna do mundo (Base de Conhecimento) composta por sentenças formais, permitindo-lhes raciocinar sobre fatos não observados diretamente e adaptar-se a novos objetivos de forma declarativa.
+*   **O Ciclo TELL e ASK:** O funcionamento do agente é definido pelas operações **TELL**, que informa à base de conhecimento o que foi percebido ou feito, e **ASK**, que consulta o conhecimento acumulado para decidir a próxima ação a ser tomada.
+*   **Eficiência de Motores de Inferência:** O tutorial demonstra que, enquanto o *Model Checking* sofre com a explosão combinatória ($2^n$), algoritmos como o **Forward Chaining** permitem inferências em tempo linear para Cláusulas de Horn, e o **DPLL** otimiza a busca por modelos através de heurísticas como a Propagação Unitária.
+*   **Satisfatibilidade e Contradição:** O conceito de acarretação lógica está diretamente ligado à **insatisfatibilidade**: provar que a Base de Conhecimento acarreta uma consulta $\beta$ é equivalente a demonstrar que a conjunção da KB com a negação da consulta $(KB \wedge \neg\beta)$ é **insatisfatível**, ou seja, leva a uma contradição lógica inevitável (*reductio ad absurdum*).
+*   **Prudência e o Wumpus World:** O **Mundo do Wumpus** serve como o ambiente ideal para demonstrar agentes lógicos em cenários **parcialmente observáveis**, onde a informação é incompleta. O agente utiliza pistas como brisa e fedor para inferir o estado do mundo, priorizando **decisões seguras** e logicamente garantidas para sobreviver e atingir seus objetivos.
+
+## Referências
+
+*   **SymPy Logic Module Documentation:** [https://docs.sympy.org/latest/modules/logic.html](https://docs.sympy.org/latest/modules/logic.html)
+*   **Russell, Stuart J., and Peter Norvig. Artificial Intelligence: A Modern Approach. 4th ed. Pearson, 2020.** (Capítulo 7: Logical Agents)

@@ -1,0 +1,945 @@
+---
+title: Laboratório - Agentes baseados em objetivos e Métodos de Busca II
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+---
+
+## Ajustando ambiente
+
+```{python}
+%%capture
+
+import sys
+import pandas as pd
+```
+
+## Motivação
+
+O estudo da **busca informada (ou heurística)** é fundamental na Inteligência Artificial porque fornece aos agentes computacionais os mecanismos necessários para resolver problemas em larga escala de maneira muito mais eficiente do que as estratégias cegas, utilizando dicas específicas do domínio para guiar a exploração do espaço de estados por meio de estimativas heurísticas. Essa capacidade de otimização é o que viabiliza o desenvolvimento de aplicações práticas complexas do mundo real, como os serviços de mapas e GPS que calculam rotas ótimas em malhas com dezenas de milhões de nós em questão de milissegundos, ou a resolução de tarefas com espaços de estados massivos, que rapidamente esgotariam a memória de algoritmos não informados. A literatura apresenta diversos exemplos de métodos informados projetados para diferentes necessidades de tempo e espaço, como a **Busca em Feixe**, a **Busca A\* Ponderada**, o **IDA** e o **SMA**. Entretanto, o domínio dessa área passa fundamentalmente pela compreensão de dois algoritmos centrais: a **Busca Gulosa pela Melhor Escolha** e a **Busca A\***. A busca gulosa atua de forma imediatista, direcionando o algoritmo a expandir sempre o nó que aparenta estar mais próximo do objetivo com base exclusivamente na heurística, o que a torna uma abordagem rápida, porém suscetível a soluções subótimas (caminhos mais caros e longos), uma vez que ignora totalmente o custo das ações passadas. Em contrapartida, o **algoritmo A\*** se destaca como a estratégia informada mais comum por corrigir essa falha: ele equilibra a exploração ao somar o custo real exato do caminho já percorrido com a estimativa do custo restante até a meta, sendo capaz de podar sistematicamente ramos irrelevantes da árvore de busca e garantir uma solução perfeitamente ótima e completa, desde que utilize uma heurística admissível (otimista).
+
+## Objetivos de Aprendizagem
+
+- Entender a diferença entre Greedy Best-First Search e A* Search.
+- Interpretar o papel de `g(n)`, `h(n)` e `f(n)` na escolha dos nós.
+- Observar como a heurística influencia a ordem de expansão e o caminho encontrado.
+- Implementar e adaptar versões didáticas de algoritmos de busca informada.
+- Comparar diferentes heurísticas no mesmo problema de busca.
+
+## Implementação
+
+### Classes do Ambiente
+
+```{python}
+class Problem:
+    def __init__(self, initial, goal=None):
+        self.initial = initial
+        self.goal = goal
+
+    def actions(self, state):
+        raise NotImplementedError
+
+    def result(self, state, action):
+        raise NotImplementedError
+
+    def goal_test(self, state):
+        return state == self.goal
+
+    def path_cost(self, c, state1, action, state2):
+        return c + 1
+
+class GraphProblem(Problem):
+    def __init__(self, initial, goal, graph):
+        super().__init__(initial, goal)
+        self.graph = graph
+
+    def actions(self, state):
+        return list(self.graph.get(state).keys())
+
+    def result(self, state, action):
+        return action
+
+    def path_cost(self, cost_so_far, state1, action, state2):
+        edge_cost = self.graph.get(state1, state2)
+        if edge_cost is None:
+            return float('inf')
+        return cost_so_far + edge_cost
+
+class SimpleGraph:
+    def __init__(self, graph_dict):
+        self.graph_dict = graph_dict
+
+    def get(self, a, b=None):
+        links = self.graph_dict.setdefault(a, {})
+        if b is None:
+            return links
+        return links.get(b)
+
+class Node:
+    def __init__(self, state, parent=None, action=None, path_cost=0):
+        self.state = state
+        self.parent = parent
+        self.action = action
+        self.path_cost = path_cost
+        self.depth = 0 if parent is None else parent.depth + 1
+
+    def __repr__(self):
+        return '<Node {}>'.format(self.state)
+
+    def __lt__(self, node):
+        return self.state < node.state
+
+    def expand(self, problem):
+        return [self.child_node(problem, action) for action in problem.actions(self.state)]
+
+    def child_node(self, problem, action):
+        next_state = problem.result(self.state, action)
+        return Node(
+            next_state,
+            self,
+            action,
+            problem.path_cost(self.path_cost, self.state, action, next_state),
+        )
+
+    def solution(self):
+        return [node.action for node in self.path()[1:]]
+
+    def path(self):
+        node = self
+        path_back = []
+        while node is not None:
+            path_back.append(node)
+            node = node.parent
+        path_back.reverse()
+        return path_back
+
+    def __eq__(self, other):
+        return isinstance(other, Node) and self.state == other.state
+
+    def __hash__(self):
+        return hash(self.state)
+```
+
+### Classes de Agente
+
+```{python}
+class SimpleProblemSolvingAgentProgram:
+    def __init__(self, initial_state=None):
+        self.state = initial_state
+        self.seq = []
+
+    def __call__(self, percept):
+        self.state = self.update_state(self.state, percept)
+        if not self.seq:
+            goal = self.formulate_goal(self.state)
+            problem = self.formulate_problem(self.state, goal)
+            self.seq = self.search(problem)
+            if not self.seq:
+                return None
+        return self.seq.pop(0)
+
+    def update_state(self, state, percept):
+        raise NotImplementedError
+
+    def formulate_goal(self, state):
+        raise NotImplementedError
+
+    def formulate_problem(self, state, goal):
+        raise NotImplementedError
+
+    def search(self, problem):
+        raise NotImplementedError
+
+class SearchAgent(SimpleProblemSolvingAgentProgram):
+    def __init__(self, goal, search_algorithm, graph):
+        super().__init__(initial_state=None)
+        self.goal = goal
+        self.search_algorithm = search_algorithm
+        self.graph = graph
+
+    def update_state(self, state, percept):
+        return percept
+
+    def formulate_goal(self, state):
+        return self.goal
+
+    def formulate_problem(self, state, goal):
+        return GraphProblem(state, goal, self.graph)
+
+    def search(self, problem):
+        node = self.search_algorithm(problem)
+        if node is None:
+            return []
+        return node.solution()
+```
+
+### Funções Auxiliares
+
+```{python}
+def state_path(node):
+    if node is None:
+        return None
+    return [step.state for step in node.path()]
+
+def verbose(node):
+    if node is None:
+        return {
+            'encontrou': False,
+            'caminho': None,
+            'acoes': None,
+            'custo': None,
+        }
+    return {
+        'encontrou': True,
+        'caminho': state_path(node),
+        'acoes': node.solution(),
+        'custo': node.path_cost,
+    }
+
+def agent_simulation(agent, initial_state, max_step=20):
+    state = initial_state
+    trajectory = [state]
+    actions = []
+
+    for _ in range(max_step):
+        action = agent(state)
+        if action is None:
+            break
+
+        actions.append(action)
+        state = action
+        trajectory.append(state)
+
+        if state == agent.goal:
+            break
+
+    return actions, trajectory
+```
+
+## Exemplo prático
+
+Agora vamos aplicar essas estruturas em um ambiente simples, com um estado inicial `Natal` e um objetivo `Pipa`.
+
+### Construção do Ambiente
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774481959803, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+environment = {
+    'Natal': {'Parnamirim': 1, 'Extremoz': 1, 'São Gonçalo do Amarante': 1, 'Macaíba': 1},
+    'Parnamirim': {'Natal': 1, 'São José de Mipibu': 1, 'Macaíba': 1},
+    'Extremoz': {'Natal': 1},
+    'São Gonçalo do Amarante': {'Natal': 1, 'Macaíba': 1, 'Ceará-Mirim': 1},
+    'Macaíba': {'Natal': 1, 'Parnamirim': 1, 'São Gonçalo do Amarante': 1, 'Ielmo Marinho': 1, 'Vera Cruz': 1},
+    'Ceará-Mirim': {'São Gonçalo do Amarante': 1},
+    'Ielmo Marinho': {'Macaíba': 1},
+    'Vera Cruz': {'Macaíba': 1, 'Monte Alegre': 1},
+    'Monte Alegre': {'Vera Cruz': 1, 'São José de Mipibu': 1},
+    'São José de Mipibu': {'Parnamirim': 1, 'Goianinha': 1, 'Monte Alegre': 1},
+    'Goianinha': {'São José de Mipibu': 1, 'Tibau do Sul': 1},
+    'Tibau do Sul': {'Goianinha': 1, 'Pipa': 1},
+    'Pipa': {'Tibau do Sul': 1}
+}
+
+# Cria um objeto de grafo a partir do dicionário environment
+graph = SimpleGraph(environment)
+
+# Cria o problema de busca propriamente dito. Define estado inicial e o objetivo
+problem = GraphProblem('Natal', 'Pipa', graph)
+
+print('Estado inicial:', problem.initial)
+print('Objetivo:', problem.goal)
+print('Ações possíveis em Natal:', problem.actions('Natal'))
+```
+
+### Definindo heurística
+
+Aqui iremos definir o dicionário relacionado à heurística da distância em linha reta (informalmente associada à ideia da distância do 'voo do pássaro'). Em síntese, a heurística da distância em linha reta ($h_{SLD}$) se baseia em estimar o custo do caminho mais barato do estado atual até o objetivo calculando a distância física direta (geométrica) entre os dois pontos no mapa.
+
+```{python}
+heuristics = {
+    "Ceará-Mirim": 76,
+    "Extremoz": 64,
+    "Goianinha": 18,
+    "Ielmo Marinho": 71,
+    "Macaíba": 52,
+    "Monte Alegre": 35,
+    "Natal": 45,
+    "Parnamirim": 41,
+    "Pipa": 0,
+    "São Gonçalo do Amarante": 57,
+    "São José de Mipibu": 27,
+    "Tibau do Sul": 6,
+    "Vera Cruz": 47
+}
+```
+
+Abaixo, vamos definir uma função h para recuperar os valores da heurística no dicionário.
+
+```{python}
+def make_h(heuristica_dict):
+    def h(node):
+        return heuristica_dict[node.state]
+
+    return h
+```
+
+### Relembrando a busca em profundidade
+
+Para entender a implementação da Busca Gulosa pela Melhor Escolha (*Greedy Best-First Search* ou GBFS), iremos relembrar o código da busca em profundidade (DFS). Embora o algoritmo de DFS seja um método de busca **não informada**, seu funcionamento serve como fundamento essencial para a compreensão de certos métodos de busca informada, sobretudo devido à sua mecânica de "mergulhar" profundamente explorando um único caminho por vez e ao seu uso **extremamente econômico de memória**.
+
+```{python}
+def depth_first_graph_search(problem, return_expansion_order=False):
+    frontier = [Node(problem.initial)]
+    visited = set()
+    expansion_order = []
+
+    while frontier:
+        node = frontier.pop()
+        expansion_order.append(node.state)
+
+        if problem.goal_test(node.state):
+            if return_expansion_order:
+                return node, expansion_order
+            return node
+
+        visited.add(node.state)
+        for child in node.expand(problem):
+            if child.state not in visited and child not in frontier:
+                frontier.append(child)
+
+    if return_expansion_order:
+        return None, expansion_order
+    return None
+```
+
+No entanto, as diferenças essenciais entre a DFS e a GBFS estão vinculadas ao critério de escolha direcionado pela incorporação da heurística como método de priorização. A heurística funciona como critério para seleção do nó que será removido da fronteira no caso da Busca Gulosa pela Melhor Escolha (GBFS), onde uma função $h(n)$ estima o custo do estado atual até o estado objetivo. O algoritmo GBFS utiliza uma fila de prioridade para avaliar esses nós, expandindo primeiro aquele que aparenta estar mais próximo da meta, agindo de forma imediatista e ignorando o custo das ações já realizadas. Em contrapartida, a Busca em Profundidade (DFS) é um método de busca não informada, ou seja, ela não recebe nenhuma estimativa ou pista sobre a localização do objetivo.
+
+### Greedy Best-First Search
+
+A busca gananciosa pela melhor escolha (*Greedy best-first search*) é uma estratégia de busca informada na qual o nó que aparenta estar mais próximo do estado objetivo é expandido primeiro. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados com base exclusivamente em uma estimativa heurística ($f(n) = h(n)$), permitindo que os nós com os menores valores (mais promissores) sejam posicionados no topo da fila e expandidos antes dos demais. Por focar apenas no benefício imediato de se aproximar da meta a cada iteração e ignorar completamente o custo das ações passadas, a busca gananciosa não é ótima (podendo gerar soluções mais caras) e é incompleta em espaços de estados infinitos, embora costume guiar a exploração de forma veloz e eficiente na maioria dos casos práticos.
+
+#### Passo 1: Começar pela fronteira inicial
+
+No início, a fronteira contém apenas o nó inicial. Também criamos:
+
+- `h` para instanciar a heuristica
+- `visited`, para guardar os estados já visitados;
+- `expansion_order`, para registrar a ordem de expansão;
+- `best_h`, para lembrar o melhor valor heurístico já encontrado para cada estado.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774482912279, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+greedy_frontier = [Node(problem.initial)]
+h = make_h(heuristics)
+
+greedy_visited = set()
+greedy_expansion_order = []
+greedy_best_h = {problem.initial: h(greedy_frontier[0])}
+
+print('Fronteira inicial:', [node.state for node in greedy_frontier])
+print('Melhor h inicial:', greedy_best_h)
+```
+
+#### Passo 2: Escolher o nó mais promissor
+
+Na DFS usávamos `frontier.pop()`.
+
+No Greedy, primeiro ordenamos a fronteira pela heurística e depois removemos o primeiro nó.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774482913777, user_tz: 180, elapsed: 18, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+greedy_frontier.sort(key=lambda node: (h(node), node.state))
+current_node = greedy_frontier.pop(0)
+
+print('Nó escolhido:', current_node.state)
+print('Valor heurístico do nó escolhido:', h(current_node))
+```
+
+<details>
+ <summary>Explicação</summary>
+
+```python
+frontier.sort(key=lambda node: (h(node), node.state))
+```
+
+Essa linha coloca os nós da `frontier` em ordem crescente.
+
+Ela funciona assim:
+
+- `frontier.sort(...)` ordena a lista no próprio lugar, sem criar outra lista.
+- `key=...` diz qual valor será usado para comparar os elementos.
+- `lambda node: ...` define uma função pequena e anônima que recebe um nó.
+- `h(node)` é o critério principal: nós com menor heurística ficam primeiro.
+- `node.state` é o critério de desempate: se dois nós tiverem o mesmo `h(node)`, a ordem é definida pelo nome do estado.
+
+Depois dessa ordenação, o nó mais promissor fica na posição `0` da lista. Por isso, logo em seguida usamos:
+
+```python
+node = frontier.pop(0)
+```
+
+Ou seja: o Greedy ordena a fronteira e remove o primeiro elemento, que é o nó com menor valor heurístico.
+
+</details>
+
+#### Passo 3: Expandir os filhos do nó escolhido
+
+Se o nó atual não for o objetivo, nós o marcamos como visitado e adicionamos seus filhos na fronteira.
+
+Só adicionamos um filho se:
+
+- ele ainda não foi visitado;
+- seu valor heurístico é melhor que o melhor valor já guardado para aquele estado.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774483133379, user_tz: 180, elapsed: 5, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+greedy_visited.add(current_node.state)
+greedy_expansion_order.append(current_node.state)
+
+for child in current_node.expand(problem):
+    child_h = h(child)
+    if child.state not in greedy_visited and child_h < greedy_best_h.get(child.state, float('inf')):
+        greedy_best_h[child.state] = child_h
+        greedy_frontier.append(child)
+
+print('Visitados:', greedy_visited)
+print('Fronteira após expansão:')
+for node in greedy_frontier:
+    print(' ', node.state, '-> h =', h(node))
+```
+
+#### Passo 4: Juntar tudo em uma função
+
+Agora que já vimos os blocos principais separadamente, podemos reunir tudo em uma única função de busca.
+
+```{python}
+def greedy_best_first_search(problem, return_expansion_order=False):
+    frontier = []
+    visited = set()
+    expansion_order = []
+    best_h = {}
+
+    initial_node = Node(problem.initial)
+    frontier.append(initial_node)
+    best_h[initial_node.state] = h(initial_node)
+
+    while frontier:
+        frontier.sort(key=lambda node: (h(node), node.state))
+        node = frontier.pop(0)
+
+        if node.state in visited:
+            continue
+
+        if h(node) > best_h.get(node.state, float('inf')):
+            continue
+
+        expansion_order.append(node.state)
+
+        if problem.goal_test(node.state):
+            if return_expansion_order:
+                return node, expansion_order
+            return node
+
+        visited.add(node.state)
+
+        for child in node.expand(problem):
+            child_h = h(child)
+            if child.state not in visited and child_h < best_h.get(child.state, float('inf')):
+                best_h[child.state] = child_h
+                frontier.append(child)
+
+    if return_expansion_order:
+        return None, expansion_order
+    return None
+```
+
+<details>
+<summary>Explicação</summary>
+
+1. `def greedy_best_first_search(problem, return_expansion_order=False):`
+> Define a função principal que recebe o objeto `problem` (contendo o estado inicial e regras) e um parâmetro opcional para retornar a ordem em que os nós foram explorados.
+
+2. `frontier = []`
+> Cria a **fronteira** (ou lista aberta), que armazena os nós que foram descobertos, mas ainda não foram expandidos.
+
+3. `visited = set()`
+> Cria um conjunto (set) para armazenar os estados já visitados, evitando que o algoritmo entre em loops infinitos ao revisitar o mesmo lugar.
+
+4. `expansion_order = []`
+> Inicializa uma lista vazia para registrar a sequência dos estados conforme eles são expandidos, útil para depuração ou visualização.
+
+5. `best_h = {}`
+> Um dicionário para rastrear o menor valor da função heurística ($h$) encontrado para cada estado, garantindo que só processemos caminhos que pareçam mais promissores.
+
+6. `initial_node = Node(problem.initial)`
+> Cria o nó inicial da busca a partir do estado inicial definido no problema.
+
+7. `frontier.append(initial_node)`
+> Adiciona o nó inicial à fronteira para começar a busca.
+
+8. `best_h[initial_node.state] = h(initial_node)`
+> Armazena o valor da heurística do estado inicial no dicionário `best_h`.
+
+9. `while frontier:`
+> Inicia um laço de repetição que continuará enquanto houver nós na fronteira para explorar.
+
+10. `frontier.sort(key=lambda node: (h(node), node.state))`
+> **O coração do algoritmo guloso:** ordena a fronteira com base no valor da heurística $h(n)$. O nó com o menor valor (que parece estar mais perto do objetivo) fica no início. O `node.state` serve como critério de desempate.
+
+11. `node = frontier.pop(0)`
+> Remove e retorna o primeiro nó da lista (o que tem o menor valor de $h$).
+
+12. `if node.state in visited:`
+> Verifica se o estado do nó atual já foi processado anteriormente.
+
+13. `continue`
+> Se já foi visitado, ignora este nó e pula para a próxima iteração do `while`.
+
+14. `if h(node) > best_h.get(node.state, float('inf')):`
+> Verifica se o valor heurístico do nó atual é pior do que um valor já registrado para esse mesmo estado (uma proteção extra de eficiência).
+
+15. `continue`
+> Se o custo atual for maior, descarta o nó.
+
+16. `expansion_order.append(node.state)`
+> Adiciona o estado do nó atual à lista que rastreia a ordem de expansão.
+
+17. `if problem.goal_test(node.state):`
+> Verifica se o estado do nó atual é o estado objetivo (a meta).
+
+18. `if return_expansion_order:`
+> Se o objetivo foi encontrado, verifica se o usuário solicitou a ordem de expansão.
+
+19. `return node, expansion_order`
+> Retorna o nó objetivo e a lista da ordem de expansão.
+
+20. `return node`
+> Retorna apenas o nó objetivo (caso a ordem de expansão não tenha sido solicitada).
+
+21. `visited.add(node.state)`
+> Marca o estado atual como visitado para não processá-lo novamente no futuro.
+
+22. `for child in node.expand(problem):`
+> Gera os nós filhos (sucessores) a partir do nó atual baseando-se nas ações possíveis do problema.
+
+23. `child_h = h(child)`
+> Calcula o valor da heurística $h$ para o nó filho recém-gerado.
+
+24. `if child.state not in visited and child_h < best_h.get(child.state, float('inf')):`
+> Critério de inserção: só adiciona o filho à fronteira se ele não foi visitado **e** se este novo caminho oferece um valor de heurística menor do que o encontrado anteriormente para esse estado.
+
+25. `best_h[child.state] = child_h`
+> Atualiza o melhor valor de heurística conhecido para o estado do filho.
+
+26. `frontier.append(child)`
+> Adiciona o nó filho à fronteira para ser avaliado futuramente.
+
+27. `if return_expansion_order:`
+> Caso o loop termine sem encontrar o objetivo (fronteira vazia), verifica se deve retornar a ordem de expansão.
+
+28. `return None, expansion_order`
+> Retorna `None` (indicando que não há solução) e a ordem de expansão percorrida.
+
+29. `return None`
+> Retorna apenas `None`, sinalizando falha na busca por um caminho.
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774483503251, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+h = make_h(heuristics)
+resultado_gbfs, expansoes_gbfs = greedy_best_first_search(problem, return_expansion_order=True)
+print('GBFS didática:', verbose(resultado_gbfs))
+print('Ordem de expansão GBFS:', expansoes_gbfs)
+```
+
+### A-star Search
+
+A busca A* (A-estrela) é a estratégia de busca informada mais comum, na qual o nó selecionado para expansão é aquele que apresenta o menor custo total estimado do início até o objetivo. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados pela função de avaliação $f(n) = g(n) + h(n)$, que combina o custo exato do caminho percorrido até o momento ($g(n)$) com a estimativa heurística do custo restante ($h(n)$). Por equilibrar o peso entre o custo das ações passadas e a aproximação da meta. A busca A* é completa e garante encontrar uma solução perfeitamente ótima, desde que a heurística utilizada seja admissível (ou seja, otimista, nunca superestimando o custo real para se atingir o objetivo). O principal desafio desse algoritmo, no entanto, reside no uso excessivo de espaço computacional, visto que ele precisa armazenar todos os nós gerados na memória, o que pode esgotar os recursos rapidamente em problemas de complexidade exponencial.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774483644063, user_tz: 180, elapsed: 39, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+environment_with_distance = {
+    "Ceará-Mirim": {"Ielmo Marinho": 26, "São Gonçalo do Amarante": 21},
+    "Extremoz": {"Natal": 25, "São Gonçalo do Amarante": 17},
+    "Goianinha": {"São José de Mipibu": 23, "Tibau do Sul": 19},
+    "Ielmo Marinho": {"Ceará-Mirim": 26, "Macaíba": 28},
+    "Macaíba": {"Ielmo Marinho": 28, "Natal": 21, "Parnamirim": 16, "São Gonçalo do Amarante": 8, "Vera Cruz": 25},
+    "Monte Alegre": {"São José de Mipibu": 12, "Vera Cruz": 13},
+    "Natal": {"Extremoz": 25, "Macaíba": 21, "Parnamirim": 13, "São Gonçalo do Amarante": 22},
+    "Parnamirim": {"Macaíba": 16, "Natal": 13, "São José de Mipibu": 19},
+    "Pipa": {"Tibau do Sul": 9},
+    "São Gonçalo do Amarante": {"Ceará-Mirim": 21, "Extremoz": 17, "Macaíba": 8, "Natal": 22},
+    "São José de Mipibu": {"Goianinha": 23, "Monte Alegre": 12, "Parnamirim": 19},
+    "Tibau do Sul": {"Goianinha": 19, "Pipa": 9},
+    "Vera Cruz": {"Macaíba": 25, "Monte Alegre": 13}
+}
+
+# Cria um objeto de grafo a partir do dicionário environment
+graph = SimpleGraph(environment_with_distance)
+
+# Cria o problema de busca propriamente dito. Define estado inicial e o objetivo
+problem = GraphProblem('Natal', 'Pipa', graph)
+
+print('Estado inicial:', problem.initial)
+print('Objetivo:', problem.goal)
+print('Ações possíveis em Natal:', problem.actions('Natal'))
+```
+
+A distância entre as cidades está representada nos valores do dicionário interno, que representa as arestas do grafo. Esse valor será mantido dentro do atributo `path_cost` para cada nó, considerando a estrutura da classe `Node`.
+
+```{python}
+def astar_search(problem, return_expansion_order=False):
+    frontier = []
+    visited = set()
+    expansion_order = []
+    best_f = {}
+    trace = []
+
+    initial_node = Node(problem.initial)
+    frontier.append(initial_node)
+    best_f[initial_node.state] = initial_node.path_cost + h(initial_node)
+
+    while frontier:
+        frontier.sort(key=lambda node: (node.path_cost + h(node), node.state))
+        node = frontier.pop(0)
+        f_value = node.path_cost + h(node)
+
+        if node.state in visited:
+            continue
+
+        if f_value > best_f.get(node.state, float('inf')):
+            continue
+
+        trace.append({
+            'estado': node.state,
+            'g(n)': node.path_cost,
+            'h(n)': h(node),
+            'f(n)': f_value,
+        })
+
+        expansion_order.append(node.state)
+
+        if problem.goal_test(node.state):
+            print(f"{'Estado':<24} {'g(n)':>6} {'h(n)':>6} {'f(n)':>6}")
+            print('-' * 46)
+            for row in trace:
+                print(f"{row['estado']:<24} {row['g(n)']:>6} {row['h(n)']:>6} {row['f(n)']:>6}")
+            if return_expansion_order:
+                return node, expansion_order
+            return node
+
+        visited.add(node.state)
+
+        for child in node.expand(problem):
+            child_f = child.path_cost + h(child)
+            if child.state not in visited and child_f < best_f.get(child.state, float('inf')):
+                best_f[child.state] = child_f
+                frontier.append(child)
+
+    if return_expansion_order:
+        return None, expansion_order
+    return None
+```
+
+<details>
+<summary>Explicação</summary>
+
+1. `def astar_search(problem, return_expansion_order=False):`
+> Define a função de busca A*, que recebe o problema a ser resolvido e um booleano opcional para retornar a ordem de expansão dos nós.
+
+2. `frontier = []`
+> Inicializa a **fronteira** (lista aberta), que armazenará os nós candidatos à expansão.
+
+3. `visited = set()`
+> Cria um conjunto para armazenar os estados que já foram processados (expandidos), evitando redundância e ciclos.
+
+4. `expansion_order = []`
+> Inicializa uma lista para registrar a sequência exata em que os estados são retirados da fronteira.
+
+5. `best_f = {}`
+> Cria um dicionário para rastrear o menor valor da função de avaliação $f(n) = g(n) + h(n)$ encontrado para cada estado.
+
+6. `initial_node = Node(problem.initial)`
+> Cria o nó raiz da árvore de busca a partir do estado inicial do problema.
+
+7. `frontier.append(initial_node)`
+> Insere o nó inicial na fronteira para iniciar o processo de busca.
+
+8. `best_f[initial_node.state] = initial_node.path_cost + h(initial_node)`
+> Calcula e armazena o valor $f$ inicial (custo do caminho atual + estimativa heurística até o objetivo).
+
+9. `while frontier:`
+> Inicia o loop principal que executa enquanto houver caminhos possíveis para explorar na fronteira.
+
+10. `frontier.sort(key=lambda node: (node.path_cost + h(node), node.state))`
+> **Critério do A*:** Ordena a fronteira pelo valor de $f(n)$. Isso garante que o nó com o menor custo total estimado seja priorizado. O `node.state` é usado como desempate.
+
+11. `node = frontier.pop(0)`
+> Remove da fronteira o nó que apresenta o menor valor de $f$ (o "melhor" nó atual).
+
+12. `if node.state in visited:`
+> Verifica se o estado deste nó já foi expandido anteriormente.
+
+13. `continue`
+> Caso já tenha sido visitado, ignora o nó para evitar processamento desnecessário de caminhos piores.
+
+14. `if node.path_cost + h(node) > best_f.get(node.state, float('inf')):`
+> Verifica se o custo total $f$ deste nó é superior ao melhor custo já registrado para este mesmo estado.
+
+15. `continue`
+> Se for um caminho mais caro para um estado já conhecido, descarta o nó.
+
+16. `expansion_order.append(node.state)`
+> Registra o estado atual na lista que mantém o histórico da ordem de expansão.
+
+17. `if problem.goal_test(node.state):`
+> Realiza o teste de meta para verificar se o estado atual do nó é o objetivo desejado.
+
+18. `if return_expansion_order:`
+> Se o objetivo for atingido, checa se deve retornar também o histórico de expansão.
+
+19. `return node, expansion_order`
+> Retorna o nó solução (que contém o caminho completo) e a lista da ordem de expansão.
+
+20. `return node`
+> Retorna apenas o nó que contém a solução encontrada.
+
+21. `visited.add(node.state)`
+> Adiciona o estado atual ao conjunto de visitados, marcando sua expansão oficial.
+
+22. `for child in node.expand(problem):`
+> Gera os nós filhos (sucessores) aplicando as ações possíveis ao estado atual.
+
+23. `child_f = child.path_cost + h(child)`
+> Calcula o valor $f(child)$ para o novo nó: a soma do custo real para chegar até ele ($g$) com a estimativa heurística ($h$).
+
+24. `if child.state not in visited and child_f < best_f.get(child.state, float('inf')):`
+> Só adiciona o filho à fronteira se ele nunca foi visitado **ou** se este novo caminho for mais barato (menor $f$) do que qualquer outro encontrado antes.
+
+25. `best_f[child.state] = child_f`
+> Atualiza o dicionário com o novo menor valor de $f$ para este estado específico.
+
+26. `frontier.append(child)`
+> Adiciona o nó filho à fronteira para que possa ser avaliado nas próximas iterações.
+
+27. `if return_expansion_order:`
+> Caso a fronteira esvazie sem encontrar a meta, verifica a flag de retorno.
+
+28. `return None, expansion_order`
+> Retorna `None` (falha) e a ordem de expansão percorrida até a exaustão das possibilidades.
+
+29. `return None`
+> Retorna apenas `None`, indicando que não foi encontrada uma solução para o problema.
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774484102187, user_tz: 180, elapsed: 7, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+h = make_h(heuristics)
+resultado_astar, expansoes_astar = astar_search(problem, return_expansion_order=True)
+
+print('A* didática:', verbose(resultado_astar))
+print('Ordem de expansão A*:', expansoes_astar)
+```
+
+<details>
+  <summary>Explicação</summary>
+
+```python
+# 1. Adicione o registro da expansão
+trace.append({
+    'estado': node.state,
+    'g(n)': node.path_cost,
+    'h(n)': h(node),
+    'f(n)': f_value,
+})
+```
+
+```python
+# 2. Adicione um print apos
+if problem.goal_test(node.state):
+  print(f"{'Estado':<24} {'g(n)':>6} {'h(n)':>6} {'f(n)':>6}")
+  print('-' * 46)
+  for row in trace:
+      print(f"{row['estado']:<24} {row['g(n)']:>6} {row['h(n)']:>6} {row['f(n)']:>6}")
+
+```
+
+
+</details>
+
+### Ajustando heurística
+
+```{python}
+new_heuristics = {
+    'Natal': 74,
+    'Parnamirim': 61,
+    'Extremoz': 85,
+    'São Gonçalo do Amarante': 84,
+    'Macaíba': 71,
+    'Ceará-Mirim': 99,
+    'Ielmo Marinho': 85,
+    'Vera Cruz': 57,
+    'Monte Alegre': 48,
+    'São José de Mipibu': 44,
+    'Goianinha': 24,
+    'Tibau do Sul': 7,
+    'Pipa': 0,
+}
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 457}
+#| executionInfo: {status: ok, timestamp: 1774484691805, user_tz: 180, elapsed: 21, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+data = []
+for city in sorted(heuristics.keys()):
+    old_h = heuristics.get(city, 0)  # Use 0 as default if not found
+    new_h = new_heuristics.get(city, 0) # Use 0 as default if not found
+    difference = new_h - old_h
+    data.append([city, old_h, new_h, difference])
+
+df_heuristics = pd.DataFrame(data, columns=['Cidade', 'Heurística Antiga', 'Nova Heurística', 'Diferença'])
+display(df_heuristics)
+```
+
+<details>
+  <summary> Explicação </summary>
+
+Ao ajustar os valores da heurística, agora nos aproximamos de uma lógica que representa de maneira mais fidedigna a **distância geográfica real (ou o custo verdadeiro) das rotas até o estado objetivo**.
+
+Como a literatura de Inteligência Artificial estabelece, **é geralmente preferível utilizar uma função heurística com valores mais altos**, desde que ela continue sendo admissível e consistente (ou seja, nunca superestimando o custo real da viagem). Ao refinar esses valores para que fiquem mais precisos e próximos da realidade, os contornos da busca do algoritmo A* deixam de se espalhar em todas as direções e passam a se focar de forma muito mais estreita e direcionada para a meta.
+
+Na prática, isso significa que cidades irrelevantes ou que representam "andar para trás" receberão rapidamente estimativas de custo total ($f(n)$) superiores ao custo do caminho ótimo real. Isso permite que o algoritmo **pode (elimine) esses caminhos desnecessários da árvore de exploração sem precisar sequer visitá-los**. O resultado direto de uma heurística mais fidedigna é um ganho substancial de eficiência, pois o algoritmo expande uma quantidade significativamente menor de nós e resolve o problema consumindo menos tempo e memória.
+
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774484720346, user_tz: 180, elapsed: 14, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+h = make_h(new_heuristics)
+resultado_astar, expansoes_astar = astar_search(problem, return_expansion_order=True)
+print('A* didática:', verbose(resultado_astar))
+print('Ordem de expansão A*:', expansoes_astar)
+```
+
+## Então, o Greedy é melhor?
+
+Para evidenciar as fraquezas do Greedy Best-First Search, vamos usar uma heurística propositalmente enganosa. Ela faz alguns estados parecerem muito promissores localmente, mesmo quando isso não produz o melhor caminho global.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774485101421, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+misleading_heuristics = {
+    'Natal': 40,
+    'Parnamirim': 35,
+    'Extremoz': 20,
+    'São Gonçalo do Amarante': 12,
+    'Macaíba': 10,
+    'Ceará-Mirim': 8,
+    'Ielmo Marinho': 7,
+    'Vera Cruz': 9,
+    'Monte Alegre': 11,
+    'São José de Mipibu': 25,
+    'Goianinha': 18,
+    'Tibau do Sul': 6,
+    'Pipa': 0,
+}
+
+h = make_h(misleading_heuristics)
+
+print('Heurística enganosa:')
+for cidade, valor in misleading_heuristics.items():
+    print(cidade, '-> h =', valor)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774485105213, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+resultado_greedy_ruim, expansoes_greedy_ruim = greedy_best_first_search(problem, return_expansion_order=True)
+resultado_astar_ruim, expansoes_astar_ruim = astar_search(problem, return_expansion_order=True)
+
+print('Greedy com heurística enganosa:')
+print(verbose(resultado_greedy_ruim))
+print('Ordem de expansão Greedy:', expansoes_greedy_ruim)
+print()
+print('A* com a mesma heurística:')
+print(verbose(resultado_astar_ruim))
+print('Ordem de expansão A*:', expansoes_astar_ruim)
+```
+
+## Simulação de agentes
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774485218981, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+h = make_h(new_heuristics)
+
+agente_greedy = SearchAgent(goal='Pipa', search_algorithm=greedy_best_first_search, graph=graph)
+acoes_greedy, trajetoria_greedy = agent_simulation(agente_greedy, 'Natal')
+
+print('Agente com Greedy')
+print('Ações:', acoes_greedy)
+print('Trajetória:', trajetoria_greedy)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1774485220909, user_tz: 180, elapsed: 12, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+agente_astar = SearchAgent(goal='Pipa', search_algorithm=astar_search, graph=graph)
+acoes_astar, trajetoria_astar = agent_simulation(agente_astar, 'Natal')
+
+print('Agente com A*')
+print('Ações:', acoes_astar)
+print('Trajetória:', trajetoria_astar)
+```
+
+## Desafio
+
+A busca de satisfação (*satisficing search*) é uma abordagem que abre mão de encontrar a solução perfeitamente ótima em troca de explorar significativamente menos nós, aceitando uma solução subótima que seja "boa o suficiente" para economizar tempo e espaço computacional. O principal exemplo dessa estratégia é o algoritmo **A\* ponderado** (*weighted A\**), que permite o uso de heurísticas inadmissíveis (que superestimam o custo real) ao aplicar um multiplicador $W > 1$ à estimativa heurística, resultando na função de avaliação modificada $f(n) = g(n) + W \times h(n)$. Ao dar um peso maior à distância restante, o algoritmo assume um comportamento "um pouco guloso", focando o contorno da busca de forma mais agressiva e direta em direção ao objetivo, sem ignorar totalmente o custo das ações passadas. Embora essa inclinação sacrifique a otimização matemática garantida pelo A* tradicional — uma vez que a rota encontrada terá um custo que varia entre o valor ótimo $C^*$ e $W \times C^*$ —, na prática o A* ponderado explora uma quantidade muito menor de estados e encontra soluções extremamente rápidas com custos bem próximos do ideal.
+
+Implemente uma variação do algoritmo **A* Ponderado** para resolver o problema de busca de **Natal** até **Pipa**, utilizando o ambiente `environment_with_distance`. No A* ponderado, a função de avaliação é definida como:
+
+$$f(n) = g(n) + w \cdot h(n)$$
+
+Onde $w \ge 1$ representa o peso aplicado à heurística.
+
+### Diretrizes de Implementação
+
+1.  **Compatibilidade:** Utilize as estruturas de classe `Node`, `GraphProblem` e `SimpleGraph` já definidas no notebook.
+2.  **Assinatura da Função:** A função deve aceitar os seguintes parâmetros:
+    * `problem`: O problema de busca instanciado.
+    * `w`: O peso da heurística (parâmetro de ponderação).
+    * `return_expansion_order`: Booleano (padrão `False`) que define o formato do retorno.
+3.  **Retorno:** Caso `return_expansion_order=True`, a função deve retornar uma tupla contendo o **nó solução** e a **lista com a ordem de expansão**.
+4.  **Casos de Teste:** Avalie o desempenho do algoritmo utilizando os seguintes pesos:
+    * $w = 1.0$
+    * $w = 1.5$
+    * $w = 2.0$
+
+```{python}
+def weighted_astar_search(problem, w=1.0, return_expansion_order=False):
+  pass
+```
+
+### Perguntas do desafio
+
+1. Quando `w = 1`, o comportamento é igual ao A*?
+2. Ao aumentar `w`, o algoritmo expande menos nós?
+3. O caminho encontrado continua ótimo?
+4. Em que momento o algoritmo começa a se comportar mais como uma busca gananciosa?
+
+## Key takeways
+
+Greedy Best-First Search decide com base apenas na heurística, enquanto o A* combina custo acumulado e estimativa restante. A qualidade da heurística afeta diretamente a eficiência da busca: uma heurística mais informativa tende a reduzir expansões desnecessárias e a direcionar melhor o algoritmo até o objetivo.
+
+## Referencias
+
+1. Russell, S. & Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.
+2. Implementações clássicas de `Problem`, `Node` e agentes baseados em objetivos no ecossistema AIMA.

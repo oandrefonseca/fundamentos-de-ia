@@ -1,0 +1,16 @@
+/.quarto/
+/_site/
+/_freeze/
+/old/
+.venv/
+__pycache__/
+*.pyc
+
+capitulos/*.html
+capitulos/*.ipynb
+capitulos/*.quarto_ipynb
+capitulos/*_files/
+apendices/*.html
+apendices/*.ipynb
+apendices/*.quarto_ipynb
+apendices/*_files/

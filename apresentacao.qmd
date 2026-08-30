@@ -1,0 +1,26 @@
+# Apresentação {.unnumbered}
+
+## Sobre o material
+
+Esta publicação foi organizada a partir dos notebooks de laboratório da disciplina IMD3001. A conversão para Quarto permite consultar o conteúdo como um livro navegável, pesquisar termos, copiar exemplos de código e gerar diferentes formatos de publicação.
+
+## Estrutura dos capítulos
+
+Os laboratórios adotam, em geral, a seguinte sequência didática:
+
+1. **Ajuste do ambiente:** bibliotecas e configurações necessárias.
+2. **Motivação:** relevância do problema para a Inteligência Artificial.
+3. **Objetivos de aprendizagem:** competências trabalhadas no laboratório.
+4. **Fundamentação:** conceitos, modelos e intuições essenciais.
+5. **Implementação:** representação do problema, funções auxiliares e algoritmos.
+6. **Exemplos práticos:** cenários de execução e comparação.
+7. **Discussão e desafios:** interpretação crítica e extensões propostas.
+8. **Síntese e referências:** principais aprendizados e fontes.
+
+## Convenções
+
+Os termos técnicos consolidados são apresentados em português e, quando útil, acompanhados do nome em inglês. Trechos recolhíveis trazem explicações complementares. Blocos de código podem ser copiados diretamente na versão HTML.
+
+## Execução dos exemplos
+
+O livro não reexecuta automaticamente os capítulos durante a compilação. Essa escolha preserva as saídas existentes e evita que dependências externas, dados ausentes ou componentes específicos do Google Colab interrompam a publicação. Para atualizar resultados, execute primeiro o notebook correspondente em um ambiente preparado e refaça a conversão.

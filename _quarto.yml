@@ -1,0 +1,79 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - apresentacao.qmd
+    - capitulos/*.qmd
+    - apendices/*.qmd
+
+website:
+  title: "Introdução à Inteligência Artificial"
+  site-url: https://oandrefonseca.github.io/fundamentos-de-ia/
+  search: true
+  repo-url: https://github.com/oandrefonseca/fundamentos-de-ia
+  repo-branch: main
+  repo-actions: [source, issue]
+  sidebar:
+    style: docked
+    collapse-level: 1
+    contents:
+    - index.qmd
+    - apresentacao.qmd
+    - section: "Agentes e métodos de busca"
+      contents:
+        - text: "1. Métodos de Busca I"
+          href: capitulos/01-metodos-de-busca-i.qmd
+        - text: "2. Métodos de Busca II"
+          href: capitulos/02-metodos-de-busca-ii.qmd
+    - section: "Busca em ambientes complexos"
+      contents:
+        - text: "3. Ambientes Complexos I"
+          href: capitulos/03-ambientes-complexos-i.qmd
+        - text: "4. Ambientes Complexos II"
+          href: capitulos/04-ambientes-complexos-ii.qmd
+    - section: "Busca competitiva"
+      contents:
+        - text: "5. Minimax e Alpha-Beta"
+          href: capitulos/05-busca-competitiva-i.qmd
+        - text: "6. Monte Carlo Tree Search"
+          href: capitulos/06-busca-competitiva-ii.qmd
+    - section: "Conhecimento e incerteza"
+      contents:
+        - text: "7. Agentes Lógicos"
+          href: capitulos/07-agentes-logicos.qmd
+        - text: "8. Agentes Probabilísticos"
+          href: capitulos/08-agentes-probabilisticos.qmd
+        - text: "9. Naive Bayes"
+          href: capitulos/09-naive-bayes.qmd
+        - text: "10. Redes Bayesianas"
+          href: capitulos/10-redes-bayesianas.qmd
+        - text: "11. Cadeias de Markov"
+          href: capitulos/11-cadeias-de-markov.qmd
+    - section: "Apêndices"
+      contents:
+        - text: "Métodos de Busca I sem OO"
+          href: apendices/metodos-de-busca-sem-oo.qmd
+
+language:
+  title-block-author-single: "Autor"
+
+execute:
+  enabled: true
+  freeze: true
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-copy: true
+    code-overflow: scroll
+    code-line-numbers: false
+    fig-align: center
+    link-external-newwindow: true
+lang: pt-BR

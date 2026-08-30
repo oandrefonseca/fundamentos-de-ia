@@ -1,0 +1,26 @@
+---
+page-layout: full
+---
+
+# Introdução à Inteligência Artificial {.unnumbered}
+
+## Apostila de apoio — IMD3001 {.unnumbered}
+
+Esta apostila reúne os laboratórios práticos da disciplina **Introdução à Inteligência Artificial (IMD3001)**. O material articula conceitos, implementações em Python, experimentos e questões de reflexão.
+
+O percurso começa com agentes baseados em objetivos e métodos clássicos de busca. Em seguida, aborda otimização em ambientes complexos, decisão em cenários competitivos, representação lógica do conhecimento e raciocínio sob incerteza.
+
+## Organização
+
+O conteúdo está agrupado em quatro unidades:
+
+1. **Agentes e métodos de busca:** busca em largura, busca em profundidade, busca gulosa e A*.
+2. **Busca em ambientes complexos:** busca local, recozimento simulado, busca em feixe e algoritmos genéticos.
+3. **Busca competitiva:** Minimax, poda Alpha-Beta, busca heurística e Monte Carlo Tree Search.
+4. **Conhecimento e incerteza:** agentes lógicos e probabilísticos, Naive Bayes, redes Bayesianas e modelos de Markov.
+
+## Como usar esta apostila
+
+Cada capítulo combina explicações conceituais e células de código. Recomenda-se ler os objetivos, acompanhar a construção das funções, reproduzir os exemplos em um ambiente Python e responder às perguntas ou desafios propostos.
+
+As saídas preservadas durante a conversão servem como referência. Como alguns experimentos envolvem aleatoriedade, uma nova execução pode produzir valores ou trajetórias diferentes.

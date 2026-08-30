@@ -1,0 +1,928 @@
+---
+title: Laboratório — Agentes Probabilísticos no Wumpus World
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+---
+
+
+
+## Ajustando Ambiente
+
+Para este laboratório, utilizaremos a biblioteca `numpy` para operações numéricas e `itertools` para auxiliar na manipulação de conjuntos. Não será necessário `sympy` neste tutorial, pois focaremos em cálculos probabilísticos diretos.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719597, user_tz: 180, elapsed: 30, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+import itertools
+import numpy as np
+import random
+from collections import defaultdict
+```
+
+## Motivação
+
+No tutorial anterior, exploramos o poder dos agentes lógicos em um mundo de certezas. Vimos como a lógica proposicional, o Model Checking, o Forward Chaining e o DPLL permitem que um agente infira fatos com 100% de certeza a partir de uma Base de Conhecimento bem definida. No entanto, o mundo real raramente oferece tal clareza. A **incerteza** é uma constante, seja por observações ruidosas, sensores imperfeitos, ações não-determinísticas ou simplesmente pela falta de conhecimento completo sobre o ambiente. Nesse contexto,  a teoria da probabilidade surge como a ferramenta fundamental para resolver esses impasses, permitindo que o agente utilize **graus de crença** numéricos para resumir a incerteza de forma compacta e tratável. Estudar essa área motiva-se pela busca da **racionalidade**, que é alcançada através da **Teoria da Decisão** — a combinação da probabilidade (o que o agente acredita) com a utilidade (o que o agente deseja). Um agente racional é aquele que escolhe a ação que maximiza sua **utilidade esperada**, permitindo decisões inteligentes mesmo quando o resultado não é garantido.
+
+Considere o Wumpus World: quando o agente sente brisa na Sala 2, a lógica nos diz que há um poço na Sala 3 **OU** na Sala 6 (`P3 ∨ P6`). Para um agente lógico, ambas as salas são igualmente perigosas, pois ele não pode provar que são seguras. Essa limitação pode levar a um agente paralisado pela incerteza, incapaz de tomar uma decisão racional.
+
+Finalmente, os **agentes probabilísticos** surgem como uma solução para este desafio. Em vez de exigir certezas absolutas, eles quantificam a incerteza usando a probabilidade. Isso permite que o agente não apenas saiba que “há um poço em P3 ou P6”, mas também calcule a *chance* de haver um poço em cada uma dessas salas. Armado com esse mecanismo, o agente pode tomar decisões **racionais**, escolhendo a ação que maximiza sua utilidade esperada, mesmo em face da incerteza. Este tutorial irá guiá-lo através da construção de um agente capaz de navegar no Wumpus World usando o poder da probabilidade.
+
+## Objetivos de Aprendizagem
+
+Ao final deste laboratório, você será capaz de:
+
+*   **Compreender a transição da Lógica para a Probabilidade:** Identificar as limitações da lógica clássica em ambientes de observabilidade parcial e como os graus de crença resolvem impasses de decisão.
+*   **Dominar os Fundamentos Bayesianos:** Aplicar os conceitos de probabilidade incondicional (prior), condicional (posterior) e o Teorema de Bayes para realizar diagnósticos em sistemas incertos.
+*   **Modelar Ambientes Estocásticos:** Estruturar o Wumpus World através de variáveis aleatórias e entender como a independência condicional simplifica o cálculo de distribuições conjuntas complexas.
+*   **Implementar Inferência Probabilística:** Desenvolver algoritmos que atualizam o mapa mental do agente com base em evidências sensoriais acumuladas.
+*   **Praticar a Teoria da Decisão:** Avaliar riscos e recompensas para escolher ações que maximizam a utilidade esperada do agente em cenários de perigo iminente.
+
+## Fundamentos teóricos
+
+### Teoria da Probabilidade
+
+
+#### 1. Probabilidade Incondicional e Condicional
+
+No mundo real, a certeza absoluta é rara. Agentes inteligentes frequentemente precisam tomar decisões com base em informações incompletas ou ruidosas. A **Teoria da Probabilidade** fornece a estrutura matemática para quantificar e raciocinar sob incerteza. Diferente da lógica proposicional, que lida com sentenças que são estritamente Verdadeiras ou Falsas, a probabilidade atribui um grau de crença a uma proposição, variando de 0 (impossível) a 1 (certo).
+
+**A. Variáveis Aleatórias e Probabilidade Incondicional (Prior)**
+
+Uma **variável aleatória** é uma variável cujo valor é um resultado numérico de um fenômeno aleatório. No Wumpus World, temos variáveis booleanas como $P_{i,j}$ (poço no quadrado $[i,j]$). A **probabilidade incondicional** (ou *prior probability*) é a nossa crença antes de qualquer evidência. Por exemplo, sabemos que a chance base de qualquer quadrado ter um poço é:
+$$\text{P}(p) = 0.2$$
+
+Esse valor 0.2 é uma regra do ambiente que permite ao agente quantificar a incerteza inicial e tomar decisões racionais de risco em vez de escolher caminhos aleatoriamente.
+
+**B. Probabilidade Condicional (Posterior)**
+Por outro lado, a probabilidade condicional (ou *posterior probability*) representa a atualização da crença após novas evidências. No Wumpus, se o agente sente uma brisa ($b$), ele quer saber a probabilidade de haver um poço ($p$) ali: $\text{P}(p | b)$.  Ela é denotada por $P(A | B)$, lida como “a probabilidade de A dado B”. Veja abaixo:
+
+$$\text{P}(a | b) = \frac{\text{P}(a \land b)}{\text{P}(b)}$$
+
+#### 2. Regra do Produto: A "Cola" dos Eventos Conjuntos
+
+A **Regra do Produto** é uma derivação direta da definição de probabilidade condicional. Enquanto a probabilidade condicional nos diz como atualizar uma crença diante de uma evidência, a Regra do Produto nos permite calcular a probabilidade de dois eventos ocorrerem simultaneamente (sua conjunção), tratando-os como uma sequência lógica de condições.
+
+**A. Definição e Intuição**
+Matematicamente, isolamos o termo da conjunção ($a \land b$) da fórmula anterior:
+$$\text{P}(a \land b) = \text{P}(a | b) \times \text{P}(b)$$
+
+**A lógica intuitiva por trás disso é simples:** para que $a$ e $b$ sejam verdadeiros ao mesmo tempo, primeiro precisamos que $b$ ocorra e, em seguida, que $a$ seja verdadeiro dado que $b$ já aconteceu.
+
+**B. Aplicação no Mundo de Wumpus**
+Imagine que o agente queira saber a probabilidade de "existir um poço no quadrado **e** ele sentir uma brisa no quadrado".
+- Sabemos que a chance a priori de um poço é $\text{P}(p_{1,2}) = 0.2$.
+- Sabemos que, se houver um poço, a brisa ocorre com certeza: $\text{P}(b_{1,1} | p_{1,2}) = 1.0$.
+- A **Regra do Produto** nos diz que a chance de ambos serem verdadeiros é:
+$$\text{P}(b_{1,1} \land p_{1,2}) = \text{P}(b_{1,1} | p_{1,2}) \times \text{P}(p_{1,2}) = 1.0 \times 0.2 = \mathbf{0.2}$$
+
+<details>
+    <summary>Explicação</summary>
+
+Esse resultado de **0.2 (ou 20%)** representa a chance de um cenário muito específico acontecer no universo do jogo: a probabilidade de o quadrado $[1,2]$ ter um poço **E**, simultaneamente, o quadrado $[1,1]$ ter uma brisa. Para entender a intuição por trás do cálculo, pense nisso como um filtro de duas etapas:  **a) a condição inicial,** a chance base de existir um poço em $[1,2]$ é de **20%** ($0.2$); e **b) a consequência física,** se esse poço realmente existir ali, a chance de ele gerar uma brisa em $[1,1]$ é de **100%** ($1.0$), pois essa é a regra estrita do ambiente. Ao multiplicarmos esses valores ($1.0 \times 0.2$), descobrimos que a chance de ambos os eventos coexistirem é de **20%**.
+
+**Note,** esse número **não** significa que, se o agente sentir uma brisa, a chance de ter um poço é de 20%. Isso que calculamos é a probabilidade *conjunta* (a chance de a combinação "Poço + Brisa" existir no mapa). Descobrir a chance do poço *depois* que a brisa já foi detectada é o papel do Teorema de Bayes, que veremos a seguir.
+
+</details>
+
+O ponto fundamental para a Inteligência Artificial é notar que o mundo não tem uma "ordem fixa" para a conjunção. O evento conjunto "Brisa e Poço" é identicamente o mesmo que "Poço e Brisa". Essa constatação de que a conjunção é comutativa ($a \land b \equiv b \land a$) é o que nos permite escrever a Regra do Produto de duas formas diferentes, criando a base para a inversão de inferência que veremos a seguir.
+
+#### 3. A Regra do Produto e a Simetria da Inferência
+
+Para chegarmos ao Teorema de Bayes, utilizamos a **Regra do Produto**, que descreve a probabilidade de dois eventos ocorrerem simultaneamente.
+
+**A. Definir a Probabilidade Conjunta**
+Como visto anteriormente, a partir da definição de probabilidade condicional, isolamos a conjunção ($a \land b$):
+$$\text{P}(a \land b) = \text{P}(a | b) \times \text{P}(b)$$
+
+**B. Aplicar a Simetria da Conjunção**
+Como a ordem da conjunção não importa ($a \land b$ é idêntico a $b \land a$), podemos escrever a regra de uma segunda forma igualmente válida:
+$$\text{P}(a \land b) = \text{P}(b | a) \times \text{P}(a)$$
+
+**C. Estabelecer a Igualdade**
+Se ambos os caminhos levam ao mesmo resultado ($\text{P}(a \land b)$), os lados direitos das equações devem ser iguais entre si:
+$$\text{P}(a | b) \times \text{P}(b) = \text{P}(b | a) \times \text{P}(a)$$
+
+**D. Isolar a Inferência Desejada (O Teorema de Bayes)**
+Para descobrir a probabilidade de $b$ dado $a$, dividimos ambos os lados por $\text{P}(a)$:
+$$\text{P}(a | b) = \frac{\text{P}(a | b) \times \text{P}(b)}{\text{P}(a)}$$
+
+<details>
+ <summary>Por que essa simetria é vital para a IA?</summary>
+
+*   **Inversão do Raciocínio (Efeito para Causa):** O agente observa o **efeito** (a brisa no Wumpus) e utiliza Bayes para inferir a **causa** invisível (o poço).
+*   **Robustez do Modelo:** O conhecimento na **direção causal** ($\text{P}(efeito | causa)$) é estável e reflete como o mundo funciona. Por exemplo, a regra de que "poços causam brisas" ($P(b|p)=1.0$) é uma lei física constante do ambiente.
+*   **Atualização de Crença:** O conhecimento diagnóstico ($\text{P}(causa | efeito)$) é frágil e mudaria se, por exemplo, aumentássemos o número de poços no mapa. Ao usar Bayes, o agente não precisa "reaprender" o diagnóstico. Ele apenas atualiza sua probabilidade *a priori* ($\text{P}(b)$) e a fórmula ajusta o diagnóstico automaticamente.
+*   **Decisão Racional:** No Mundo de Wumpus, essa matemática permite que o agente quantifique o risco. Em vez de escolher aleatoriamente entre dois quadrados desconhecidos, ele pode calcular que um tem 31% de chance de ter um poço enquanto o outro tem 86%, escolhendo o caminho mais seguro.
+
+</details>
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719606, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Graus de crença iniciais antes de qualquer evidência (Priors)
+p_p13 = 0.2    # Probabilidade a priori de ter poço em [1,3]: 20%
+p_b12 = 0.36   # Probabilidade total de sentir brisa em [1,2] (vinda de [1,3], [2,2] ou [1,1]-que é 0)
+
+# Verossimilhança (Likelihood / Modelo Causal)
+# Quão provável é o efeito (brisa) dado que a condição (poço em [1,3]) existe?
+# Se há um poço em [1,3], a brisa em [1,2] é gerada obrigatoriamente
+p_b12_given_p13 = 1.0
+
+# Regra do Produto (Probabilidade Conjunta)
+# Calcula a chance de ambos coexistirem simultaneamente no universo do jogo
+# P(b1,2 ∧ p1,3) = P(b1,2 | p1,3) * P(p1,3)
+p_b12_and_p13 = p_b12_given_p13 * p_p13
+
+# Teorema de Bayes (Probabilidade Posterior / Diagnóstico)
+# Inverte a inferência: do efeito detectado (brisa) para a condição oculta (poço)
+# P(p1,3 | b1,2) = (P(b1,2 | p1,3) * P(p1,3)) / P(b1,2)
+p_p13_given_b12 = (p_b12_given_p13 * p_p13) / p_b12
+
+# Exibição dos Resultados
+print(f">>> Análise Probabilística (Mundo de Wumpus)")
+print(f"Probabilidade a priori do Poço P(p1,3): {p_p13:.2f} (20%)")
+print(f"Probabilidade Conjunta P(b1,2 ∧ p1,3): {p_b12_and_p13:.2f} (Regra do Produto)")
+print(f"Probabilidade Posterior P(p1,3 | b1,2): {p_p13_given_b12:.4f} (Teorema de Bayes)")
+
+if p_p13_given_b12 > p_p13:
+    print(f"\nConclusão da IA: A evidência da brisa alterou nosso grau de crença! "
+          f"A probabilidade de poço em [1,3] saltou de 20% para {p_p13_given_b12*100:.1f}%.")
+```
+
+<details>
+    <summary>Explicação</summary>
+
+O resultado da probabilidade posterior é **0.5556 (ou 55.6%)**. Tal aspecto deemonstra o poder da atualização Bayesiana: a chance de ter um poço ali era de apenas $20\%$, mas a presença física da brisa restringiu tanto o espaço amostral que a probabilidade mais do que dobrou, tornando o quadrado $[1,3]$ uma rota altamente perigosa para o agente!
+
++-------------------+-------------------+-------------------+-------------------+
+| [1,4]             | [2,4]             | [3,4]             | [4,4]             |
+|                   |                   |                   |                   |
+| Prior: P=20%      | Prior: P=20%      | Prior: P=20%      | Prior: P=20%      |
++-------------------+-------------------+-------------------+-------------------+
+| [1,3]  <======??  | [2,3]             | [3,3]             | [4,3]             |
+| Causa Possível    |                   |                   |                   |
+| Prior: P=20%      | Prior: P=20%      | Prior: P=20%      | Prior: P=20%      |
++-------------------+-------------------+-------------------+-------------------+
+| [1,2]             | [2,2]  <======??  | [3,2]             | [4,2]             |
+| [ ROBÔ ]          | Causa Possível    |                   |                   |
+| ( BRISA )         | Prior: P=20%      | Prior: P=20%      | Prior: P=20%      |
++-------------------+-------------------+-------------------+-------------------+
+| [1,1]             | [2,1]             | [3,1]             | [4,1]             |
+| [ INÍCIO ]        |                   |                   |                   |
+| SEGURO (P=0%)     | Prior: P=20%      | Prior: P=20%      | Prior: P=20%      |
++-------------------+-------------------+-------------------+-------------------+
+
+</detaisl>
+
+## Implementação
+
+### Funções auxiliares
+
+Antes de mergulharmos na lógica probabilística complexa, precisamos construir as ferramentas básicas que permitirão ao nosso agente "enxergar" e "navegar" pelo tabuleiro. No desenvolvimento de IA, chamamos isso de camada de abstração. Aqui está a definição simplificada de cada função auxiliar utilizada no projeto:
+
+* `create_wumpus_probabilistic(GRID_SIZE):` Responsável por construir o ambiente do jogo, sorteando as posições dos perigos e do ouro, e espalhando as pistas sensoriais (brisas e fedores) pelas salas vizinhas.
+* `display_mental_map(visited_rooms, pit_probs, wumpus_probs):` Gera uma representação visual do conhecimento acumulado pelo agente, exibindo quais salas já foram exploradas e os níveis de risco (probabilidades) calculados para as salas desconhecidas.
+* `get_neighbors(room_id):` Identifica todas as salas adjacentes (Norte, Sul, Leste, Oeste) a uma determinada sala, garantindo que o agente reconheça apenas movimentos válidos e respeite os limites das bordas do mapa.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719619, user_tz: 180, elapsed: 12, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def create_wumpus_probabilistic(GRID_SIZE=4):
+    """
+    Gera o mapa clássico do Wumpus World em uma grid 4x4 e retorna:
+    1. O dicionário completo do mapa físico (wumpus_map) com todos os sensores.
+    2. Um snapshot gabarito (map_snapshot) indicando as coordenadas reais das ameaças.
+    """
+    wumpus_map = {}
+
+    # Inicializa todas as células vazias com os sensores limpos
+    for x in range(1, GRID_SIZE + 1):
+        for y in range(1, GRID_SIZE + 1):
+            wumpus_map[(x, y)] = {
+                "wumpus": False,
+                "pit": False,
+                "stench": False,
+                "breeze": False,
+                "glimmer": False
+            }
+
+    # Lista de todas as coordenadas possíveis (coluna, linha) excluindo o início seguro (1,1)
+    available_positions = [(x, y) for x in range(1, GRID_SIZE + 1) for y in range(1, GRID_SIZE + 1) if (x, y) != (1, 1)]
+
+    # Sorteia e posiciona exatamente 1 Wumpus
+    wumpus_position = random.choice(available_positions)
+    wumpus_map[wumpus_position]["wumpus"] = True
+    available_positions.remove(wumpus_position) # Remove para evitar que um Pit caia no mesmo lugar
+
+    # Sorteia e posiciona exatamente 2 Pits
+    pit_positions = random.sample(available_positions, k=2)
+    for pos in pit_positions:
+        wumpus_map[pos]["pit"] = True
+        available_positions.remove(pos) # Remove para evitar que o Ouro caia no mesmo lugar
+
+    # Física do Mundo: Mapeia as percepções nas casas adjacentes (coluna, linha)
+    adjacents = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    for (x, y) in wumpus_map.keys():
+        # Se a casa tem o Wumpus, espalha o fedor (Stench) ao redor
+        if wumpus_map[(x, y)]["wumpus"]:
+            for dx, dy in adjacents:
+                neighbor = (x + dx, y + dy)
+                if neighbor in wumpus_map:
+                    wumpus_map[neighbor]["stench"] = True
+
+        # Se a casa tem um Pit, espalha a brisa (Breeze) ao redor
+        if wumpus_map[(x, y)]["pit"]:
+            for dx, dy in adjacents:
+                neighbor = (x + dx, y + dy)
+                if neighbor in wumpus_map:
+                    wumpus_map[neighbor]["breeze"] = True
+
+    # Adicionar posicionamento do Ouro
+    gold_position = random.choice(available_positions)
+    wumpus_map[gold_position]["glimmer"] = True # Adiciona a chave que faltava
+
+    # Geração do Snapshot Revelado (O Gabarito do Mundo)
+    # Convertemos as coordenadas para IDs de salas (1 a 16) para facilitar a leitura didática
+    wumpus_room_id = (wumpus_position[1] - 1) * 4 + wumpus_position[0]
+    pit_room_ids = [(pos[1] - 1) * 4 + pos[0] for pos in pit_positions]
+
+    map_snapshot = {
+        "wumpus_location": {"coords": wumpus_position, "room_id": wumpus_room_id},
+        "gold_location": {"coords": gold_position, "room_id": (gold_position[1] - 1) * 4 + gold_position[0]},
+        "pits_locations": [
+            {"coords": pit_positions[0], "room_id": pit_room_ids[0]},
+            {"coords": pit_positions[1], "room_id": pit_room_ids[1]}
+        ]
+    }
+
+    return wumpus_map, map_snapshot
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719621, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def display_mental_map(wumpus_map, agent_position=(1, 1), visited_rooms=None):
+    """
+    Exibe o mapa mental do agente com base na estética clássica e compacta.
+    Navegação corrigida estritamente para o padrão (coluna, linha).
+    """
+    if visited_rooms is None:
+        visited_rooms = set()
+
+    # Garante que a posição atual do agente sempre conte como visitada
+    visited_rooms.add(agent_position)
+
+    # CORREÇÃO: ID da sala calculado como (linha - 1) * 4 + coluna
+    agent_col, agent_row = agent_position
+    current_room = (agent_row - 1) * 4 + agent_col
+
+    print(f"\n--- MAPA MENTAL DO AGENTE (Sala Atual: {current_room}) ---")
+
+    # Cria a estrutura da grade 4x4 vazia
+    grid = [[" ? " for _ in range(4)] for _ in range(4)]
+
+    # Função auxiliar para converter o ID da sala no índice visual da matriz (linha 0 no topo)
+    def get_grid_indices(room_id):
+        row_index = 3 - ((room_id - 1) // 4)
+        col_index = (room_id - 1) % 4
+        return row_index, col_index
+
+    # Varre todas as 16 salas para construir o visual
+    for room_id in range(1, 17):
+        r, c = get_grid_indices(room_id)
+
+        # CORREÇÃO: Conversão do ID linear para o sistema cartesiano (coluna, linha)
+        col_coord = ((room_id - 1) % 4) + 1
+        row_coord = ((room_id - 1) // 4) + 1
+        map_pos = (col_coord, row_coord)
+
+        # O agente só tem informações se a sala já foi visitada
+        if map_pos in visited_rooms:
+            cell = wumpus_map[map_pos]
+
+            cell_text = f"{room_id:02}"
+            status = ""
+
+            # Identificação do Agente ou se a sala está marcada como Segura
+            if room_id == current_room:
+                status += "A"
+            else:
+                status += "S"
+
+            # Verifica apenas as percepções ATIVAS que o agente sentiu
+            if cell["breeze"]:
+                status += "B"
+            if cell["stench"]:
+                status += "F"
+
+            # Centraliza o texto no bloco de tamanho 5 para manter a largura fixa
+            grid[r][c] = (cell_text + status).center(5)
+        else:
+            # Sala nunca antes vista pelo agente
+            grid[r][c] = "  ?  "
+
+    # Desenho da grade com largura fixa
+    print(" +-----+-----+-----+-----+")
+    for row in grid:
+        print(f" |{'|'.join(row)}|")
+        print(" +-----+-----+-----+-----+")
+    print(" Legenda: A=Agente, S=Segura, B=Brisa, F=Fedor, ?=Desconhecido")
+```
+
+### Inferência Bayesiana
+
+Nesta seção, implementamos o "cérebro" do nosso agente. Enquanto a lógica clássica trabalha com certezas, a Inferência Bayesiana permite que o agente atualize suas crenças sobre o estado oculto do mundo (onde estão os poços e o Wumpus) à medida que novas evidências (brisa e fedor) são coletadas. A função `calculate_bayesian_inference` utiliza o Teorema de Bayes para realizar o diagnóstico. O ponto fundamental aqui é a inversão do raciocínio: em vez de perguntar "se eu sinto brisa, há um poço?", perguntamos "qual a probabilidade de eu sentir esta brisa dado que existe um poço ali?".
+
+O código abaixo implementa um Modelo Causal, onde:
+
+* Priors: Definimos a chance base de perigos (ex: 20% para poços).
+* Evidências: Coletamos os sensores da sala atual.
+* Normalização: Ajustamos os resultados para que as probabilidades reflitam o novo grau de crença do agente após a observação.
+
+Observação didática: esta função combina inferências determinísticas simples, como marcar salas visitadas como seguras, com estimativas probabilísticas simplificadas. Portanto, ela não é uma implementação completa de inferência bayesiana exata no Wumpus World, mas uma aproximação didática para visualizar risco.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719686, user_tz: 180, elapsed: 50, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def calculate_bayesian_inference(wumpus_map, agent_position=(1,1), visited_rooms=None, cumulative_risk=True):
+    """
+    Aplica o Teorema de Bayes e Dedução Lógica para calcular os riscos de
+    Poços (Pits) e do Wumpus de forma simultânea e independente.
+    """
+    if visited_rooms is None:
+        visited_rooms = set()
+
+    agent_col, agent_row = agent_position
+    current_room_id = (agent_row - 1) * 4 + agent_col
+
+    # Coleta as evidências físicas da sala atual
+    has_breeze_here = wumpus_map[agent_position]["breeze"]
+    has_stench_here = wumpus_map[agent_position]["stench"]
+
+    # Define os movimentos permitidos (X, Y)
+    adjacents = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    # Mapeia os vizinhos da sala atual
+    current_neighbors = []
+    for dc, dr in adjacents:
+        neighbor_pos = (agent_col + dc, agent_row + dr)
+        if neighbor_pos in wumpus_map:
+            current_neighbors.append(neighbor_pos)
+
+    print(f">>> [INFERÊNCIA BAYESIANA] Agente na Sala {current_room_id:02} {agent_position}")
+    print(f"Modo de Memória: {'RISCO ACUMULADO (ATIVADO)' if cumulative_risk else 'LOCAL ISOLADO (DESATIVADO)'}")
+    print(f"Sensores Locais: Brisa = {'~' if has_breeze_here else 'NÃO'} | Fedor = {'FF' if has_stench_here else 'NÃO'}")
+    print(f"Análise de perigo para as salas vizinhas da Sala {current_room_id:02}:")
+
+    # PRÉ-PROCESSAMENTO HISTÓRICO (CUMULATIVE RISK)
+    guaranteed_safe_pit = set()
+    guaranteed_pits = set()
+
+    guaranteed_safe_wumpus = set()
+    guaranteed_wumpus = set()
+
+    if cumulative_risk:
+        # Regra A: Salas visitadas são 100% seguras de tudo
+        for room in visited_rooms:
+            guaranteed_safe_pit.add(room)
+            guaranteed_safe_wumpus.add(room)
+
+        # Regra B: Dedução por ausência de efeito
+        for room in visited_rooms:
+            r_col, r_row = room
+            # Sem brisa = Sem poços ao redor
+            if not wumpus_map[room]["breeze"]:
+                for dc, dr in adjacents:
+                    v = (r_col + dc, r_row + dr)
+                    if v in wumpus_map: guaranteed_safe_pit.add(v)
+            # Sem fedor = Sem Wumpus ao redor
+            if not wumpus_map[room]["stench"]:
+                for dc, dr in adjacents:
+                    v = (r_col + dc, r_row + dr)
+                    if v in wumpus_map: guaranteed_safe_wumpus.add(v)
+
+        # Regra C: Encadeamento Causal (Resolução de suspeitos únicos)
+        for room in visited_rooms:
+            r_col, r_row = room
+            room_neighbors = [(r_col + dc, r_row + dr) for dc, dr in adjacents if (r_col + dc, r_row + dr) in wumpus_map]
+
+            # Localiza Poço Único
+            if wumpus_map[room]["breeze"]:
+                suspects_pit = [n for n in room_neighbors if n not in guaranteed_safe_pit]
+                if len(suspects_pit) == 1: guaranteed_pits.add(suspects_pit[0])
+
+            # Localiza Wumpus Único (Super eficiente pois só existe 1 no mapa inteiro)
+            if wumpus_map[room]["stench"]:
+                suspects_wumpus = [n for n in room_neighbors if n not in guaranteed_safe_wumpus]
+                if len(suspects_wumpus) == 1: guaranteed_wumpus.add(suspects_wumpus[0])
+
+    # CÁLCULO E EXIBIÇÃO DA MATRIZ DE RISCO COMBINADA
+    for n_col, n_row in current_neighbors:
+        neighbor_room_id = (n_row - 1) * 4 + n_col
+        neighbor_pos = (n_col, n_row)
+
+        # Casa inicial (1,1) é nula por padrão
+        if neighbor_pos == (1, 1):
+            print(f"  -> Sala {neighbor_room_id:02} (1, 1): P(Poço) = 0.0% | P(Wumpus) = 0.0% (Início Seguro)")
+            continue
+
+        # Cálculo Probabilístico do Poço
+        prob_pit = 0.0
+        if cumulative_risk and neighbor_pos in guaranteed_safe_pit: prob_pit = 0.0
+        elif cumulative_risk and neighbor_pos in guaranteed_pits: prob_pit = 100.0
+        elif not has_breeze_here: prob_pit = 0.0
+        else:
+            # Bayes: (1.0 * 0.2) / 0.36
+            prob_pit = (1.0 * 0.2) / 0.36 * 100
+
+        # Cálculo Probabilístico do Wumpus
+        prob_wumpus = 0.0
+        if cumulative_risk and neighbor_pos in guaranteed_safe_wumpus: prob_wumpus = 0.0
+        elif cumulative_risk and neighbor_pos in guaranteed_wumpus: prob_wumpus = 100.0
+        elif not has_stench_here: prob_wumpus = 0.0
+        else:
+            # Como há apenas 1 Wumpus em 15 casas possíveis (excluindo 1,1):
+            # Prior P(Wumpus) = 1/15 ≈ 6.6%. Probabilidade Total do Fedor P(Stench) ≈ 18%
+            prob_wumpus = (1.0 * (1/15)) / 0.18 * 100
+
+        # Formatação limpa exibindo os dois diagnósticos lado a lado
+        status_pit = f"{prob_pit:.1f}%" if prob_pit not in [0.0, 100.0] else ("100.0%" if prob_pit == 100.0 else "0.0%")
+        status_wumpus = f"{prob_wumpus:.1f}%" if prob_wumpus not in [0.0, 100.0] else ("100.0%" if prob_wumpus == 100.0 else "0.0%")
+
+        print(f"  -> Sala {neighbor_room_id:02} {neighbor_pos}: P(Poço) = {status_pit:<7} | P(Wumpus) = {status_wumpus}")
+```
+
+<details>
+    <summary>Explicação</summary>
+
+A função `calculate_bayesian_inference` opera como um sistema híbrido que integra **dedução lógica** e **inferência estatística** em quatro camadas: a), coleta evidências sensoriais locais (brisa e fedor); b), aplica um pré-processamento histórico para eliminar riscos em salas já visitadas ou provadas seguras por ausência de sinais; c), utiliza o **Teorema de Bayes** para calcular a probabilidade posterior de perigos nas salas que permanecem incertas, cruzando a probabilidade *prior* com a verossimilhança das evidências; e, d) por fim, consolida esses dados em um diagnóstico de risco percentual, permitindo que o agente tome decisões racionais baseadas na maximização da utilidade esperada mesmo sob observabilidade parcial. Veja a explicação linha a linha abaixo:
+
+1. `def calculate_bayesian_inference(wumpus_map, agent_position=(1,1), visited_rooms=set(), cumulative_risk=True):`
+> Define a função que recebe o mapa real (para simular sensores), a posição do agente, o histórico de salas visitadas e uma flag para ativar o raciocínio acumulado.
+
+2. `if visited_rooms is None: visited_rooms = set()`
+> Garante que a variável de salas visitadas seja um conjunto inicializado, evitando erros de mutabilidade.
+
+3. `agent_col, agent_row = agent_position`
+> Desempacota as coordenadas cartesianas (coluna e linha) da posição atual do agente.
+
+4. `current_room_id = (agent_row - 1) * 4 + agent_col`
+> Calcula o ID linear da sala (1 a 16) com base nas coordenadas para fins de exibição.
+
+5. `has_breeze_here = wumpus_map[agent_position]["breeze"]`
+> Simula o sensor de brisa do agente na posição atual acessando os dados do mapa.
+
+6. `has_stench_here = wumpus_map[agent_position]["stench"]`
+> Simula o sensor de fedor do agente na posição atual acessando os dados do mapa.
+
+7. `adjacents = [(1, 0), (-1, 0), (0, 1), (0, -1)]`
+> Define os deslocamentos relativos para localizar as quatro salas vizinhas (norte, sul, leste, oeste).
+
+8. `current_neighbors = []`
+> Inicializa uma lista para armazenar as coordenadas das salas vizinhas válidas à posição atual.
+
+9. `for dc, dr in adjacents:`
+> Inicia um loop para iterar sobre cada direção adjacente possível.
+
+10. `neighbor_pos = (agent_col + dc, agent_row + dr)`
+> Calcula a coordenada absoluta da sala vizinha.
+
+11. `if neighbor_pos in wumpus_map:`
+> Verifica se a coordenada calculada está dentro dos limites do tabuleiro 4x4.
+
+12. `current_neighbors.append(neighbor_pos)`
+> Adiciona a coordenada válida à lista de vizinhos que serão analisados.
+
+13. `print(f">>> [INFERÊNCIA BAYESIANA] Agente na Sala {current_room_id:02} ...")`
+> Exibe um cabeçalho de status indicando o início do processo de inferência para a sala atual.
+
+14. `guaranteed_safe_pit = set(); guaranteed_pits = set()`
+> Inicializa conjuntos para armazenar salas onde a ausência ou presença de poços é logicamente certa.
+
+15. `guaranteed_safe_wumpus = set(); guaranteed_wumpus = set()`
+> Inicializa conjuntos para armazenar salas onde a ausência ou presença do Wumpus é logicamente certa.
+
+16. `if cumulative_risk:`
+> Verifica se o modo de memória acumulada está ativo para realizar deduções lógicas históricas.
+
+17. `for room in visited_rooms:`
+> Itera sobre todas as salas que o agente já visitou para aplicar regras de dedução.
+
+18. `guaranteed_safe_pit.add(room); guaranteed_safe_wumpus.add(room)`
+> Regra A: Se o agente já passou por uma sala e sobreviveu, ela é 100% segura contra poços e Wumpus.
+
+19. `r_col, r_row = room`
+> Extrai as coordenadas de uma sala visitada para analisar seus vizinhos.
+
+20. `if not wumpus_map[room]["breeze"]:`
+> Regra B: Se não houve brisa em uma sala visitada, nenhum de seus vizinhos pode ter um poço.
+
+21. `for dc, dr in adjacents:`
+> Itera sobre as direções para marcar os vizinhos da sala sem brisa.
+
+22. `v = (r_col + dc, r_row + dr)`
+> Calcula a coordenada do vizinho da sala sem brisa.
+
+23. `if v in wumpus_map: guaranteed_safe_pit.add(v)`
+> Se o vizinho existe, ele é adicionado à lista de segurança garantida contra poços.
+
+24. `if not wumpus_map[room]["stench"]:`
+> Regra B (cont.): Se não houve fedor em uma sala visitada, nenhum de seus vizinhos pode ter o Wumpus.
+
+25. `for dc, dr in adjacents:`
+> Itera sobre as direções para marcar os vizinhos da sala sem fedor.
+
+26. `v = (r_col + dc, r_row + dr)`
+> Calcula a coordenada do vizinho da sala sem fedor.
+
+27. `if v in wumpus_map: guaranteed_safe_wumpus.add(v)`
+> Se o vizinho existe, ele é adicionado à lista de segurança garantida contra o Wumpus.
+
+28. `for room in visited_rooms:`
+> Inicia nova varredura histórica para identificar "suspeitos únicos" (Regra C).
+
+29. `r_col, r_row = room`
+> Extrai coordenadas da sala visitada.
+
+30. `room_neighbors = [(r_col + dc, r_row + dr) for dc, dr in adjacents if (r_col + dc, r_row + dr) in wumpus_map]`
+> Gera a lista de todos os vizinhos geográficos da sala visitada.
+
+31. `if wumpus_map[room]["breeze"]:`
+> Se houve brisa, verifica se apenas um vizinho ainda é suspeito de ter poço.
+
+32. `suspects_pit = [n for n in room_neighbors if n not in guaranteed_safe_pit]`
+> Filtra os vizinhos que ainda não foram provados seguros contra poços.
+
+33. `if len(suspects_pit) == 1: guaranteed_pits.add(suspects_pit[0])`
+> Se restar apenas um suspeito, a lógica força que ele seja um poço (100% de certeza).
+
+34. `if wumpus_map[room]["stench"]:`
+> Se houve fedor, verifica se apenas um vizinho ainda é suspeito de ter o Wumpus.
+
+35. `suspects_wumpus = [n for n in room_neighbors if n not in guaranteed_safe_wumpus]`
+> Filtra os vizinhos que ainda não foram provados seguros contra o Wumpus.
+
+36. `if len(suspects_wumpus) == 1: guaranteed_wumpus.add(suspects_wumpus[0])`
+> Se restar apenas um suspeito, a lógica força que ele seja o Wumpus (100% de certeza).
+
+37. `for n_col, n_row in current_neighbors:`
+> Inicia o loop final para calcular e exibir o risco de cada vizinho da sala atual.
+
+38. `neighbor_room_id = (n_row - 1) * 4 + n_col`
+> Calcula o ID da sala vizinha para exibição.
+
+39. `neighbor_pos = (n_col, n_row)`
+> Define a posição do vizinho sendo analisado.
+
+40. `if neighbor_pos == (1, 1): print(f" -> Sala {neighbor_room_id:02} (1, 1): P(Poço) = 0.0% | P(Wumpus) = 0.0%"); continue`
+> Trata a sala inicial (1,1) como caso especial, sempre exibindo 0% de risco.
+
+41. `prob_pit = 0.0`
+> Inicializa a variável de probabilidade de poço para o vizinho atual.
+
+42. `if cumulative_risk and neighbor_pos in guaranteed_safe_pit: prob_pit = 0.0`
+> Se a lógica provou que é seguro contra poços, define probabilidade como 0.
+
+43. `elif cumulative_risk and neighbor_pos in guaranteed_pits: prob_pit = 100.0`
+> Se a lógica provou que há um poço, define probabilidade como 100.
+
+44. `elif not has_breeze_here: prob_pit = 0.0`
+> Se não há brisa na sala atual, a probabilidade de poço no vizinho é zero (independência local).
+
+45. `else: prob_pit = (1.0 * 0.2) / 0.36 * 100`
+> Aplica o Teorema de Bayes: (Verossimilhança 1.0 * Prior 0.2) / Evidência 0.36, convertido para percentual.
+
+46. `prob_wumpus = 0.0`
+> Inicializa a variável de probabilidade de Wumpus para o vizinho atual.
+
+47. `if cumulative_risk and neighbor_pos in guaranteed_safe_wumpus: prob_wumpus = 0.0`
+> Se a lógica provou que é seguro contra o Wumpus, define probabilidade como 0.
+
+48. `elif cumulative_risk and neighbor_pos in guaranteed_wumpus: prob_wumpus = 100.0`
+> Se a lógica provou que é o Wumpus, define probabilidade como 100.
+
+49. `elif not has_stench_here: prob_wumpus = 0.0`
+> Se não há fedor na sala atual, a probabilidade de Wumpus no vizinho é zero.
+
+50. `else: prob_wumpus = (1.0 * (1/15)) / 0.18 * 100`
+> Aplica Bayes para o Wumpus: (Verossimilhança 1.0 * Prior 1/15) / Evidência 0.18, convertido para percentual.
+
+51. `status_pit = f\"{prob_pit:.1f}%\" if prob_pit not in [0.0, 100.0] else (\"NÃO\" if prob_pit == 0.0 else \"SIM\")`
+> Formata a exibição do risco de poço: mostra a porcentagem ou as palavras "NÃO"/"SIM" para certezas.
+
+52. `status_wumpus = f\"{prob_wumpus:.1f}%\" if prob_wumpus not in [0.0, 100.0] else (\"NÃO\" if prob_wumpus == 0.0 else \"SIM\")`
+> Formata a exibição do risco de Wumpus: mostra a porcentagem ou as palavras "NÃO"/"SIM" para certezas.
+
+53. `print(f\" -> Sala {neighbor_room_id:02} {neighbor_pos}: P(Poço) = {status_pit} | P(Wumpus) = {status_wumpus}\")`
+> Imprime o diagnóstico final combinado para a sala vizinha analisada.
+
+</details>
+
+### Agente Autônomo
+
+Até agora, nosso agente era capaz de observar e calcular riscos, mas ainda dependia de nós para decidir o próximo passo. Para torná-lo verdadeiramente autônomo, precisamos implementar a lógica de navegação e a estratégia de decisão.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719689, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def get_neighbors(pos):
+    col, row = pos
+    neighbors = []
+    for dc, dr in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+        n_pos = (col + dc, row + dr)
+        if 1 <= n_pos[0] <= 4 and 1 <= n_pos[1] <= 4:
+            neighbors.append(n_pos)
+    return neighbors
+
+def choose_best_move(agent_pos, risks, visited_rooms, GRID_SIZE=4):
+    """
+    Escolhe a melhor sala para explorar, considerando APENAS as salas adjacentes.
+    """
+    # 1. Identificar salas vizinhas válidas (N, S, L, O)
+    possible_moves = []
+    for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        neighbor = (agent_pos[0] + dr, agent_pos[1] + dc)
+        if 1 <= neighbor[0] <= GRID_SIZE and 1 <= neighbor[1] <= GRID_SIZE:
+            possible_moves.append(neighbor)
+
+    # 2. Calcular o risco para cada vizinho
+    neighbor_risks = {}
+    for move in possible_moves:
+        # Se o risco não estiver no dicionário (sala segura conhecida), assumimos 0.0
+        risk = risks.get(move, 0.0)
+
+        # Pequeno bônus para incentivar a exploração de salas não visitadas
+        if move not in visited_rooms:
+            risk -= 0.001
+
+        neighbor_risks[move] = risk
+
+    # 3. Escolher a opção de menor risco entre os vizinhos
+    min_risk = min(neighbor_risks.values())
+    best_options = [pos for pos, risk in neighbor_risks.items() if risk == min_risk]
+
+    return random.choice(best_options)
+```
+
+Enquanto nossas funções anteriores focavam em exibir informações para humanos, a `calculate_inference_data` é projetada para o consumo do próprio algoritmo. Ela varre a fronteira do conhecimento do agente — todas as salas adjacentes às já visitadas — e retorna um dicionário estruturado de riscos. Essa função é vital porque permite ao agente comparar numericamente as ameaças de diferentes caminhos, transformando percepções sensoriais em uma "matriz de decisão" que o computador pode processar.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719691, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def calculate_inference_data(wumpus_world, visited):
+    """
+    Calcula o risco de cada sala baseada em TODAS as percepções acumuladas.
+    """
+    # 1. Começamos com o risco base (prior) para todas as salas do mapa
+    # No Wumpus World, a probabilidade padrão de um poço é ~20%
+    risks = { (x, y): 0.2 for x in range(1, 5) for y in range(1, 5) }
+
+    # Salas já visitadas são 100% seguras (pois o agente está vivo)
+    for v in visited:
+        risks[v] = 0.0
+
+    # 2. Processamos as percepções de CADA sala visitada para ajustar os riscos
+    for v_room in visited:
+        perceptions = wumpus_world[v_room]
+        neighbors = []
+        for dr, dc in [(0,1),(0,-1),(1,0),(-1,0)]:
+            n = (v_room[0]+dr, v_room[1]+dc)
+            if 1 <= n[0] <= 4 and 1 <= n[1] <= 4:
+                neighbors.append(n)
+
+        # SE NÃO HÁ PERCEPÇÃO: Todas as vizinhas são garantidamente seguras
+        if not perceptions["breeze"] and not perceptions["stench"]:
+            for n in neighbors:
+                risks[n] = 0.0
+
+        # SE HÁ BRISA OU FEDOR: O risco das vizinhas aumenta
+        else:
+            for n in neighbors:
+                if n not in visited and risks[n] != 0.0:
+                    # Se já havia um risco, ele se acumula (probabilidade condicional)
+                    risks[n] = min(risks[n] + 0.4, 0.9)
+
+    return risks
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779320719702, user_tz: 180, elapsed: 10, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def play_autonomous_wumpus(wumpus_world):
+    agent_pos = (1, 1)
+    visited = set()
+    path_taken = []
+
+    print(">>> INICIANDO EXPLORAÇÃO AUTÔNOMA")
+
+    for turn in range(1, 20): # Limite de turnos para evitar loops infinitos
+        visited.add(agent_pos)
+        path_taken.append(agent_pos)
+
+        # Cálculo do ID da sala para exibição (1 a 16)
+        room_id = (agent_pos[1]-1)*4 + agent_pos[0]
+        print(f"\n[TURNO {turn}] Agente na Sala {room_id:02d} {agent_pos}")
+
+        # 1. Verificar se morreu (Perigo imediato)
+        if wumpus_world[agent_pos].get("pit", False):
+            print("MORTE! O agente caiu em um poço.")
+            return "LOSE"
+        if wumpus_world[agent_pos].get("wumpus", False):
+            print("MORTE! O Wumpus devorou o agente.")
+            return "LOSE"
+
+        # 2. Verificar se achou ouro (Objetivo final)
+        # Uso do .get() evita o KeyError: 'glimmer'
+        if wumpus_world[agent_pos].get("glimmer", False):
+            print("VITÓRIA! O agente encontrou o ouro!")
+            return "WIN"
+
+        # 3. Calcular riscos da fronteira (Inferência Bayesiana)
+        risks = calculate_inference_data(wumpus_world, visited)
+
+        # 4. Decidir próximo movimento
+        # CORREÇÃO: Passamos 'agent_pos' como primeiro argumento para evitar o TypeError
+        # e permitir que a função filtre apenas movimentos adjacentes (sem teletransporte)
+        next_move = choose_best_move(agent_pos, risks, visited)
+
+        if not next_move:
+            print("O agente não tem mais para onde ir com segurança.")
+            break
+
+        # Exibição da decisão e do risco calculado para a próxima sala
+        estimated_risk = risks.get(next_move, 0)
+        print(f"Decisão: Mover para {next_move} (Risco estimado: {estimated_risk*100:.1f}%)")
+
+        # Atualiza a posição para o próximo turno
+        agent_pos = next_move
+
+    print("\nA exploração terminou sem encontrar o ouro.")
+    return "TIMEOUT"
+```
+
+## Exemplos práticos
+
+A partir daqui, os principais componentes já foram apresentados: criação do ambiente, exibição do mapa mental, inferência de risco e escolha de movimento. Os cenários seguintes não introduzem novos conceitos isolados; eles demonstram como essas partes interagem no ciclo percepção → inferência → decisão → ação.
+
+### Cenário 01 - Navegação isolada
+
+Neste primeiro cenário, o agente inicia sua jornada na Sala 01 (1, 1). Por definição do Wumpus World, a sala inicial é sempre segura. No entanto, ao "abrir os olhos", o agente já recebe suas primeiras percepções.
+
+* **O que acontece:** O agente verifica se há brisa ou fedor na Sala 01. Se ele sentir uma brisa, ele sabe que existe um poço em algum lugar ao redor, mas não sabe onde.
+* **O Desafio:** Sem visitar outras salas, o agente possui apenas informações locais. Aqui, veremos como o Teorema de Bayes eleva a probabilidade de poços nas salas vizinhas (02 e 05) de 20% (prior) para um valor muito mais alto, alertando o agente sobre o perigo iminente antes mesmo de ele dar o primeiro passo.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719710, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Semente fixa para garantir consistência e reprodutibilidade em sala de aula
+random.seed(42)
+
+# Inicializa a memória do Agente
+memory_visited_rooms = set()
+
+# Criação do mundo físico
+wumpus_world, snapshot = create_wumpus_probabilistic()
+
+# Exibe o gabarito no console
+print("[GABARITO DO PROFESSOR] Elementos reais ocultos no mapa:")
+print(f"  -> Wumpus está na Sala {snapshot['wumpus_location']['room_id']} {snapshot['wumpus_location']['coords']}")
+print(f"  -> Ouro está na Sala {snapshot['gold_location']['room_id']} {snapshot['gold_location']['coords']}")
+print(f"  -> Pits estão nas Salas: "
+        f"{snapshot['pits_locations'][0]['room_id']} {snapshot['pits_locations'][0]['coords']} e "
+        f"{snapshot['pits_locations'][1]['room_id']} {snapshot['pits_locations'][1]['coords']}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719733, user_tz: 180, elapsed: 22, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Exibição inicial do mapa para os estudantes
+
+agent_position = (1,1)  # Posição inicial do agente (coluna, linha)
+memory_visited_rooms.add(agent_position)
+
+display_mental_map(wumpus_world, agent_position=agent_position, visited_rooms=memory_visited_rooms)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719738, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Primeiro passo lógico: Agente inicia em (1,1)
+calculate_bayesian_inference(wumpus_world, agent_position=agent_position)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719742, user_tz: 180, elapsed: 5, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Segundo passo lógico: Agente avança na exploração para (2, 1)
+agent_position = (2, 1)
+memory_visited_rooms.add(agent_position)
+
+display_mental_map(wumpus_world, agent_position=agent_position, visited_rooms=memory_visited_rooms)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719759, user_tz: 180, elapsed: 16, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+calculate_bayesian_inference(wumpus_world, agent_position=agent_position)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719760, user_tz: 180, elapsed: 14, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Segundo passo lógico: Agente avança na exploração para (2, 2)
+agent_position = (2, 2)
+memory_visited_rooms.add(agent_position)
+
+display_mental_map(wumpus_world, agent_position=agent_position, visited_rooms=memory_visited_rooms)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719761, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+calculate_bayesian_inference(wumpus_world, agent_position=agent_position)
+```
+
+### Cenário 02 - Atualização continua
+
+Após analisar os riscos iniciais, o agente decide avançar para a Sala 02 (2, 1). Este é um momento crítico: o agente está acumulando memória.
+
+* **O que acontece:** Ao entrar na nova sala, o agente combina o que aprendeu na Sala 01 com as novas percepções da Sala 02.
+* **O Diferencial:** Introduzimos aqui o conceito de Risco Acumulado. Se o agente sentiu brisa na Sala 01 e agora sente brisa na Sala 02, as probabilidades se cruzam. Através da inferência, o agente pode começar a "isolar" os suspeitos. Se uma sala vizinha explica a brisa de ambas as salas visitadas, a probabilidade de haver um poço ali dispara, permitindo que o agente tome decisões muito mais seguras do que se estivesse usando apenas lógica simples.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719761, user_tz: 180, elapsed: 6, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+calculate_bayesian_inference(wumpus_world, agent_position=(1, 1),  visited_rooms={(1,1)}, cumulative_risk=True)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719777, user_tz: 180, elapsed: 16, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+calculate_bayesian_inference(wumpus_world, agent_position=(2, 1),  visited_rooms={(1,1), (2,1)}, cumulative_risk=True)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719782, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+calculate_bayesian_inference(wumpus_world, agent_position=(2, 2),  visited_rooms={(1,1), (2,1), (2,2)}, cumulative_risk=True)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779320719882, user_tz: 180, elapsed: 98, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+display_mental_map(wumpus_world, agent_position=agent_position, visited_rooms={(1,1), (2,1), (2,2)})
+```
+
+### Cenário 03 - Autonomia e Decisão sob Risco
+
+Neste cenário final, deixamos de ser os "pilotos" do agente e passamos a ser observadores de sua inteligência. Utilizando as funções de navegação e estratégia que implementamos, o agente agora é capaz de explorar o mapa de forma totalmente autônoma, gerenciando sua própria fronteira de conhecimento.
+
+**O que observar neste cenário:**
+1.  **Priorização de Segurança:** O agente sempre esgotará todas as opções com 0% de risco antes de considerar um caminho perigoso.
+2.  **Raciocínio Global:** Se o agente encontrar um beco sem saída perigoso, ele "lembrará" de uma sala segura que viu no início da jornada e voltará para explorar a partir de lá.
+3.  **Coragem Calculada:** Quando não restarem caminhos 100% seguros, o agente escolherá a sala com a menor probabilidade de poço/Wumpus, demonstrando a aplicação prática da **Utilidade Esperada**.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779322929892, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Semente fixa para garantir consistência e reprodutibilidade em sala de aula
+random.seed(42)
+
+# Criar o mundo padrão para o teste de autonomia
+wumpus_world, snapshot = create_wumpus_probabilistic()
+
+# Exibe o gabarito no console
+print("[GABARITO DO PROFESSOR] Elementos reais ocultos no mapa:")
+print(f"  -> Wumpus está na Sala {snapshot['wumpus_location']['room_id']} {snapshot['wumpus_location']['coords']}")
+print(f"  -> Ouro está na Sala {snapshot['gold_location']['room_id']} {snapshot['gold_location']['coords']}")
+print(f"  -> Pits estão nas Salas: "
+        f"{snapshot['pits_locations'][0]['room_id']} {snapshot['pits_locations'][0]['coords']} e "
+        f"{snapshot['pits_locations'][1]['room_id']} {snapshot['pits_locations'][1]['coords']}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779322936741, user_tz: 180, elapsed: 21, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Iniciar o loop de jogo autônomo
+# Esta função coordena: Percepção -> Inferência -> Decisão -> Ação
+resultado = play_autonomous_wumpus(wumpus_world)
+
+print(f"\n--- RELATÓRIO FINAL DA MISSÃO ---")
+if resultado == "WIN":
+    print("Status: SUCESSO. O agente provou que a racionalidade probabilística vence a incerteza.")
+elif resultado == "LOSE":
+    print("Status: FRACASSO. O agente tomou a melhor decisão possível, mas a sorte não estava ao seu lado.")
+else:
+    print("Status: INCONCLUSIVO. O agente ficou sem opções ou tempo.")
+```
+
+**Análise do Comportamento:** Ao observar os logs do console, note como o agente "pensa" antes de cada movimento. Se ele detectar uma brisa na Sala 02, ele não entrará na Sala 06 imediatamente; ele primeiro verificará se a Sala 05 oferece um caminho mais seguro. Essa capacidade de **planejamento baseado em risco** é o que diferencia um agente inteligente de um simples algoritmo de busca.
+
+## Key takeways
+
+*   **Incerteza não é Ignorância:** A probabilidade permite que o agente resuma a incerteza de forma compacta e tratável, permitindo a ação mesmo quando a prova lógica é impossível.
+*   **O Poder do Posterior:** O Teorema de Bayes é a ferramenta definitiva para o aprendizado do agente; ele permite "inverter" o modelo causal (do efeito para a causa) para descobrir perigos ocultos.
+*   **Memória é Evidência:** Em agentes probabilísticos, cada sala visitada não é apenas um local, mas uma fonte de evidência que refina as probabilidades de todo o mapa através do risco acumulado.
+*   **Racionalidade é Maximização:** Ser um agente racional significa escolher o caminho que oferece o melhor equilíbrio entre o risco de falha e a utilidade da recompensa (o ouro).
+
+## Referências
+
+*   **RUSSELL, Stuart; NORVIG, Peter.** *Artificial Intelligence: A Modern Approach*. 4th ed. Pearson, 2020. (Capítulos 12 e 13: Quantifying Uncertainty e Probabilistic Reasoning).
+*   **POOLE, David L.; MACKWORTH, Alan K.** *Artificial Intelligence: Foundations of Computational Agents*. 2nd ed. Cambridge University Press, 2017.
+*   **BARBER, David.** *Bayesian Reasoning and Machine Learning*. Cambridge University Press, 2012.

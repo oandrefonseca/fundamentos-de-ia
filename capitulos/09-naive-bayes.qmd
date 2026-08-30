@@ -1,0 +1,1342 @@
+---
+title: Laboratório - Classificação com Naive Bayes
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+execute:
+  enabled: false
+---
+
+::: {.callout-note}
+## Outputs pendentes
+
+Este laboratório lê o arquivo `email_dataset.csv`, que ainda não está disponível no repositório. A execução automática está desativada até que o dataset seja adicionado — o código abaixo é mostrado como referência, sem outputs.
+:::
+
+
+## Ajustando Ambiente
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751950231, user_tz: 180, elapsed: 19920, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+%%capture
+!pip install nltk
+!pip install matplotlib-venn
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751950248, user_tz: 180, elapsed: 15, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+import re
+import pandas as pd
+import numpy as np
+
+from collections import defaultdict
+from collections import Counter
+from sklearn.feature_extraction.text import CountVectorizer
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from wordcloud import WordCloud
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib_venn import venn2
+
+from google.colab import drive
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952458, user_tz: 180, elapsed: 2210, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+drive.mount('/content/drive')
+print("✓ Google Drive montado com sucesso!")
+```
+
+## Objetivos de aprendizagem
+
+Ao final deste laboratório, espera-se que o estudante seja capaz de:
+
+* Explicar como o Teorema de Bayes pode ser usado em problemas de classificação.
+* Descrever a hipótese de independência condicional do Naive Bayes.
+* Realizar o pré-processamento básico de mensagens de texto.
+* Calcular probabilidades a priori e verossimilhanças a partir de frequências.
+* Identificar o problema da probabilidade zero em classificadores Naive Bayes.
+* Aplicar suavização de Laplace para tornar o classificador mais robusto.
+* Classificar uma nova mensagem usando a regra de decisão MAP.
+
+## Motivação
+
+O Teorema de Bayes fornece uma forma de atualizar nossas crenças diante de novas evidências. Em Inteligência Artificial, essa ideia é particularmente útil quando queremos tomar decisões sob incerteza.
+
+Neste laboratório, vamos usar essa ideia para construir um classificador de mensagens. A pergunta central será: dada uma nova mensagem, ela parece mais compatível com a classe `Normal` ou com a classe `Spam`?
+
+O classificador Naive Bayes responde a essa pergunta combinando duas informações: a frequência com que cada classe aparece no treinamento e a frequência com que cada palavra aparece em cada classe. Apesar de simples, esse modelo é uma porta de entrada importante para compreender classificação probabilística, representação textual e tomada de decisão baseada em evidências.
+
+## Fundamentação Teórica
+
+### Naive Bayes
+
+O Teorema de Bayes nos mostrou como calcular a probabilidade de uma causa, dado um único efeito: $P(\text{Causa } | \text{Efeito})$. No Machine Learning, especialmente em tarefas de **classificação** (como classificar um e-mail como *spam* ou *não spam*), temos uma **causa** (a classe) e **múltiplos efeitos** (as palavras do e-mail, o remetente, etc.)
+
+Nosso objetivo agora é calcular a probabilidade de uma **Classe ($C$)**, dadas **múltiplas evidências ($E_1, E_2, \dots, E_n$)**:
+
+$$P(C | E_1, E_2, \dots, E_n) = \frac{P(E_1, E_2, \dots, E_n | C) \cdot P(C)}{P(E_1, E_2, \dots, E_n)}$$
+
+O termo $\mathbf{P(E_1, E_2, \dots, E_n | C)}$ no numerador é a probabilidade conjunta das evidências. Para calculá-la de forma precisa, deveríamos saber como todas as evidências se relacionam entre si, o que exige uma quantidade astronômica de dados e torna o cálculo inviável na prática (o problema da complexidade).
+
+Para evitar esse problema , o **classificador Naive Bayes** sugere uma suposição simplificadora: Ele assume que todas as evidências ($E_i$) são condicionalmente independentes dado o conhecimento da classe ($C$). Em termos simples: a ocorrência de uma evidência ($E_1$ - a palavra 'promoção') não afeta a probabilidade de outra evidência ($E_2$ - a palavra 'grátis'), desde que saibamos a classe (se o e-mail é spam ou não).
+
+
+<details>
+  <summary>O que é independência e dependência?</summary>
+
+1. Dependência (e o Desafio da Probabilidade Conjunta)
+
+  * A **Dependência** é a regra geral, significando que o conhecimento sobre uma variável **muda** a probabilidade de outra (Ex: a probabilidade de ter dor de dente aumenta se a sonda do dentista fisgar).
+  * Para um classificador com múltiplas evidências, a dependência torna o cálculo da Probabilidade Conjunta $P(E_1, E_2, \dots | C)$ (a Verossimilhança) inviável, pois exigiria dados sobre todas as interações possíveis.
+
+2. Independência Condicional (A Suposição "Naive")
+
+  * O Classificador Naive Bayes assume a **Independência Condicional**: a ocorrência de uma evidência ($E_1$) **não afeta** a probabilidade de outra evidência ($E_2$), **desde que a classe ($C$) seja conhecida**.
+      * *Matematicamente:* $P(E_1, E_2, \dots | C) = P(E_1 | C) \cdot P(E_2 | C) \cdot \dots$
+  * Essa suposição "ingênua" (naive) simplifica o cálculo, permitindo que a Verossimilhança seja computada pela **multiplicação de probabilidades individuais**, tornando o classificador eficiente e aplicável a problemas complexos como a classificação de texto.
+
+</details>
+
+### A Fórmula do Naive Bayes
+
+Ao aplicar essa suposição de independência, a complexa **probabilidade conjunta** se simplifica em uma multiplicação de probabilidades individuais:
+
+$$P(E_1, E_2, \dots, E_n | C) = P(E_1 | C) \cdot P(E_2 | C) \cdot \dots \cdot P(E_n | C)$$
+
+Substituindo isso na Regra de Bayes original, obtemos a fórmula do Naive Bayes:
+
+$$\mathbf{P(C | E_1, \dots, E_n) = \frac{P(C) \cdot \prod_{i=1}^{n} P(E_i | C)}{P(E_1, \dots, E_n)}}$$
+
+**Onde:**
+
+* $\mathbf{P(C)}$: A **Prior** (Probabilidade A Priori) da classe.
+* $\mathbf{\prod_{i=1}^{n} P(E_i | C)}$: A multiplicação das **Verossimilhanças** individuais.
+* $\mathbf{P(E_1, \dots, E_n)}$: O denominador (Evidência Total), que atua como **fator de normalização**.
+
+#### Demonstração
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952502, user_tz: 180, elapsed: 40, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Probabilidades a priori das classes
+p_normal = 0.5
+p_spam = 0.5
+
+# Nova mensagem já pré-processada e tokenizada
+message_tokens = ["oferta", "gratis"]
+print("Tokens da mensagem:", message_tokens)
+
+# Verossimilhanças hipotéticas
+# P(palavra | Normal)
+likelihood_normal = {
+    "oferta": 0.01,
+    "gratis": 0.01
+}
+
+# P(palavra | Spam)
+likelihood_spam = {
+    "oferta": 0.10,
+    "gratis": 0.08
+}
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952535, user_tz: 180, elapsed: 20, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Cálculo das Verossimilhanças para a classe Normal
+likelihood_normal_demo = p_normal
+
+for word in message_tokens:
+    likelihood_normal_demo = likelihood_normal_demo * likelihood_normal[word]
+
+print("Verossimilhanca de Normal:")
+print(f"P(Normal) × P(oferta | Normal) × P(gratis | Normal) = {likelihood_normal_demo:.6f}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952568, user_tz: 180, elapsed: 20, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Cálculo das Verossimilhanças para a classe Spam
+likelihood_spam_demo = p_spam
+
+for word in message_tokens:
+    likelihood_spam_demo = likelihood_spam_demo * likelihood_spam[word]
+
+print("Verossimilhanca de Spam:")
+print(f"P(Spam)   × P(oferta | Spam)   × P(gratis | Spam)   = {likelihood_spam_demo:.6f}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952612, user_tz: 180, elapsed: 34, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Cálculo da Evidência baseada em ambas as classes
+evidence = likelihood_normal_demo + likelihood_spam_demo
+
+print("Evidência:")
+print(f"P(Normal) × P(oferta | Normal) × P(gratis | Normal) + P(Spam) × P(oferta | Spam) × P(gratis | Spam) = {evidence:.6f}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952640, user_tz: 180, elapsed: 26, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Resolução do score ou posteriori para cada classe
+posterior_normal_demo = likelihood_normal_demo / evidence
+posterior_spam_demo = likelihood_spam_demo / evidence
+
+print("Probabilidade Posterior:")
+print(f"P(Normal | oferta, gratis) = {posterior_normal_demo:.6f}")
+print(f"P(Spam | oferta, gratis) = {posterior_spam_demo:.6f}")
+```
+
+### Como funciona o Classificador (Regra de Decisão MAP)
+
+Na prática, a decisão do classificador Naive Bayes é guiada pelo princípio da **Máxima Probabilidade A Posteriori (Maximum A Posteriori - MAP)**. O objetivo é escolher a classe ou hipótese ($C_k$) que maximiza a probabilidade posterior $P(C_k | \text{Evidência})$.
+
+Aplicando o Teorema de Bayes, observamos que o denominador ($P(\text{Evidência})$ ou $P(E_1, \dots, E_n)$), que representa a probabilidade dos efeitos observados, é o mesmo para todas as classes consideradas. Portanto, para maximizar a probabilidade posterior, basta maximizar o numerador:
+
+$$\text{Decisão}_{MAP} = \arg \max_{C_k} \left[ \underbrace{P(C_k)}_{\text{Prior}} \cdot \underbrace{\prod_{i=1}^{n} P(E_i | C_k)}_{\text{Verossimilhanças}} \right]$$
+
+O agente de IA apenas calcula este numerador (o *score* de probabilidade) para cada classe e **escolhe aquela que tem o maior valor**, garantindo assim a classificação mais provável para a nova instância de dados.
+
+#### Demonstração
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952652, user_tz: 180, elapsed: 7, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+if posterior_spam_demo > posterior_normal_demo:
+    predicted_class = "Spam"
+else:
+    predicted_class = "Normal"
+
+print(f"Classe prevista: {predicted_class}")
+```
+
+<details>
+  <summary>Uso de Log-Probabilidades e somatória em Naive Bayes</summary>
+
+Na implementação prática de classificadores probabilísticos, é comum substituir o produto das verossimilhanças pela **soma de seus logaritmos**. Essa estratégia é adotada primordialmente para evitar o **underflow numérico**, um fenômeno que ocorre quando a multiplicação sucessiva de muitas probabilidades pequenas (valores entre 0 e 1) resulta em um número tão próximo de zero que o hardware do computador perde a precisão decimal ou anula o valor completamente. Como a função logarítmica é monotônica — ou seja, ela preserva a ordem de grandeza original —, o valor que maximiza a soma dos logaritmos será exatamente o mesmo que maximizaria o produto original. Assim, o agente de IA consegue realizar a decisão de Máxima Probabilidade A Posteriori (MAP) de forma estável e matematicamente correta, mesmo lidando com mensagens extensas ou grandes volumes de evidências.
+
+</details>
+
+## Implementação
+
+Agora que introduzimos a teoria, podemos fazer uma implementação básica do modelo Naive Bayes para classificação de e-mails. Nosso objetivo é construir o modelo combinando as **Probabilidades A Priori** (a proporção de Spam e Normal no conjunto de dados) com as **Probabilidades de Verossimilhança** (a frequência de cada palavra em cada classe).
+
+Para o tratamento inicial das mensagens, utilizamos a biblioteca **NLTK (Natural Language Toolkit)**. Este pré-processamento é essencial e inclui a **tokenização** das mensagens (quebra em palavras) através do `word_tokenize`, garantindo o tratamento eficiente de pontuações, e a remoção de **stopwords** (artigos, preposições e outros ruídos contextuais) para isolar os termos mais relevantes.
+
+Após essa higienização dos dados, construímos a **Probabilidade A Priori** a partir da contagem total de documentos em cada classe ('Normal' e 'Spam') dividida pelo número total de documentos no conjunto de treinamento.
+
+Finalmente, para garantir que nosso classificador seja robusto, introduziremos uma nova mensagem que contém uma palavra inédita no vocabulário de treino. Isso nos obrigará a aplicar a técnica de **Suavização de Laplace** durante o cálculo da verossimilhança, resolvendo o problema das probabilidades zero. O código calculará o *score* de classificação para ambas as classes, e a classe com o maior valor será a previsão final para a nova mensagem.
+
+Neste laboratório, vamos construir um classificador Naive Bayes para distinguir mensagens `Normal` e `Spam`. Para isso, seguiremos algumas etapas fundementais:
+
+1. **Carregamento do conjunto de dados:**
+   * Leitura do arquivo `email_dataset.csv`, contendo mensagens previamente classificadas como `Normal` ou `Spam`.
+   * Inspeção inicial da base para verificar o número de mensagens, as colunas disponíveis e exemplos de cada classe.
+
+2. **Pré-processamento de texto:**
+   * **Limpeza textual:** conversão das mensagens para letras minúsculas e remoção de números, pontuação e caracteres especiais.
+   * **Tokenização:** uso do `nltk.word_tokenize` para quebrar cada mensagem em palavras individuais, chamadas tokens.
+   * **Remoção de stopwords:** remoção de palavras muito frequentes em português, como artigos, preposições e pronomes, que geralmente carregam pouca informação discriminativa para a classificação.
+
+3. **Análise exploratória dos tokens:**
+   * Separação dos tokens por classe (`Normal` e `Spam`).
+   * Contagem da frequência das palavras em cada classe.
+   * Visualização das palavras mais frequentes por meio de gráficos, WordClouds, razão log2 entre classes, diagrama de Venn e heatmap de coocorrência.
+   * Discussão sobre quais palavras parecem mais associadas a cada classe e sobre as limitações da hipótese de independência do Naive Bayes.
+
+4.  **Cálculo da Probabilidade A Priori ($P(\text{Classe})$):**
+    * Cálculo da proporção de documentos 'Spam' ($7/17$) e 'Normal' ($10/17$) no total de documentos de treinamento.
+
+5.  **Cálculo das Probabilidades de Verossimilhança ($P(\text{Palavra}|\text{Classe})$):**
+    * Cálculo da probabilidade de ocorrência de cada palavra dado que a mensagem pertence àquela classe (razão entre Contagem da Palavra e Total de Tokens na Classe).
+
+6.  **Visualização (Opcional, mas feito para Análise):**
+    * Geração de gráficos (histogramas com Seaborn) para visualizar a diferença na distribuição de frequência das palavras entre as classes.
+
+7.  **Classificação da Nova Mensagem:**
+    * Definição de uma mensagem de teste contendo palavras vistas e uma palavra inédita.
+    * **Suavização de Laplace:** Implementação da técnica para evitar que palavras não vistas zerassem o score de probabilidade.
+    * **Aplicação do Teorema de Naive Bayes:** Cálculo do *Score* (P(Classe) $\times \prod P(\text{Palavra}|\text{Classe})$) para ambas as classes.
+    * **Decisão Final:** Classificação da mensagem como a classe que gerou o maior *score*.
+
+### Funções de auxílio
+
+#### Tratamento de texto em português e pré-processamento
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952666, user_tz: 180, elapsed: 12, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Preparação dos Pacotes NLTK
+# Certifica-se de que os pacotes necessários (punkt e stopwords) estão baixados
+try:
+    stopwords.words('portuguese')
+except LookupError:
+    print("Baixando pacotes 'punkt' e 'stopwords' do NLTK...")
+    nltk.download('punkt')
+    nltk.download('stopwords')
+
+# Baixando 'punkt_tab' para o idioma português
+try:
+    word_tokenize("teste", language='portuguese')
+except LookupError:
+    print("Baixando pacote 'punkt_tab' para português do NLTK...")
+    nltk.download('punkt_tab')
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952689, user_tz: 180, elapsed: 21, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def preprocessing_text(text):
+    """Realiza uma limpeza simples em uma mensagem de texto."""
+
+    # Garante que o valor seja tratado como texto
+    text = str(text)
+
+    # Converter para letras minúsculas
+    text = text.lower()
+
+    # Remover pontuação e caracteres especiais
+    # Mantém letras, espaços e caracteres acentuados comuns em português
+    text = re.sub(r"[^a-záàâãéèêíóôõúç\s]", "", text)
+
+    # Remover espaços extras
+    text = re.sub(r"\s+", " ", text).strip()
+
+    return text
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952733, user_tz: 180, elapsed: 42, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Define o conjunto de stop words em Português para variáveis
+STOP_WORDS_PT = set(stopwords.words('portuguese'))
+
+def custom_tokenize(text):
+    """ Tokeniza uma mensagem de texto e remove stop words em português. """
+    # Tokenização utilizando word_tokenize (mais robusto)
+    tokens = word_tokenize(text, language='portuguese')
+
+    # Remoção de Stop Words e Pontuação (usamos regex simples para pontuação)
+    filtered_tokens = []
+
+    for token in tokens:
+        # Verifica se o token não é uma stop word E se não é apenas pontuação
+        if token not in STOP_WORDS_PT and re.match(r'\w', token):
+            filtered_tokens.append(token)
+
+    return filtered_tokens
+```
+
+#### Funções de data visualization
+
+Agora, vamos definir funções para a Análise Exploratória de Dados (EDA). O objetivo é transformar listas de tokens em contagens visuais.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952807, user_tz: 180, elapsed: 59, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def flatten_tokens(token_lists):
+    """
+    Recebe uma lista de listas de tokens e retorna uma única lista com todos os tokens.
+    """
+
+    return [token for tokens in token_lists for token in tokens]
+
+def get_tokens_by_class(data, class_label, class_column="class", tokens_column="tokens"):
+    """
+    Filtra o DataFrame por classe e retorna a lista de tokens das mensagens daquela classe.
+    """
+
+    return data[data[class_column] == class_label][tokens_column].tolist()
+
+def count_tokens(token_lists):
+    """Conta a frequência dos tokens em uma lista de mensagens tokenizadas."""
+
+    all_tokens = flatten_tokens(token_lists)
+
+    return Counter(all_tokens)
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952811, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def plot_top_words(freq_counter, class_label, top_n=10, ax=None):
+    """Plota as palavras mais frequentes de uma classe."""
+
+    top_words = freq_counter.most_common(top_n)
+
+    words = [word for word, count in top_words]
+    counts = [count for word, count in top_words]
+
+    # Cria uma figura apenas se nenhum eixo for fornecido
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 5))
+
+    ax.bar(words, counts)
+
+    ax.set_title(f"Top {top_n} palavras — Classe {class_label}")
+    ax.set_xlabel("Palavras")
+    ax.set_ylabel("Frequência")
+    ax.tick_params(axis="x", rotation=45)
+    ax.grid(axis="y", alpha=0.3)
+
+    for label in ax.get_xticklabels():
+        label.set_ha("right")
+
+    return ax
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952814, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def build_ratio_table(freq_normal, freq_spam, smoothing=0.5):
+    """
+    Cria uma tabela com a razão log2 entre frequência em Spam e frequência em Normal.
+    """
+
+    vocabulary = sorted(set(freq_normal.keys()) | set(freq_spam.keys()))
+
+    rows = []
+
+    for word in vocabulary:
+        normal_count = freq_normal.get(word, 0)
+        spam_count = freq_spam.get(word, 0)
+
+        ratio = (spam_count + smoothing) / (normal_count + smoothing)
+        log2_ratio = np.log2(ratio)
+
+        if log2_ratio > 0:
+            dominant_class = "Spam"
+        elif log2_ratio < 0:
+            dominant_class = "Normal"
+        else:
+            dominant_class = "Equal"
+
+        rows.append({
+            "Word": word,
+            "Normal_Frequency": normal_count,
+            "Spam_Frequency": spam_count,
+            "Spam_Normal_Ratio": ratio,
+            "Log2_Spam_Normal_Ratio": log2_ratio,
+            "Dominant_Class": dominant_class
+        })
+
+    ratio_table = pd.DataFrame(rows)
+
+    ratio_table = ratio_table.sort_values(
+        by="Log2_Spam_Normal_Ratio",
+        key=lambda column: column.abs(),
+        ascending=False
+    ).reset_index(drop=True)
+
+    return ratio_table
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952834, user_tz: 180, elapsed: 18, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def plot_ratio_table(ratio_table, top_n=15, ax=None):
+    """Plota a razão log2 Spam/Normal centralizada em zero."""
+
+    top_words = ratio_table.head(top_n).copy()
+
+    # Ordena para melhorar a leitura no gráfico
+    top_words = top_words.sort_values("Log2_Spam_Normal_Ratio")
+
+    # Cria uma figura apenas se nenhum eixo for fornecido
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+    # Define cores pela direção da associação
+    bar_colors = top_words["Dominant_Class"].map({
+        "Spam": "tomato",
+        "Normal": "steelblue",
+        "Equal": "gray"
+    })
+
+    ax.barh(
+        top_words["Word"],
+        top_words["Log2_Spam_Normal_Ratio"],
+        color=bar_colors
+    )
+
+    # Linha central em zero
+    ax.axvline(x=0, linestyle="--", linewidth=1)
+
+    ax.set_title(f"Razão log2 Spam / Normal — Top {top_n}")
+    ax.set_xlabel("log2(Spam / Normal)")
+    ax.set_ylabel("Palavras")
+    ax.grid(axis="x", alpha=0.3)
+
+    # Centraliza visualmente o eixo X em zero
+    max_abs_value = top_words["Log2_Spam_Normal_Ratio"].abs().max()
+    ax.set_xlim(-max_abs_value * 1.15, max_abs_value * 1.15)
+
+    return ax
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952853, user_tz: 180, elapsed: 17, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def plot_word_cooccurrence_heatmap(token_lists, top_n=12):
+    """
+    Plota um heatmap simples de coocorrência entre palavras.
+    """
+
+    all_tokens = [token for tokens in token_lists for token in tokens]
+    top_words = [word for word, count in Counter(all_tokens).most_common(top_n)]
+
+    cooccurrence_matrix = pd.DataFrame(
+        0,
+        index=top_words,
+        columns=top_words
+    )
+
+    for tokens in token_lists:
+        unique_tokens = set(tokens)
+
+        for word_i in top_words:
+            for word_j in top_words:
+                if word_i in unique_tokens and word_j in unique_tokens:
+                    cooccurrence_matrix.loc[word_i, word_j] += 1
+
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cooccurrence_matrix, aspect="auto")
+    plt.colorbar(label="Coocorrência")
+    plt.xticks(range(len(top_words)), top_words, rotation=45, ha="right")
+    plt.yticks(range(len(top_words)), top_words)
+    plt.title("Heatmap de coocorrência entre palavras")
+    plt.tight_layout()
+    plt.show()
+
+    return cooccurrence_matrix
+```
+
+#### Implementação do Naive Bayes
+
+Aqui implementamos o 'coração' do modelo. Diferente de uma contagem simples, usaremos a Suavização de Laplace. Ela adiciona um parâmetro α (geralmente 1) ao numerador e ao tamanho do vocabulário ao denominador. Isso garante que palavras nunca vistas no treinamento não recebam probabilidade zero, tornando o agente robusto a novas evidências
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952856, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def laplace_likelihoods(freq_normal, freq_spam, alpha=1):
+    """
+    Calcula as verossimilhanças P(palavra | classe) usando suavização de Laplace.
+    """
+
+    # Cria o vocabulário completo observado no treinamento
+    vocabulary = set(freq_normal.keys()) | set(freq_spam.keys())
+
+    # Calcula o tamanho do vocabulário
+    vocabulary_size = len(vocabulary)
+
+    # Conta o total de tokens em cada classe
+    total_tokens_normal = sum(freq_normal.values())
+    total_tokens_spam = sum(freq_spam.values())
+
+    # Calcula P(palavra | Normal) com suavização de Laplace
+    likelihood_normal = {
+        word: (freq_normal.get(word, 0) + alpha) / (
+            total_tokens_normal + alpha * vocabulary_size
+        )
+        for word in vocabulary
+    }
+
+    # Calcula P(palavra | Spam) com suavização de Laplace
+    likelihood_spam = {
+        word: (freq_spam.get(word, 0) + alpha) / (
+            total_tokens_spam + alpha * vocabulary_size
+        )
+        for word in vocabulary
+    }
+
+    return vocabulary, likelihood_normal, likelihood_spam
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952885, user_tz: 180, elapsed: 27, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def make_map_decision(log_prob_normal, log_prob_spam):
+    """
+    Realiza a decisão MAP (Maximum A Posteriori) comparando as log-probabilidades
+    de Normal e Spam e retornando a classe predita.
+    """
+    # Define a classe prevista
+    if log_prob_spam > log_prob_normal:
+        predicted_class = "Spam"
+    elif log_prob_normal > log_prob_spam:
+        predicted_class = "Normal"
+    else:
+        predicted_class = "Ambíguo"
+    return predicted_class
+```
+
+Esta função integra todo o processo de inferência. Ela limpa o e-mail novo, recupera as verossimilhanças calculadas e aplica a regra de Decisão MAP. Em vez de multiplicar probabilidades puras, somamos seus logaritmos para evitar perda de precisão numérica
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952888, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def run_naive_bayes_classification(
+    email,
+    vocabulary,
+    likelihood_normal,
+    likelihood_spam,
+    p_normal,
+    p_spam
+):
+    """
+    Classifica uma nova mensagem usando Naive Bayes.
+    """
+
+    # Limpeza da mensagem
+    clean_email = preprocessing_text(email)
+
+    # Tokenização da mensagem
+    email_tokens = custom_tokenize(clean_email)
+
+    # Inicia com o log das probabilidades a priori
+    log_prob_normal = np.log(p_normal)
+    log_prob_spam = np.log(p_spam)
+
+    # Lista para armazenar informações de cada palavra
+    word_scores = []
+
+    for word in email_tokens:
+
+        if word in vocabulary:
+
+            word_log_prob_normal = np.log(likelihood_normal[word])
+            word_log_prob_spam = np.log(likelihood_spam[word])
+
+            log_prob_normal += word_log_prob_normal
+            log_prob_spam += word_log_prob_spam
+
+            word_scores.append({
+                "Word": word,
+                "Known_Word": True,
+                "P_Word_Given_Normal": likelihood_normal[word],
+                "P_Word_Given_Spam": likelihood_spam[word],
+                "Log_P_Word_Given_Normal": word_log_prob_normal,
+                "Log_P_Word_Given_Spam": word_log_prob_spam
+            })
+
+        else:
+            word_scores.append({
+                "Word": word,
+                "Known_Word": False,
+                "P_Word_Given_Normal": None,
+                "P_Word_Given_Spam": None,
+                "Log_P_Word_Given_Normal": None,
+                "Log_P_Given_Spam": None
+            })
+
+    # Define a classe prevista usando a função MAP
+    predicted_class = make_map_decision(log_prob_normal, log_prob_spam)
+
+    # Cria tabela de contribuição das palavras
+    result_table = pd.DataFrame(word_scores)
+
+    # Cria resumo da classificação
+    result_summary = {
+        "Original_Email": email,
+        "Clean_Email": clean_email,
+        "Tokens": email_tokens,
+        "Log_Probability_Normal": log_prob_normal,
+        "Log_Probability_Spam": log_prob_spam,
+        "Predicted_Class": predicted_class
+    }
+
+    return predicted_class, result_table, result_summary
+```
+
+### Carregando dados de treinamento
+
+Iniciaremos o processo de Aprendizado Supervisionado carregando o conjunto de dados email_dataset.csv. Cada linha contém uma mensagem e seu rótulo (label) correspondente, que servirá de base para o agente quantificar suas crenças iniciais.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952891, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Definir o caminho do arquivo CSV
+file_path = "/content/email_dataset.csv"
+
+# Usar a função pd.read_csv() para carregar o arquivo CSV em um DataFrame
+# Um DataFrame é uma estrutura de dados tabular (como uma planilha Excel)
+# que facilita a manipulação e análise de dados
+df_training = pd.read_csv(file_path)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 442}
+#| executionInfo: {status: ok, timestamp: 1779751952926, user_tz: 180, elapsed: 17, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Agora vamos verificar o conteudo
+print(f"✓ Arquivo carregado! Dimensões: {df_training.shape}")
+df_training
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952954, user_tz: 180, elapsed: 26, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Filtrar mensagens da classe "Normal"
+mensagens_normais = df_training[df_training['class'] == 'Normal']['email'].head(3)
+print("Exemplos de mensagens NORMAL:\n")
+for i, msg in enumerate(mensagens_normais, 1):
+    print(f"  {i}. {msg}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751952955, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Filtrar mensagens da classe "Spam"
+mensagens_spam = df_training[df_training['class'] == 'Spam']['email'].head(3)
+print("Exemplos de mensagens SPAM:\n")
+for i, msg in enumerate(mensagens_spam, 1):
+    print(f"  {i}. {msg}")
+```
+
+### Pré-processamento das mensagens
+
+#### 1. Limpeza e harmonização do dado
+
+Os dados brutos de texto contêm muito "ruído" que não é útil para o classificador Naive Bayes. Considere estas duas mensagens:
+
+**Mensagem 1 (Bruta):**
+```
+"Professor, qual foi minha nota na última prova???"
+```
+
+**Mensagem 2 (Bruta):**
+```
+"PROFESSOR, QUAL FOI MINHA NOTA NA ÚLTIMA PROVA???"
+```
+
+Para um computador, essas são duas mensagens **completamente diferentes** (maiúsculas vs minúsculas, pontuação diferente). Mas para um ser humano, elas significam exatamente a mesma coisa!
+
+O pré-processamento resolve esse problema, transformando ambas em:
+```
+"professor qual foi minha nota na última prova"
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751952976, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+df_training["cleaned"] = df_training["email"].apply(preprocessing_text)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 423}
+#| executionInfo: {status: ok, timestamp: 1779751953048, user_tz: 180, elapsed: 74, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+df_training
+```
+
+#### 2. Tokenização e Remoção de Stop Words
+
+Quebra o texto em palavras individuais (tokens).
+
+**Antes:**
+```
+"Qual foi minha nota na última prova"
+```
+
+**Depois:**
+```
+["Qual", "foi", "minha", "nota", "na", "última", "prova"]
+```
+
+**Remoção de Pontuação**: Remove símbolos como `.`, `,`, `!`, `?`, etc.
+
+**Antes:**
+```
+"Professor, qual foi minha nota na última prova???"
+```
+
+**Depois:**
+```
+"Professor qual foi minha nota na última prova"
+```
+
+**Remoção de Stop Words**: Por exemplo, remove palavras muito comuns que não agregam significado (artigos, preposições, etc.).
+
+**Palavras comuns em português:**
+```
+"o", "a", "de", "para", "com", "em", "na", "por", "que", "foi", "é", etc.
+```
+
+**Antes:**
+```
+["Professor", "qual", "foi", "minha", "nota", "na", "última", "prova"]
+```
+
+**Depois (removendo stop words):**
+```
+["Professor", "nota", "última", "prova"]
+```
+
+As palavras "qual", "foi", "minha", "na" foram removidas porque aparecem em quase todas as mensagens e não ajudam a distinguir entre "Normal" e "Spam".
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953051, user_tz: 180, elapsed: 24, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+df_training["tokens"] = df_training["cleaned"].apply(custom_tokenize)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 423}
+#| executionInfo: {status: ok, timestamp: 1779751953071, user_tz: 180, elapsed: 22, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+df_training
+```
+
+### Análise Exploratória de Dados
+
+Antes de criar o modelo matemático, vamos quantificar nosso vocabulário. Contaremos o total de mensagens e tokens para entender a densidade de cada classe no nosso 'mundo' de dados.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953092, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+tokens_normal = get_tokens_by_class(df_training, "Normal", class_column="class")
+tokens_spam = get_tokens_by_class(df_training, "Spam", class_column="class")
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953129, user_tz: 180, elapsed: 22, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+#| colab: {base_uri: https://localhost:8080/}
+# Demonstrar em sala de aula
+tokens_spam
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953148, user_tz: 180, elapsed: 17, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+freq_normal = count_tokens(tokens_normal)
+freq_spam = count_tokens(tokens_spam)
+```
+
+```{python}
+freq_normal
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953184, user_tz: 180, elapsed: 34, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+#| colab: {base_uri: https://localhost:8080/}
+# Demonstrar em sala de aula
+freq_spam
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751953195, user_tz: 180, elapsed: 10, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+print("Resumo dos tokens")
+print("-" * 40)
+print(f"Total de mensagens Normal: {len(tokens_normal)}")
+print(f"Total de mensagens Spam:   {len(tokens_spam)}")
+print(f"Total de tokens Normal:    {sum(freq_normal.values())}")
+print(f"Total de tokens Spam:      {sum(freq_spam.values())}")
+print(f"Vocabulário Normal:        {len(freq_normal)}")
+print(f"Vocabulário Spam:          {len(freq_spam)}")
+```
+
+#### Visualizando WordCloud
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751953232, user_tz: 180, elapsed: 35, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Construindo sentenca com tokens
+texto_normal = " ".join([" ".join(tokens) for tokens in tokens_normal])
+texto_spam = " ".join([" ".join(tokens) for tokens in tokens_spam])
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 438}
+#| executionInfo: {status: ok, timestamp: 1779751956039, user_tz: 180, elapsed: 2805, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Criar figura com 2 subplots
+fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+# WordCloud Normal
+wc_normal = WordCloud(width=800, height=400, background_color='white',
+                      colormap='Blues').generate(texto_normal)
+axes[0].imshow(wc_normal)
+axes[0].set_title('WordCloud - Mensagens NORMAL', fontsize=14)
+axes[0].axis('off')
+
+# WordCloud Spam
+wc_spam = WordCloud(width=800, height=400, background_color='white',
+                    colormap='Reds').generate(texto_spam)
+axes[1].imshow(wc_spam)
+axes[1].set_title('WordCloud - Mensagens SPAM', fontsize=14)
+axes[1].axis('off')
+
+plt.tight_layout()
+plt.show()
+```
+
+#### Painel com frequência e razão
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751956041, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Contar frequências
+freq_normal = Counter([token for tokens in tokens_normal for token in tokens])
+freq_spam = Counter([token for tokens in tokens_spam for token in tokens])
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751956042, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Tabela com razao dos tokens entre classes
+ratio_table = build_ratio_table(
+    freq_normal=freq_normal,
+    freq_spam=freq_spam,
+    smoothing=0.5
+)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 916}
+#| executionInfo: {status: ok, timestamp: 1779751956329, user_tz: 180, elapsed: 287, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+fig = plt.figure(figsize=(16, 9))
+
+grid = fig.add_gridspec(
+    nrows=2,
+    ncols=2,
+    width_ratios=[1.2, 1],
+    height_ratios=[1, 1]
+)
+
+ax_a = fig.add_subplot(grid[:, 0])
+ax_b = fig.add_subplot(grid[0, 1])
+ax_c = fig.add_subplot(grid[1, 1])
+
+plot_ratio_table(
+    ratio_table=ratio_table,
+    top_n=15,
+    ax=ax_a
+)
+
+plot_top_words(
+    freq_counter=freq_normal,
+    class_label="Normal",
+    top_n=10,
+    ax=ax_b
+)
+
+plot_top_words(
+    freq_counter=freq_spam,
+    class_label="Spam",
+    top_n=10,
+    ax=ax_c
+)
+
+ax_a.text(-0.08, 1.03, "A", transform=ax_a.transAxes, fontsize=16, fontweight="bold")
+ax_b.text(-0.10, 1.08, "B", transform=ax_b.transAxes, fontsize=16, fontweight="bold")
+ax_c.text(-0.10, 1.08, "C", transform=ax_c.transAxes, fontsize=16, fontweight="bold")
+
+fig.suptitle(
+    "Análise exploratória das palavras por classe",
+    fontsize=16,
+    fontweight="bold",
+    y=1.02
+)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+Os gráficos à direita mostram a frequência bruta: quais palavras mais aparecem. No entanto, o gráfico à esquerda (Log2 Ratio) é o mais informativo: ele mostra a especificidade. Palavras com valores positivos altos (como 'clique') são fortes indicadoras de Spam, enquanto valores negativos baixos (como 'reunião') são assinaturas de mensagens Normais.
+
+#### Diagrama de Venn dos tokens por classe
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 439}
+#| executionInfo: {status: ok, timestamp: 1779751956384, user_tz: 180, elapsed: 53, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Converter as listas de tokens em conjuntos para o Venn diagram
+set_normal = set(flatten_tokens(tokens_normal))
+set_spam = set(flatten_tokens(tokens_spam))
+
+# Criar o diagrama de Venn
+plt.figure(figsize=(8, 8))
+venn2(
+    [set_normal, set_spam],
+    set_labels=('Tokens Normal', 'Tokens Spam')
+)
+plt.title('Diagrama de Venn - Tokens por Classe')
+plt.show()
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956396, user_tz: 180, elapsed: 10, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+set_normal.intersection(set_spam)
+```
+
+#### Heatmap simplificado de coocorrência de palavras
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 607}
+#| executionInfo: {status: ok, timestamp: 1779751956814, user_tz: 180, elapsed: 417, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+all_token_lists = tokens_normal + tokens_spam
+
+cooccurrence_matrix = plot_word_cooccurrence_heatmap(
+    all_token_lists,
+    top_n=12
+)
+```
+
+O Heatmap revela a coocorrência de termos, como 'ganhe' aparecendo frequentemente com 'oferta'. Aqui reside a principal limitação do Naive Bayes: o modelo ignora essas conexões, tratando cada palavra como se ocorresse de forma independente. No mundo real, essa suposição é frequentemente violada, mas o modelo ainda funciona bem para classificação e ranking.
+
+### Trainamento a partir do Teorema de Bayes
+
+#### Cálculo da Probabilidades a Priori
+
+A EDA nos deu insights visuais e estatísticos sobre os dados. Agora precisamos quantificar as probabilidades que o algoritmo Naive Bayes usará para fazer predições. As probabilidades a priori são a base matemática do classificador.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956832, user_tz: 180, elapsed: 23, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Contar mensagens por classe
+total_normal = len(tokens_normal)
+total_spam = len(tokens_spam)
+
+# Contar palavras por classe
+total_messages = total_normal + total_spam
+
+# Calcular probabilidades a priori
+P_normal = total_normal / total_messages
+P_spam = total_spam / total_messages
+
+print(f"P(Normal) = {P_normal:.4f} ({P_normal*100:.2f}%)")
+print(f"P(Spam)   = {P_spam:.4f} ({P_spam*100:.2f}%)")
+```
+
+#### Construindo o vocabulário dos tokens do treinamento
+
+Definimos aqui o espaço de estados das palavras. Criar um vocabulário único de todas as palavras vistas no treino é fundamental para podermos calcular a verossimilhança de cada termo em ambas as classes, mesmo naquelas onde a palavra não apareceu originalmente.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956852, user_tz: 180, elapsed: 20, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Une os tokens das duas classes
+all_training_tokens = flatten_tokens(tokens_normal) + flatten_tokens(tokens_spam)
+
+# Cria um conjunto com palavras únicas
+VOCABULARY = set(all_training_tokens)
+
+print(f"Tamanho do vocabulário: {len(VOCABULARY)} palavras")
+```
+
+#### Cálculo da Verossimilhança (Likelihood)
+
+A verossimilhança representa o modelo de sensor do agente (a direção causal: P(palavra∣classe)). Ela quantifica o quão provável é que um e-mail de spam gere a palavra 'grátis'. Esse conhecimento causal é mais robusto e estável do que diagnósticos diretos.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751956855, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Conta o total de tokens em cada classe
+total_tokens_normal = sum(freq_normal.values())
+total_tokens_spam = sum(freq_spam.values())
+
+# Calcula P(palavra | Normal)
+likelihood_normal = {
+    word: freq_normal.get(word, 0) / total_tokens_normal
+    for word in VOCABULARY
+}
+
+# Calcula P(palavra | Spam)
+likelihood_spam = {
+    word: freq_spam.get(word, 0) / total_tokens_spam
+    for word in VOCABULARY
+}
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 519}
+#| executionInfo: {status: ok, timestamp: 1779751956913, user_tz: 180, elapsed: 42, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Tabela de verossimilhanças
+likelihood_table = pd.DataFrame({
+    "P_Word_Given_Normal": likelihood_normal,
+    "P_Word_Given_Spam": likelihood_spam
+})
+
+# Transforma o índice em uma coluna chamada Word
+likelihood_table = likelihood_table.reset_index()
+likelihood_table = likelihood_table.rename(columns={"index": "Word"})
+
+# Ordena alfabeticamente pelas palavras
+likelihood_table = likelihood_table.sort_values("Word").reset_index(drop=True)
+
+likelihood_table.head(15)
+```
+
+## Exemplo prático
+
+### Cenário 01 - Classificando uma nova mensagem
+
+Aqui fazemos a classificação de uma nova mensagem que acabou de chegar na conta do professor. Neste cenário, usamos as verossimilhanças calculadas diretamente a partir das frequências observadas. No entanto, aqui iremos introduzir um problema: **E se, uma palavra nunca foi vista no conjunto de treinamento?**
+
+Lembre-se, como o Naive Bayes combina as evidências multiplicando probabilidades, uma única palavra com probabilidade zero pode anular toda a probabilidade final de uma classe.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751956916, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# A nova mensagem de teste
+NEW_EMAIL = "O projeto foi aprovado. Você receberá um bônus!"
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956922, user_tz: 180, elapsed: 5, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Palavras esperadas após tokenização e filtragem
+CLEAN_EMAIL = preprocessing_text(NEW_EMAIL)
+NEW_TOKENS = custom_tokenize(CLEAN_EMAIL)
+
+print(f"Tokens da Nova Mensagem: {NEW_TOKENS}")
+```
+
+A partir daqui, iremos realizar alguns passos:
+
+*   **Cálculo do Score de Classificação:**
+    *   **Inicialização com Log-Priors:** O cálculo começa definindo o score inicial como o logaritmo da **probabilidade a priori** de cada classe ($P(Normal)$ e $P(Spam)$).
+    *   **Acúmulo de Verossimilhanças (Likelihoods):** Para cada palavra da mensagem, o agente busca na "tabela de experiência" a probabilidade de aquela palavra ocorrer em cada classe ($P(palavra|classe)$).
+    *   **Soma de Logaritmos:** Finalmente, em vez de multiplicar as probabilidades puras (o que causaria erro numérico), o algoritmo **soma os logaritmos** das verossimilhanças ao score inicial da classe.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956928, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Inicia com o log das probabilidades a priori
+log_prob_normal = np.log(P_normal)
+log_prob_spam = np.log(P_spam)
+
+print(f"Log Probabilidade Normal: {log_prob_normal:.4f}")
+print(f"Log Probabilidade Spam:   {log_prob_spam:.4f}")
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751956962, user_tz: 180, elapsed: 33, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Lista para armazenar informações de cada palavra
+word_scores = []
+
+for word in NEW_TOKENS:
+    if word in VOCABULARY:
+
+        # Se a palavra é conhecida, adiciona seus log-likelihoods
+        word_log_prob_normal = np.log(likelihood_normal[word])
+        word_log_prob_spam = np.log(likelihood_spam[word])
+
+        log_prob_normal += word_log_prob_normal
+        log_prob_spam += word_log_prob_spam
+
+        word_scores.append({
+            "Word": word,
+            "Known_Word": True,
+            "P_Word_Given_Normal": likelihood_normal[word],
+            "P_Word_Given_Spam": likelihood_spam[word],
+            "Log_P_Word_Given_Normal": word_log_prob_normal,
+            "Log_P_Word_Given_Spam": word_log_prob_spam
+        })
+
+    else:
+        # Identificando a palavra nova (não prevista no Vocabulário)
+        print(f"Palavra Nova/Não Vista ('{word}') identificada.")
+
+        word_scores.append({
+            "Word": word,
+            "Known_Word": False,
+            "P_Word_Given_Normal": None,
+            "P_Word_Given_Spam": None,
+            "Log_P_Word_Given_Normal": None,
+            "Log_P_Word_Given_Spam": None
+        })
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 339}
+#| executionInfo: {status: ok, timestamp: 1779751956969, user_tz: 180, elapsed: 5, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Define a classe prevista
+if log_prob_spam > log_prob_normal:
+    predicted_class = "Spam"
+elif log_prob_normal > log_prob_spam:
+    predicted_class = "Normal"
+else:
+    predicted_class = "Ambíguo"
+
+# Cria tabela de contribuição das palavras
+word_contribution_table = pd.DataFrame(word_scores)
+
+# Exibição dos resultados
+
+print(f"Original Email: {NEW_EMAIL}")
+print(f"Cleaned Email: {CLEAN_EMAIL}")
+print(f"Tokens: {NEW_TOKENS}")
+print(f"Log Probabilidade Normal: {log_prob_normal:.4f}")
+print(f"Log Probabilidade Spam:   {log_prob_spam:.4f}")
+print(f"Classe Predita: {predicted_class}")
+
+print("\nContribuição das palavras:\n")
+display(word_contribution_table)
+```
+
+<details>
+  <summary>Por que o resultado foi Ambíguo?</summary>
+
+No **Cenário #01**, o resultado da classificação foi **Ambíguo** porque as pontuações (scores) finais para ambas as classes, "Normal" e "Spam", resultaram em **infinito negativo (-inf)**.
+
+Isso ocorreu devido aos seguintes fatores técnicos e matemáticos detalhados no laboratório:
+
+*   **Presença de Palavras Novas:** A mensagem de teste continha os tokens "aprovado" e "receberá", que não faziam parte do vocabulário de treinamento do modelo.
+*   **Problema da Probabilidade Zero:** Neste cenário inicial, o modelo utiliza verossimilhanças calculadas diretamente das frequências observadas no treino. Como essas palavras nunca foram vistas, a probabilidade atribuída a elas é **zero**.
+*   **Impacto no Cálculo Logarítmico:** O algoritmo utiliza a soma de logaritmos para evitar erros de precisão numérica. Matematicamente, o logaritmo de zero é **-infinito**.
+*   **Anulação dos Scores:** Como o Naive Bayes combina as evidências (neste caso, somando os logaritmos), a presença de um único "-inf" (probabilidade zero) em cada classe anula todo o cálculo anterior.
+
+Como resultado final, o agente de IA obteve um score de `-inf` tanto para a classe Normal quanto para a Spam, ficando impossibilitado de aplicar a regra de decisão **MAP** (Máxima Probabilidade A Posteriori) para escolher a classe vencedora. Esse problema de "paralisia" por ignorância é o que motiva a aplicação da **Suavização de Laplace** no cenário seguinte.
+
+</details>
+
+### Cenário 02 - Adicionando suavização de Laplace
+
+Encontramos um **problema crítico** no cenário anterior: uma palavra nova (não vista no treinamento) recebia probabilidade **zero**, o que anulava todo o cálculo de probabilidade. A **Suavização de Laplace** resolve esse problema adicionando um pequeno valor (geralmente 1) ao numerador e ao denominador:
+
+$$P(\text{Palavra} | \text{Classe})_{\text{suavizado}} = \frac{\text{Frequência} + \alpha}{\text{Total de palavras} + \alpha \times |\text{Vocabulário}|}$$
+
+**Efeito da Suavização:**
+- Palavras vistas recebem probabilidades ligeiramente menores (distribuição mais uniforme)
+- Palavras novas recebem uma pequena probabilidade não-zero
+- O modelo se torna mais robusto contra dados novos
+
+**Intuição:** Em vez de dizer "nunca vi essa palavra, então probabilidade = 0", dizemos "nunca vi essa palavra, mas é possível que apareça, então probabilidade = pequeno valor".
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751957017, user_tz: 180, elapsed: 47, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Por precaucao, vamos recalcular os valores a Priori
+log_prob_normal_smoothed = np.log(P_normal)
+log_prob_spam_smoothed = np.log(P_spam)
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751957017, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Quando `alpha = 1`, usamos a suavização de Laplace clássica
+alpha = 1
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1779751957022, user_tz: 180, elapsed: 8, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Calcula denominadores suavizados
+total_tokens_normal_smoothed = total_tokens_normal + alpha * len(VOCABULARY)
+total_tokens_spam_smoothed = total_tokens_spam + alpha * len(VOCABULARY)
+
+print(f"Denominador Normal Suavizado: {total_tokens_spam_smoothed}")
+print(f"Denominador Spam Suavizado:   {total_tokens_spam_smoothed}")
+```
+
+<details>
+  <summary>Por que recalcular com suavização?</summary>
+
+Quando aplicamos a Suavização de Laplace, **todas as probabilidades mudam**, não apenas as das palavras novas. Por isso precisamos recalcular:
+
+1. **Mudança no Denominador:** Adicionamos $\alpha \times |\text{Vocabulário}|$ ao denominador, aumentando-o
+2. **Mudança no Numerador:** Adicionamos $\alpha$ a cada palavra, mesmo as já vistas
+3. **Redistribuição de Probabilidade:** A massa de probabilidade é redistribuída entre todas as palavras
+
+**Exemplo Numérico:**
+- Sem suavização: $P(\text{clique} | \text{Spam}) = 15/368 ≈ 0.0408$
+- Com suavização (α=1): $P(\text{clique} | \text{Spam}) = (15+1)/(368+|Vocab|) ≈ 0.0387$
+
+Essa mudança é pequena para palavras frequentes, mas crítica para palavras raras ou novas. Recalcular garante que todas as probabilidades sejam consistentes e somem 1.
+
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1779751957023, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Calcula verossimilhanças suavizadas
+likelihood_normal_smoothed = {
+    word: (freq_normal.get(word, 0) + alpha) / total_tokens_normal_smoothed
+    for word in VOCABULARY
+}
+
+likelihood_spam_smoothed = {
+    word: (freq_spam.get(word, 0) + alpha) / total_tokens_spam_smoothed
+    for word in VOCABULARY
+}
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 376}
+#| executionInfo: {status: ok, timestamp: 1779751957097, user_tz: 180, elapsed: 73, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Lista para armazenar informações de cada palavra
+word_scores = []
+
+for word in NEW_TOKENS:
+    if word in VOCABULARY:
+        # Se a palavra é conhecida, adiciona seus log-likelihoods
+        word_log_prob_normal_smoothed = np.log(likelihood_normal_smoothed[word])
+        word_log_prob_spam_smoothed = np.log(likelihood_spam_smoothed[word])
+
+        log_prob_normal_smoothed += word_log_prob_normal_smoothed
+        log_prob_spam_smoothed += word_log_prob_spam_smoothed
+
+        word_scores.append({
+            "Word": word,
+            "Known_Word": True,
+            "P_Word_Given_Normal": likelihood_normal_smoothed[word],
+            "P_Word_Given_Spam": likelihood_spam_smoothed[word],
+            "Log_P_Word_Given_Normal": word_log_prob_normal_smoothed,
+            "Log_P_Word_Given_Spam": word_log_prob_spam_smoothed
+        })
+
+    else:
+        # Identificando a palavra nova (não prevista no Vocabulário)
+        print(f"Palavra Nova/Não Vista ('{word}') identificada.")
+
+        word_scores.append({
+            "Word": word,
+            "Known_Word": False,
+            "P_Word_Given_Normal": None,
+            "P_Word_Given_Spam": None,
+            "Log_P_Word_Given_Normal": None,
+            "Log_P_Word_Given_Spam": None
+        })
+
+# Define a classe prevista
+if log_prob_spam_smoothed > log_prob_normal_smoothed:
+    predicted_class = "Spam"
+elif log_prob_normal_smoothed > log_prob_spam_smoothed:
+    predicted_class = "Normal"
+else:
+    predicted_class = "Ambíguo"
+
+# Cria tabela de contribuição das palavras
+word_contribution_table = pd.DataFrame(word_scores)
+
+# Exibição dos resultados
+
+print(f"Original Email: {NEW_EMAIL}")
+print(f"Cleaned Email: {CLEAN_EMAIL}")
+print(f"Tokens: {NEW_TOKENS}")
+print(f"Log Probabilidade Normal: {log_prob_normal_smoothed:.4f}")
+print(f"Log Probabilidade Spam:   {log_prob_spam_smoothed:.4f}")
+print(f"Classe Predita: {predicted_class}")
+
+print("\nContribuição das palavras:\n")
+display(word_contribution_table)
+```
+
+### Cenário 03 - Executando Naive Bayes em um único passo
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 339}
+#| executionInfo: {status: ok, timestamp: 1779751957195, user_tz: 180, elapsed: 63, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+predicted_class_final, word_table_final, summary_final = run_naive_bayes_classification(
+    email=NEW_EMAIL,
+    vocabulary=VOCABULARY,
+    likelihood_normal=likelihood_normal_smoothed,
+    likelihood_spam=likelihood_spam_smoothed,
+    p_normal=P_normal,
+    p_spam=P_spam
+)
+
+print(f"Original Email: {summary_final['Original_Email']}")
+print(f"Cleaned Email: {summary_final['Clean_Email']}")
+print(f"Tokens: {summary_final['Tokens']}")
+print(f"Log Probability Normal (smoothed): {summary_final['Log_Probability_Normal']:.4f}")
+print(f"Log Probability Spam (smoothed):   {summary_final['Log_Probability_Spam']:.4f}")
+print(f"Predicted Class: {summary_final['Predicted_Class']}")
+
+print("\nWord Contribution Table:\n")
+display(word_table_final)
+```
+
+## Key Takeaways
+
+*  **A Essência 'Ingênua' do Naive Bayes:** O classificador **Naive Bayes** é eficiente por ser "ingênuo": ele assume a **Suposição de Independência Condicional** dos efeitos (ou seja, a ocorrência de uma palavra na mensagem não afeta a probabilidade de outra). Essa simplificação drástica no cálculo da probabilidade conjunta permite construir um classificador rápido e escalável.
+*  **Decisão MAP e Robustez (Suavização de Laplace):** A decisão final do classificador é tomada pelo princípio da **Máxima Probabilidade A Posteriori (MAP)**, escolhendo a classe que maximiza o *score* do numerador de Bayes. Além disso, a **Suavização de Laplace** é essencial para a robustez do modelo, impedindo que a probabilidade zero de palavras inéditas (não vistas no treinamento) anulem todo o cálculo de inferência.
+
+## Referências
+
+1. Russell, S. & Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.
+2. GeeksforGeeks. Naive Bayes Classifiers. Disponível em: https://www.geeksforgeeks.org/machine-learning/naive-bayes-classifiers/.

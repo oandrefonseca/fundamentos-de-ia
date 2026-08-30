@@ -1,0 +1,865 @@
+---
+title: Laboratório - Busca Adversarial e MCTS
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+---
+
+
+
+## Ajustando Ambiente
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968831, user_tz: 180, elapsed: 16876, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+%%capture
+!pip install chess
+!pip install cairosvg
+!pip install imageio
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968838, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+import random
+import sys
+import math
+import chess
+import chess.svg
+import imageio
+import cairosvg
+from PIL import Image
+from io import BytesIO
+import imageio.v2 as imageio
+```
+
+## Fundamentação Teórica
+
+As principais diferenças entre o **Minimax** e o **Monte Carlo Tree Search (MCTS)**, residem em sua complexidade exponencial $O(b^m)$ relacionada a busca realizada por Minimax, o que torna a exploração total da árvore de jogo impraticável para competições complexas. Historicamente, para mitigar o tempo computacional, o algoritmo depende de **funções de avaliação heurística** para estimar a utilidade de estados em uma profundidade limitada, em vez de buscar o resultado final real. No entanto, essa dependência introduz falhas críticas, como o **efeito horizonte**, onde o agente ignora danos inevitáveis simplesmente por conseguir adiá-los para além do seu limite de visão na busca. Além disso, o Minimax enfrenta dificuldades em **posições não quiescentes**, onde avaliações instáveis podem levar a decisões errôneas, e em jogos como o Go, onde é extremamente difícil definir uma heurística material precisa.
+
+Diferente dessa abordagem, o **Monte Carlo Tree Search (MCTS)** foi desenvolvido para superar essas limitações ao **dispensar funções de avaliação heurísticas**. O MCTS estima o valor de um estado através da **média de utilidade de múltiplas simulações (playouts)** completas do jogo, baseando-se nas regras exatas da partida em vez de estimativas falíveis. Isso o torna menos vulnerável a erros isolados de cálculo e muito mais eficaz em ambientes com **alto fator de ramificação**. Didaticamente, o funcionamento do MCTS pode ser entendido como um ciclo de quatro camadas ou etapas: na **Seleção**, **Expansão**, **Simulação** e **Retropropagação**. Veja a descrição de cada etapa abaixo:
+
+1.  **Seleção:** Partindo da raiz da árvore de busca, o algoritmo seleciona movimentos sucessivos baseando-se em uma **política de seleção** (como o UCT) até atingir um nó folha. Esta etapa equilibra a exploração de ramos novos e a exploração de ramos com bons resultados históricos.
+2.  **Expansão:** A árvore de busca é ampliada com a criação de um (ou mais) **novo nó filho** a partir do nó folha selecionado.
+3.  **Simulação:** É realizado um **playout** (simulação rápida) a partir do novo nó, onde os jogadores escolhem movimentos de acordo com uma **política de playout** (muitas vezes aleatória ou baseada em heurísticas simples) até que um estado terminal seja alcançado.
+4.  **Retropropagação:** O resultado final da simulação é utilizado para **atualizar as estatísticas** (número de vitórias e de visitas) de todos os nós no caminho percorrido da folha até a raiz.
+
+
+```
+function MONTE-CARLO-TREE-SEARCH(state) returns an action
+    tree ← NODE(state)
+    while IS-TIME-REMAINING() do
+        leaf ← SELECT(tree)
+        child ← EXPAND(leaf)
+        result ← SIMULATE(child)
+        BACK-PROPAGATE(result, child)
+    return the move in ACTIONS(state) whose node has highest number of playouts
+```
+
+Esse ciclo é repetido exaustivamente até que o tempo disponível se esgote, momento em que o algoritmo retorna o movimento que obteve o maior número de simulações. Por basear-se em resultados reais de simulações em vez de heurísticas manuais, o MCTS é particularmente eficaz em jogos de alta complexidade, como o **Go**.
+
+
+### Minimax vs. MCTS
+
+| Característica | Minimax + Alpha-Beta | MCTS |
+|---|---|---|
+| **Estratégia** | Busca exaustiva com poda | Amostragem estatística por simulação |
+| **Precisa de heurística?** | Sim (função EVAL obrigatória) | Não (aprende pelas regras do jogo) |
+| **Complexidade** | $O(b^{m/2})$ com poda Alpha-Beta | Cresce suavemente com mais iterações |
+| **Escalabilidade** | Ruim para fator de ramificação alto | Excelente (Go, xadrez, jogos complexos) |
+| **Anytime?** | Não (precisa terminar a busca) | Sim (pode parar a qualquer momento) |
+| **Exemplo de uso** | Xadrez clássico (Stockfish) | Go (AlphaGo), jogos de tabuleiro complexos |
+
+**Anytime Algorithm:** Um algoritmo que pode ser interrompido a qualquer momento e ainda retorna a melhor solução encontrada até ali. O MCTS é um exemplo clássico.
+
+### A intuição por trás do MCTS
+
+Durante a execução, o **Monte Carlo Tree Search (MCTS)** estima o valor de um estado através da **média de utilidade obtida em múltiplas simulações (*playouts*)**. Esse processo é fundamentado na capacidade do método de simular partidas completas seguindo estritamente as regras exatas do jogo até o fim, o que dispensa o uso de heurísticas falíveis. Nesse sentido, o algoritmo atua como um estrategista que decide onde investir seu tempo de processamento, equilibrando constantemente duas forças fundamentais em sua **política de seleção**:
+
+*   **Exploitation (Exploração do Conhecido):** Consiste em focar a busca em ramos que apresentaram a **maior taxa de vitória** ou média de utilidade em simulações anteriores. O objetivo é refinar a precisão do valor de movimentos que já demonstraram ser promissores.
+*   **Exploration (Exploração do Desconhecido):** Consiste em investigar estados que foram pouco visitados e que, por isso, possuem **alta incerteza em sua avaliação**. Essa força garante que o algoritmo não ignore um caminho potencialmente vitorioso apenas por ainda não ter coletado informações suficientes sobre ele.
+
+Ao equilibrar essas forças — frequentemente utilizando fórmulas como o **UCB1** —, o MCTS consegue **focar seletivamente os recursos computacionais** nas partes mais relevantes da árvore de busca. Essa característica permite que o agente tome decisões robustas mesmo em jogos com **alto fator de ramificação**, como o Go, onde métodos de busca exaustiva tradicional seriam computacionalmente inviáveis.
+
+### A fórmula do UCB1
+
+A fase de **Seleção** é o mecanismo que decide como navegar na árvore de busca, equilibrando o conhecimento acumulado com a necessidade de descobrir novos caminhos. Esse equilíbrio é guiado pela fórmula **UCB1 (Upper Confidence Bound 1)**, que integra o algoritmo **UCT** (Upper Confidence Bounds applied to Trees):
+
+$$UCB1(n) = \underbrace{\frac{U(n)}{N(n)}}_{\text{Exploitation}} + \underbrace{C \cdot \sqrt{\frac{\ln N(p)}{N(n)}}}_{\text{Exploration}}$$
+
+**Onde:**
+*   **$U(n)$:** Utilidade total (ou soma de vitórias) de todos os *playouts* que passaram pelo nó $n$.
+*   **$N(n)$:** Número de vezes que o nó $n$ foi visitado.
+*   **$N(p)$:** Número de vezes que o **nó pai** de $n$ foi visitado.
+*   **$C$:** Constante de exploração que ajusta o equilíbrio entre as duas forças. Teoricamente, utiliza-se $\sqrt{2}$, mas na prática ela é ajustada para otimizar a performance do agente.
+
+Imagine uma tomada de decisão com 3 movimentos possíveis após o nó pai ter sido visitado 10 vezes ($N_p = 10$). Adotando $C \approx 1,41$:
+
+| Movimento | $U$ (Vitórias) | $N$ (Visitas) | **Exploitation** ($U/N$) | **Exploration** ($1,41\sqrt{\frac{\ln 10}{N}}$) | **UCB1** |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **A** | 4 | 6 | 0,67 | $1,41 \times 0,62 \approx 0,87$ | **1,54** |
+| **B** | 2 | 3 | 0,67 | $1,41 \times 0,88 \approx 1,24$ | **1,91** |
+| **C** | 0 | 1 | 0,00 | $1,41 \times 1,52 \approx 2,14$ | **2,14** |
+
+O algoritmo selecionará o **Movimento C**. Embora ele não tenha vitórias registradas, sua **alta incerteza** (representada pelo termo de exploração elevado) indica que ainda não temos dados suficientes para descartá-lo. À medida que $N(n)$ aumenta, o termo de explotação diminui, e a decisão passa a ser dominada pela média de vitórias (utilidade). **Nota importante:** Existe um caso especial crítico, quando $N(n) = 0$, o termo de exploração tende ao infinito. Isso garante que o MCTS **sempre priorize visitar cada nó filho pelo menos uma vez** antes de começar a comparar as médias de utilidade entre eles.
+
+<details>
+    <summary>Por que a decisão final usa N (visitas) e não U/N (taxa de vitória)?</summary>
+
+Após o encerramento das iterações ou do tempo disponível, o MCTS retorna o movimento que obteve o **maior número de visitas** ($\max N$), em vez daquele com a maior utilidade média ($\max U/N$). Essa escolha fundamenta-se nos seguintes pontos:
+
+- **Redução da Incerteza:** Um nó com muitas visitas oferece uma estimativa de valor muito mais estável e confiável. Por exemplo, uma jogada com 65 vitórias em 100 simulações é estatisticamente superior a uma com 2 vitórias em 3, pois a segunda apresenta uma incerteza vasta devido à baixa amostragem.
+- **Convergência Natural:** A fórmula **UCB1** garante que, com o aumento do número de *playouts*, o processo de seleção favoreça cada vez mais os nós com melhores taxas de vitória; por isso, o nó mais visitado tende a ser, quase invariavelmente, aquele com o melhor desempenho real.
+- **Robustez contra Ruído:** O número total de visitas reflete onde o algoritmo "preferiu" investir seus recursos repetidamente, sendo um indicador de qualidade muito mais resistente a flutuações estatísticas momentâneas (artefatos) do que a média simples.
+
+</details>
+
+#### Demonstração
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778113088672, user_tz: 180, elapsed: 52, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+import math
+
+# Estatísticas sugeridas pelo Laboratório [2, 4]
+PLAYOUT = {'raiz': 10, 'A': 6, 'B': 3, 'C': 2}
+VICTORY = {'raiz': 0, 'A': 4, 'B': 2, 'C': 0}
+CHILDREN = {'raiz': ['A', 'B', 'C']}
+C_EXPLORATION = math.sqrt(2) # Constante teórica ≈ 1.41 [4, 5]
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968842, user_tz: 180, elapsed: 4, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def calcular_ucb1(node, parent):
+    n_node = PLAYOUT.get(node, 0)
+    if n_node == 0:
+        return float('inf') # Prioridade máxima para o desconhecido [8, 9]
+
+    n_parent = PLAYOUT[parent]
+    exploitation = VICTORY[node] / n_node
+    exploration = C_EXPLORATION * math.sqrt(math.log(n_parent) / n_node)
+
+    return exploitation + exploration
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 139}
+#| executionInfo: {status: ok, timestamp: 1778113097593, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def demonstrar_selecao(parent):
+    print(f"--- Analisando Seleção a partir da {parent} ---")
+    best_move = None
+    max_ucb = -float('inf')
+
+    for child in CHILDREN[parent]:
+        valor_ucb = calcular_ucb1(child, parent)
+        print(f"Nó {child}: UCB1 = {valor_ucb:.2f}")
+
+        if valor_ucb > max_ucb:
+            max_ucb = valor_ucb
+            best_move = child
+
+    print(f"\nResultado: O MCTS selecionou o Nó {best_move}!")
+    return best_move
+
+# Execução
+demonstrar_selecao('raiz')
+```
+
+<details>
+  <summary>O que acontece no mecanismo de seleção do MCTS se o número de vitórias de um nó com apenas uma visita for alterado de 0 para 1?</summary>
+  <p>
+    Ao alterar o valor de vitórias (U) de 0 para 1 em um nó com apenas uma visita (n=1), sua taxa de explotação salta de 0 para 1,0 (100%), o que, somado ao alto bônus de exploração de 2,14, eleva o valor final do UCB1 para 3,14. Essa mudança transforma o nó de uma opção selecionada apenas pela incerteza em um caminho estatisticamente promissor, fazendo com que o algoritmo concentre ainda mais esforços de busca nesse ramo para validar se o sucesso inicial se mantém sob maior investigação.
+  </p>
+</details>
+
+## Implementação
+
+Nesta seção, iremos implementar cada fase do MCTS. Todo o estado da árvore de busca é mantido em três dicionários globais:
+
+- `VICTORY[fen]` → Soma das vitórias obtidas a partir daquele estado ($Q$)
+- `PLAYOUT[fen]` → Número de vezes que aquele estado foi visitado ($N$)
+- `CHILDREN[fen]` → Lista de estados filhos (movimentos legais)
+
+### Funções Auxiliares
+
+Funções para inspecionar a árvore construída e gerar animações da partida.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968869, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def print_tree_stats(root_fen, top_n=5, playout_dict=None, victory_dict=None, children_dict=None):
+    """Exibe as estatísticas dos nós mais visitados a partir da raiz.
+
+    Argumentos opcionais para passar dicionários específicos de PLAYOUT, VICTORY e CHILDREN,
+    caso contrário, usa os globais.
+    """
+    # Use provided dictionaries or global ones
+    _CHILDREN = children_dict if children_dict is not None else CHILDREN
+    _PLAYOUT  = playout_dict  if playout_dict  is not None else PLAYOUT
+    _VICTORY  = victory_dict  if victory_dict  is not None else VICTORY
+
+    if root_fen not in _CHILDREN or not _CHILDREN[root_fen]:
+        print("Árvore vazia ou raiz não expandida.")
+        return
+
+    children = _CHILDREN[root_fen]
+    stats = []
+    for fen in children:
+        n = _PLAYOUT.get(fen, 0)
+        q = _VICTORY.get(fen, 0)
+        rate = q / n if n > 0 else 0
+        stats.append((n, q, rate, fen))
+
+    stats.sort(reverse=True)
+
+    print(f"\nTop {min(top_n, len(stats))} movimentos mais visitados:")
+    print(f"{'Rank':<5} {'N (visitas)':<14} {'Q (vitórias)':<15} {'Taxa de Vitória':<17}")
+    print("-" * 55)
+    for rank, (n, q, rate, _) in enumerate(stats[:top_n], 1):
+        print(f"{rank:<5} {n:<14} {q:<15.1f} {rate:<17.1%}")
+
+def generate_frame(fen, last_move=None):
+    """Gera uma imagem PNG de um FEN, destacando o último movimento."""
+    board     = chess.Board(fen)
+    board_svg = chess.svg.board(board, lastmove=last_move, size=400, coordinates=True)
+    png_bytes = cairosvg.svg2png(bytestring=board_svg.encode('utf-8'))
+    return Image.open(BytesIO(png_bytes)).convert("RGB")
+
+def create_game_gif(game_history, filename="mcts_game.gif", duration=1.0):
+    """Gera um GIF animado com a sequência de lances da partida."""
+    frames = []
+    # Inicia com o primeiro estado FEN sem um 'last_move' destacado
+    frames.append(generate_frame(game_history[0], None))
+
+    for i in range(1, len(game_history)):
+        current_fen = game_history[i]
+        previous_fen = game_history[i-1]
+
+        board_prev = chess.Board(previous_fen)
+        board_curr = chess.Board(current_fen)
+
+        # Encontra o movimento que levou de previous_fen para current_fen
+        move_made = None
+        for move in board_prev.legal_moves:
+            temp_board = board_prev.copy()
+            temp_board.push(move)
+            if temp_board.fen() == current_fen:
+                move_made = move
+                break
+
+        frames.append(generate_frame(current_fen, move_made))
+
+    imageio.mimsave(filename, frames, fps=1/duration, loop=0)
+    print(f"GIF gerado: {filename}")
+```
+
+### Representação e Regras do Jogo
+
+Utilizamos a biblioteca `python-chess` para representar o estado do jogo. Cada posição é codificada em **notação FEN** (Forsyth-Edwards Notation), o padrão da indústria para descrever posições no xadrez.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 428}
+#| executionInfo: {status: ok, timestamp: 1778112968939, user_tz: 180, elapsed: 68, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+FEN_EXAMPLE = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+board_example = chess.Board(FEN_EXAMPLE)
+
+print("Posição inicial do tabuleiro:")
+board_example
+```
+
+<details>
+  <summary>Explicação</summary>
+
+O **FEN** é um sistema de notação padrão que condensa todas as informações de uma partida de xadrez em uma única linha de texto, permitindo reiniciar o jogo exatamente de onde ele parou. Ele funciona como uma "fotografia" técnica do tabuleiro, descrevendo não apenas onde as peças estão, mas também as regras latentes (como roque e capturas especiais) que não seriam óbvias apenas olhando para uma imagem estática.
+
+**Principais Características**
+
+*   **Estrutura em Seis Campos:** Divide-se em seções específicas que cobrem posição, vez de jogar, roques, *en passant*, regra de 50 movimentos e o número total da rodada.
+*   **Sensibilidade a Maiúsculas:** Diferencia as cores das peças de forma simples (MAIÚSCULAS para brancas, minúsculas para pretas).
+*   **Compactação de Espaços:** Utiliza números para representar casas vazias consecutivas, tornando a string muito curta e fácil de processar por computadores.
+*   **Sentido de Leitura:** A descrição da posição sempre ocorre da oitava fileira (topo) para a primeira (base), da esquerda para a direita.
+
+O formato FEN é essencial para a interoperabilidade entre softwares de xadrez. Enquanto o PGN armazena o histórico completo da partida, o FEN foca no estado presente. Para visualizar ou criar seus próprios FENs de forma interativa, você pode utilizar ferramentas visuais que facilitam a compreensão da sintaxe.
+
+**Referência:** [FEN Tool (mutsuntsai.github.io)](https://mutsuntsai.github.io/fen-tool/)
+</details>
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968942, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def check_win(board_fen):
+    """Verifica se um estado FEN é terminal e qual é o resultado.
+
+    Retorna:
+        (is_terminal: bool, result: float)
+        result = 1.0 → Vitória das Brancas (MAX)
+        result = 0.5 → Empate
+        result = 0.0 → Vitória das Pretas (MIN)
+    """
+    board = chess.Board(board_fen)
+
+    if board.is_checkmate():
+        return True, 1.0
+    elif board.is_stalemate() or board.is_insufficient_material() or board.is_fifty_moves():
+        return True, 0.5
+    else:
+        return False, 0.0
+
+def get_possible_moves(board_fen):
+    """Retorna uma lista de strings FEN representando todos os estados futuros válidos."""
+    board = chess.Board(board_fen)
+    moves = list(board.legal_moves)
+
+    next_states_fen = []
+    for move in moves:
+        board.push(move)            # Faz o movimento
+        next_states_fen.append(board.fen())
+        board.pop()                 # Desfaz o movimento (essencial para não corromper o estado)
+
+    return next_states_fen
+```
+
+### Seleção
+
+O algoritmo desce a árvore a partir da raiz, usando a fórmula **UCB1** para escolher o nó mais promissor em cada nível. O loop continua até encontrar um **nó folha** (ainda não expandido) ou um **nó terminal** (fim de jogo). Pense na seleção como um gerente que, ao avaliar seus funcionários, sempre dá uma chance extra para quem foi pouco testado — mas também confia nos que provaram ser bons.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968945, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Parâmetros globais do MCTS
+C_EXPLORATION = math.sqrt(2)   # Constante de exploração da fórmula UCB1
+DEFAULT_ROLLOUT_LIMIT = 50     # Número máximo de movimentos por simulação (rollout)
+
+# Dicionários que representam a Árvore de Busca
+VICTORY  = {}   # VICTORY[estado]  = Soma das vitórias Q(n)
+PLAYOUT  = {}   # PLAYOUT[estado]  = Contagem de visitas N(n)
+CHILDREN = {}   # CHILDREN[estado] = Lista de estados filhos
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112968948, user_tz: 180, elapsed: 2, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def ucb1_select(parent_state_fen):
+    """Aplica UCB1 para escolher o melhor nó filho.
+
+    UCB1 = Q(n)/N(n)  +  C * sqrt(ln(N(pai)) / N(n))
+    Se N(n) == 0, retorna +inf para garantir que nós não visitados sejam priorizados.
+    """
+    best_value = -float('inf')
+    best_move = None
+
+    log_N_parent = math.log(PLAYOUT[parent_state_fen])
+
+    for child_state_fen in CHILDREN[parent_state_fen]:
+        playout_child = PLAYOUT.get(child_state_fen, 0)
+        victory_child = VICTORY.get(child_state_fen, 0)
+
+        if playout_child == 0:
+            ucb1_value = float('inf')   # Nós nunca visitados têm prioridade máxima
+        else:
+            exploitation_term = victory_child / playout_child
+            exploration_term  = C_EXPLORATION * math.sqrt(log_N_parent / playout_child)
+            ucb1_value = exploitation_term + exploration_term
+
+        if ucb1_value > best_value:
+            best_value = ucb1_value
+            best_move  = child_state_fen
+
+    return best_move
+```
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112969018, user_tz: 180, elapsed: 69, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def select_node(initial_state_fen):
+    """Percorre a árvore usando UCB1 até encontrar um nó folha.
+
+    Retorna:
+        path   → Lista de FENs do caminho percorrido (raiz até folha)
+        current → FEN do nó folha encontrado
+    """
+    path    = [initial_state_fen]
+    current = initial_state_fen
+
+    if current not in PLAYOUT:
+        PLAYOUT[current] = 0
+        VICTORY[current] = 0
+
+    while current in CHILDREN and CHILDREN[current]:
+        # Inicializa estatísticas dos filhos, se necessário
+        for child_state_fen in CHILDREN[current]:
+            if child_state_fen not in PLAYOUT:
+                PLAYOUT[child_state_fen] = 0
+                VICTORY[child_state_fen] = 0
+
+        best_move_fen = ucb1_select(current)
+        path.append(best_move_fen)
+        current = best_move_fen
+
+    return path, current
+```
+
+### Expansão
+
+Ao atingir um nó folha **não terminal**, o algoritmo gera todos os movimentos legais e os adiciona à árvore como filhos. A partir de agora, esses novos nós poderão ser selecionados em iterações futuras.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112969020, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def expand_node(state_fen):
+    """Adiciona todos os movimentos legais como filhos de um nó folha.
+
+    Inicializa N=0 e Q=0 para cada novo filho criado.
+    Não faz nada se o nó já foi expandido anteriormente.
+    """
+    if state_fen not in CHILDREN:
+        moves = get_possible_moves(state_fen)
+        CHILDREN[state_fen] = moves
+
+        for move_fen in moves:
+            if move_fen not in PLAYOUT:
+                PLAYOUT[move_fen] = 0
+                VICTORY[move_fen] = 0
+```
+
+### Simulação
+
+A partir do nó recém-expandido, o jogo é jogado até o fim usando **movimentos aleatórios**. O resultado final (vitória, derrota ou empate) estima a qualidade daquele nó sem precisar de nenhuma heurística.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112969023, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def simulate_game(state_fen, rollout_limit=DEFAULT_ROLLOUT_LIMIT, record_path=False):
+    """Joga o jogo aleatoriamente (rollout) até o estado terminal.
+
+    Retorna:
+        Se record_path=False: apenas o resultado (1.0, 0.5 ou 0.0)
+        Se record_path=True: (resultado, path) onde path é lista de FENs do rollout
+    """
+    board = chess.Board(state_fen)
+    path = [state_fen] if record_path else None
+    moves_played = 0
+
+    while not board.is_game_over() and moves_played < rollout_limit:
+        legal_moves = list(board.legal_moves)
+        if not legal_moves:
+            break
+        move = random.choice(legal_moves)
+        board.push(move)
+        moves_played += 1
+        if record_path:
+            path.append(board.fen())
+
+    # Penaliza rollouts que excederam o limite: indica jogo sem conclusão rápida
+    if moves_played >= rollout_limit:
+        result = 0.0
+    else:
+        outcome = board.outcome()
+        if outcome is None:
+            result = 0.5
+        elif outcome.winner == chess.WHITE:
+            result = 1.0
+        elif outcome.winner == chess.BLACK:
+            result = 0.0
+        else:
+            result = 0.5
+
+    if record_path:
+        return result, path
+    else:
+        return result
+```
+
+<details>
+  <summary>Por que definimos um limite de rollout?</summary>
+  Para evitar que simulações durem para sempre, definimos um número máximo de movimentos por rollout. Se o limite for atingido sem fim de jogo, penalizamos o resultado (retornamos 0.0).
+</details>
+
+### Retropropagação
+
+O resultado da simulação é **propagado de volta** por todos os nós do caminho percorrido (da folha até a raiz). As estatísticas $Q$ (vitórias) e $N$ (visitas) são atualizadas em cada nó.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112969026, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def backpropagate(path, result):
+    """Atualiza Q(n) e N(n) em todos os nós do caminho percorrido.
+
+    path   → Lista de FENs do caminho (raiz → folha)
+    result → Resultado da simulação (1.0, 0.5 ou 0.0)
+    """
+    for state_fen in path:
+        PLAYOUT[state_fen] = PLAYOUT.get(state_fen, 0) + 1
+        VICTORY[state_fen] = VICTORY.get(state_fen, 0) + result
+```
+
+### Execução do MCTS
+
+O loop principal combina as quatro fases em um ciclo iterativo. Após todas as iterações, o movimento escolhido é o **filho mais visitado** do estado atual.
+
+```{python}
+#| executionInfo: {status: ok, timestamp: 1778112969028, user_tz: 180, elapsed: 1, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+def run_mcts(initial_state_fen, iterations, rollout_limit=100, return_initial_tree_stats=False):
+    """
+    Executa o ciclo MCTS de forma silenciosa.
+    Exibe apenas o status final da partida ao término da execução.
+    Se return_initial_tree_stats for True, retorna as estatísticas da árvore (PLAYOUT, VICTORY, CHILDREN)
+    após a primeira decisão de lance do MCTS.
+    """
+    game_history = [initial_state_fen]
+    current_state_fen = initial_state_fen
+
+    initial_tree_playout = None
+    initial_tree_victory = None
+    initial_tree_children = None
+    first_move_calculated = False
+
+    while True:
+        # Verifica se o estado atual é terminal (Fim de Jogo)
+        is_terminal, result = check_win(current_state_fen)
+        if is_terminal:
+            print(f"Configuracao final do tabuleiro {current_state_fen}")
+            print(f"Partida Finalizada. Status Final: {result}")
+            break
+
+        # Reinicialização silenciosa das estatísticas para o novo lance
+        PLAYOUT.clear()
+        VICTORY.clear()
+        CHILDREN.clear()
+
+        PLAYOUT[current_state_fen] = 1
+        VICTORY[current_state_fen] = 0
+        expand_node(current_state_fen)
+
+        for _ in range(iterations):
+            # 1. SELEÇÃO: Navegação via regra UCB1
+            path, leaf = select_node(current_state_fen)
+
+            # 2. EXPANSÃO: Adição de novos estados à árvore
+            is_terminal_leaf, result_leaf = check_win(leaf)
+            if not is_terminal_leaf:
+                expand_node(leaf)
+
+                # 3. SIMULAÇÃO: Playout aleatório (computacionalmente barato)
+                if leaf in CHILDREN and CHILDREN[leaf]:
+                    new_node_fen = random.choice(CHILDREN[leaf])
+                    path.append(new_node_fen)
+                    result_sim = simulate_game(new_node_fen, rollout_limit)
+                else:
+                    result_sim = 0.5
+            else:
+                result_sim = result_leaf
+
+            # 4. RETROPROPAGAÇÃO: Atualização de estatísticas (N e U)
+            backpropagate(path, result_sim)
+
+        # DECISÃO FINAL: Seleção do movimento mais robusto (maior N)
+        if current_state_fen in CHILDREN and CHILDREN[current_state_fen]:
+            if not first_move_calculated and return_initial_tree_stats:
+                # Captura o estado da árvore após a primeira decisão
+                initial_tree_playout = PLAYOUT.copy()
+                initial_tree_victory = VICTORY.copy()
+                initial_tree_children = CHILDREN.copy()
+                first_move_calculated = True
+
+            best_move_fen = max(
+                CHILDREN[current_state_fen],
+                key=lambda state: PLAYOUT.get(state, 0)
+            )
+
+            current_state_fen = best_move_fen
+            game_history.append(current_state_fen)
+        else:
+            break
+
+    if return_initial_tree_stats and initial_tree_playout is not None:
+        return game_history, initial_tree_playout, initial_tree_victory, initial_tree_children
+    else:
+        return game_history
+```
+
+<details>
+  <summary>Explicação</summary>
+
+1. `def run_mcts(initial_state_fen, iterations, rollout_limit=100, return_initial_tree_stats=False):`
+> Definição da função principal que orquestra o algoritmo de busca por árvore de Monte Carlo, utilizando amostragem estatística para decidir movimentos em vez de busca exaustiva.
+
+2. `game_history = [initial_state_fen]`
+> Inicialização da lista que armazenará o histórico completo de estados (em notação FEN) da partida.
+
+3. `current_state_fen = initial_state_fen`
+> Define o estado inicial da busca como o ponto de partida para o primeiro lance.
+
+4. `initial_tree_playout = None`
+5. `initial_tree_victory = None`
+6. `initial_tree_children = None`
+7. `first_move_calculated = False`
+> Inicialização de variáveis de controle para capturar e retornar as estatísticas da árvore após a primeira decisão, útil para fins didáticos e análise de convergência.
+
+8. `while True:`
+> Início do loop principal da partida, que persistirá até que um estado terminal (xeque-mate ou empate) seja detectado.
+
+9. `is_terminal, result = check_win(current_state_fen)`
+> Fase de verificação de terminalidade: o algoritmo utiliza as regras exatas do jogo para saber se a partida acabou.
+
+10. `if is_terminal:`
+11. `print(f"Configuracao final do tabuleiro {current_state_fen}")`
+12. `print(f"Partida Finalizada. Status Final: {result}")`
+13. `break`
+> Se o jogo acabou, imprime o estado final e o resultado (1.0 para vitória, 0.5 para empate ou 0.0 para derrota) antes de encerrar o loop.
+
+14. `PLAYOUT.clear()`
+15. `VICTORY.clear()`
+16. `CHILDREN.clear()`
+> Reinicialização dos dicionários globais da árvore a cada novo lance, garantindo que as simulações atuais não sejam influenciadas por estados de rodadas anteriores.
+
+17. `PLAYOUT[current_state_fen] = 1`
+18. `VICTORY[current_state_fen] = 0`
+19. `expand_node(current_state_fen)`
+> Inicialização do nó raiz para o lance atual e sua primeira expansão para identificar movimentos legais possíveis.
+
+20. `for _ in range(iterations):`
+> Início do ciclo iterativo do MCTS; quanto maior o número de iterações, maior a precisão estatística da decisão.
+
+21. `path, leaf = select_node(current_state_fen)`
+> **Fase 1: Seleção**. O algoritmo desce pela árvore usando a regra UCB1 para equilibrar a explotação de ramos vitoriosos e a exploração de ramos pouco visitados.
+
+22. `is_terminal_leaf, result_leaf = check_win(leaf)`
+23. `if not is_terminal_leaf:`
+24. `expand_node(leaf)`
+> **Fase 2: Expansão**. Se o nó folha selecionado não for terminal, ele é expandido, adicionando novos estados filhos à árvore de busca.
+
+25. `if leaf in CHILDREN and CHILDREN[leaf]:`
+26. `new_node_fen = random.choice(CHILDREN[leaf])`
+27. `path.append(new_node_fen)`
+28. `result_sim = simulate_game(new_node_fen, rollout_limit)`
+> **Fase 3: Simulação**. Realiza uma partida rápida e aleatória (playout) a partir do novo nó para estimar seu valor sem depender de funções de avaliação heurística complexas.
+
+29. `else: result_sim = 0.5`
+30. `else: result_sim = result_leaf`
+> Trata casos de empate por limite de movimentos ou utiliza o resultado real se a folha já for um estado terminal.
+
+31. `backpropagate(path, result_sim)`
+> **Fase 4: Retropropagação**. O resultado do playout é enviado de volta pela árvore, atualizando o contador de visitas e a soma de vitórias de todos os nós no caminho percorrido.
+
+32. `if current_state_fen in CHILDREN and CHILDREN[current_state_fen]:`
+33. `if not first_move_calculated and return_initial_tree_stats:`
+> Condicional para capturar o estado da árvore (estatísticas de visitas e vitórias) especificamente após a análise do primeiro lance da partida.
+
+34. `initial_tree_playout = PLAYOUT.copy()`
+35. `initial_tree_victory = VICTORY.copy()`
+36. `initial_tree_children = CHILDREN.copy()`
+37. `first_move_calculated = True`
+> Realiza uma cópia profunda dos dicionários de estatísticas para permitir a inspeção posterior da "intuição" do algoritmo.
+
+38. `best_move_fen = max(CHILDREN[current_state_fen], key=lambda state: PLAYOUT.get(state, 0))`
+> Regra de decisão final: o MCTS escolhe o movimento que obteve o maior número de simulações (N), garantindo a escolha do ramo mais testado e robusto.
+
+39. `current_state_fen = best_move_fen`
+40. `game_history.append(current_state_fen)`
+> Atualiza o estado atual do jogo para o movimento escolhido e registra o lance no histórico.
+
+41. `else: break`
+> Se não houver movimentos possíveis, interrompe o loop da partida.
+
+42. `if return_initial_tree_stats and initial_tree_playout is not None:`
+43. `return game_history, initial_tree_playout, initial_tree_victory, initial_tree_children`
+44. `else:`
+45. `return game_history`
+> Retorna o histórico da partida e, opcionalmente, as estatísticas detalhadas da primeira árvore gerada para análise de performance.
+
+</details>
+
+
+## Exemplos Práticos
+
+Este tutorial é feito para fins **didáticos**. Trabalhamos com posições simplificadas de xadrez onde o xeque-mate é forçado em poucos lances. Não tente expor esta implementação a partidas completas de xadrez.
+
+### Cenário 1 — Mate do pastor
+
+Nesse exemplo, O MCTS deve encontrar o xeque-mate imediato disponível para as Brancas. Esta é a posição mais simples possível: existe **exatamente um movimento** que termina o jogo imediatamente com vitória. Verificaremos se o MCTS consegue identificá-lo consistentemente.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 428}
+#| executionInfo: {status: ok, timestamp: 1778112969104, user_tz: 180, elapsed: 75, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Visualiza a posição inicial do Cenário 1 (Mate do Pastor)
+FEN_MATE_DO_PASTOR = "r1bqkb1r/pppp1ppp/2n2n2/3Qp3/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 0 4"
+board_mate_do_pastor = chess.Board(FEN_MATE_DO_PASTOR)
+
+print("Posição inicial — Cenário 1 (Mate do Pastor - Brancas jogam):")
+board_mate_do_pastor
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112978207, user_tz: 180, elapsed: 9101, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executa o MCTS no Cenário 1 (Mate do Pastor)
+ITERATIONS_1    = 1000
+ROLLOUT_LIMIT = 100
+
+print(f"Iniciando MCTS — Cenário 1 (Mate do Pastor) com C_EXPLORATION = {C_EXPLORATION}")
+print(f"Iterações por lance: {ITERATIONS_1} | Limite de rollout: {ROLLOUT_LIMIT} movimentos\n")
+
+game_history_mate_do_pastor, playout_1, victory_1, children_1 = run_mcts(
+    FEN_MATE_DO_PASTOR,
+    iterations=ITERATIONS_1,
+    rollout_limit=ROLLOUT_LIMIT,
+    return_initial_tree_stats=True
+)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112978211, user_tz: 180, elapsed: 3, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Inspeciona as estatísticas da árvore gerada para o Cenário 1 (Mate do Pastor)
+print_tree_stats(FEN_MATE_DO_PASTOR, top_n=5, playout_dict=playout_1, victory_dict=victory_1, children_dict=children_1)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 480}
+#| executionInfo: {status: ok, timestamp: 1778112978224, user_tz: 180, elapsed: 12, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Exibe o histórico e o estado final do Cenário 1 (Mate do Pastor)
+print(f"Histórico da partida do Cenário 1 ({len(game_history_mate_do_pastor) - 1} lance(s)):")
+for i, fen in enumerate(game_history_mate_do_pastor):
+    print(f"  Lance {i}: {fen}")
+
+print("Estado final do tabuleiro do Cenário 1:")
+chess.Board(game_history_mate_do_pastor[-1])
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112978538, user_tz: 180, elapsed: 314, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Gera GIF animado do Cenário 1 (Mate do Pastor)
+create_game_gif(game_history_mate_do_pastor, filename="cenario1_mate_do_pastor_mcts.gif", duration=1.0)
+```
+
+### Cenário 2 — Armadilha do Rei (Xeque-Mate em Posição Aberta)
+
+As Brancas buscam um xeque-mate em 2 lances em uma posição aberta. O objetivo é observar a convergência do MCTS (N iterações) em situações táticas complexas sem o uso de heurísticas manuais.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 428}
+#| executionInfo: {status: ok, timestamp: 1778112978570, user_tz: 180, elapsed: 29, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Visualiza a posição inicial do Cenário 2 (Armadilha do Rei)
+FEN_ARMADILHA_DO_REI = "4r1k1/2b2p1p/p5p1/8/2PP4/5Q1P/5PP1/3Rr1K1 w - - 0 1"
+board_armadilha_do_rei = chess.Board(FEN_ARMADILHA_DO_REI)
+
+print("Posição inicial — Cenário 2 (Armadilha do Rei - Brancas jogam):")
+board_armadilha_do_rei
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112991402, user_tz: 180, elapsed: 12829, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executa o MCTS no Cenário 2 (Armadilha do Rei - mais iterações — posição mais complexa)
+ITERATIONS_2  = 1000
+ROLLOUT_LIMIT = 100
+
+print(f"Iniciando MCTS — Cenário 2 (Armadilha do Rei)")
+print(f"Iterações por lance: {ITERATIONS_2} | Limite de rollout: {ROLLOUT_LIMIT} movimentos")
+
+game_history_armadilha_do_rei, playout_2, victory_2, children_2 = run_mcts(
+    FEN_ARMADILHA_DO_REI,
+    iterations=ITERATIONS_2,
+    rollout_limit=ROLLOUT_LIMIT,
+    return_initial_tree_stats=True
+)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112991409, user_tz: 180, elapsed: 9, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Inspeciona as estatísticas da árvore gerada para o Cenário 2 (Armadilha do Rei)
+print_tree_stats(FEN_ARMADILHA_DO_REI, top_n=10, playout_dict=playout_2, victory_dict=victory_2, children_dict=children_2)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 533}
+#| executionInfo: {status: ok, timestamp: 1778112991426, user_tz: 180, elapsed: 16, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Exibe o histórico e o estado final do Cenário 2 (Armadilha do Rei)
+print(f"\nHistórico da partida do Cenário 2 ({len(game_history_armadilha_do_rei) - 1} lance(s)):")
+for i, fen in enumerate(game_history_armadilha_do_rei):
+    print(f"  Lance {i}: {fen}")
+
+print("\nEstado final do tabuleiro do Cenário 2:")
+chess.Board(game_history_armadilha_do_rei[-1])
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112991702, user_tz: 180, elapsed: 275, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Gera GIF animado do Cenário 2 (Armadilha do Rei)
+create_game_gif(game_history_armadilha_do_rei, filename="cenario2_armadilha_do_rei_mcts.gif", duration=1.5)
+```
+
+### Cenário 3 — Caçada ao Rei
+
+Neste cenário, exploramos uma configuração clássica de final de jogo onde as Brancas possuem um Rei e uma Rainha contra um Rei solitário das Pretas. Este exercício serve para demonstrar o conceito de "cegueira tática". Diferente de mates imediatos, a "caçada" exige uma sequência coordenada de lances para restringir a movimentação do rei adversário.
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 428}
+#| executionInfo: {status: ok, timestamp: 1778112991731, user_tz: 180, elapsed: 28, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Visualiza a posição inicial do Cenário 3 (Caçada ao Rei)
+FEN_CACADA_AO_REI = "k7/8/K7/8/8/8/8/1Q6 w - - 0 1"
+board_cacada_ao_rei = chess.Board(FEN_CACADA_AO_REI)
+
+print("Posição inicial — Cenário 3 (Caçada ao Rei - Brancas jogam):")
+board_cacada_ao_rei
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112995009, user_tz: 180, elapsed: 3277, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Executa o MCTS no Cenário 3 (Caçada ao Rei)
+ITERATIONS_3_CACADA = 10 # Usando um nome de variável diferente para evitar conflitos
+ROLLOUT_LIMIT_CACADA = 100 # Usando um nome de variável diferente para evitar conflitos
+
+print(f"Iniciando MCTS — Cenário 3 (Caçada ao Rei)")
+print(f"Iterações por lance: {ITERATIONS_3_CACADA} | Limite de rollout: {ROLLOUT_LIMIT_CACADA} movimentos")
+
+game_history_cacada_ao_rei, playout_3, victory_3, children_3 = run_mcts(
+    FEN_CACADA_AO_REI,
+    iterations=ITERATIONS_3_CACADA,
+    rollout_limit=ROLLOUT_LIMIT_CACADA,
+    return_initial_tree_stats=True
+)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/}
+#| executionInfo: {status: ok, timestamp: 1778112995022, user_tz: 180, elapsed: 3, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Inspeciona as estatísticas da árvore gerada para o Cenário 3 (Caçada ao Rei)
+print_tree_stats(FEN_CACADA_AO_REI, top_n=5, playout_dict=playout_3, victory_dict=victory_3, children_dict=children_3)
+```
+
+```{python}
+#| colab: {base_uri: https://localhost:8080/, height: 1000}
+#| executionInfo: {status: ok, timestamp: 1778112995108, user_tz: 180, elapsed: 85, user: {displayName: Andre Luis Fonseca Faustino, userId: '03224775235810826368'}}
+# Exibe o histórico e o estado final do Cenário 3 (Caçada ao Rei)
+print(f"Histórico da partida do Cenário 3 ({len(game_history_cacada_ao_rei) - 1} lance(s)):")
+for i, fen in enumerate(game_history_cacada_ao_rei):
+    print(f"  Lance {i}: {fen}")
+
+print("\nEstado final do tabuleiro do Cenário 3:")
+chess.Board(game_history_cacada_ao_rei[-1])
+```
+
+## Desafios
+
+Na fórmula **UCB1**, a constante de exploração ($C$) é o "botão" que define o comportamento do agente. Ela equilibra a **Exploitation** (escolher movimentos com maior média de vitória) e a **Exploration** (investigar ramos com alta incerteza por terem sido pouco visitados). Embora o valor teórico ideal seja $\sqrt{2}$ (aprox. 1.41), na prática, os programadores ajustam esse valor para otimizar a performance em diferentes jogos. Utilizando o ambiente do **Cenário 1 — Mate do Pastor**, você deve investigar como a variação da constante de exploração altera a eficiência da busca do MCTS. O objetivo é observar o fenômeno da **cegueira tática** e a **convergência estatística**.
+
+**Instruções de Execução:**
+
+1.  Acesse o código do **Cenário 1** (FEN: `r1bqkb1r/pppp1ppp/2n2n2/3Qp3/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 0 4`).
+2.  Mantenha as iterações fixas em **1000** e o limite de rollout em **100**.
+3.  Execute o algoritmo três vezes, alterando apenas a variável `C_EXPLORATION` para os seguintes valores:
+    *   **C = 0.1** (Foco extremo em Explotação).
+    *   **C = 1.41** (Equilíbrio Teórico).
+    *   **C = 10.0** (Foco extremo em Exploração).
+4.  Para cada execução, utilize a função `print_tree_stats` para registrar o número de **visitas (N)** e a **Taxa de Vitória** dos 5 movimentos mais testados.
+
+**O que deve ser entregue (Relatório de Análise):**
+*   **Comparação de Convergência:** Em qual dos valores de $C$ o algoritmo concentrou mais visitas no lance de xeque-mate (`Qxf7#`)?.
+*   **Discussão sobre Desperdício:** Analise se o valor **C = 10.0** fez o algoritmo "perder tempo" testando movimentos irrelevantes (como lances de peão na base), reduzindo a confiança estatística no lance principal.
+*   **Conclusão Tática:** Explique como um valor de $C$ muito baixo (**0.1**) pode levar o agente a ignorar a vitória imediata caso as primeiras simulações aleatórias (rollouts) deem resultados negativos por puro azar.
+
+## Key Takeaways
+
+## Referências
+
+1. Russell, S. & Norvig, P. (2010). *Artificial Intelligence: A Modern Approach* (3rd ed.). Prentice Hall.
+2. Coulom, R. (2006). Efficient Selectivity and Backup Operators in Monte-Carlo Tree Search. *Computers and Games*, 72–83.
+3. [Geeks for Geeks](https://www.geeksforgeeks.org/machine-learning/monte-carlo-tree-search-mcts-in-machine-learning/)
+4. [Wikipedia: Monte Carlo Tree Search](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
+5. [python-chess documentation](https://python-chess.readthedocs.io/)
