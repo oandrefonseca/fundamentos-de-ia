@@ -123,6 +123,20 @@ def path_cost(graph, path):
 
 ```
 
+#### Complexidade assintótica
+
+Como aqui a busca roda sobre um **grafo** (via NetworkX), a notação natural é em função de $V$ (número de nós) e $E$ (número de arestas) — diferente da notação $b$ (fator de ramificação) e $d$ (profundidade) usada nos capítulos 1 e 2 para busca em árvore. As duas descrevem a mesma ideia sob premissas diferentes; a tabela abaixo usa a notação de grafo, que é a que se aplica ao código deste capítulo.
+
+| Algoritmo | Tempo (pior caso) | Espaço |
+|---|---|---|
+| BFS | $O(V + E)$ | $O(V)$ |
+| DFS | $O(V + E)$ | $O(V)$ |
+| UCS (Dijkstra) | $O((V + E) \log V)$ | $O(V)$ |
+| A* | $O((V + E) \log V)$ | $O(V)$ |
+| GBFS | $O((V + E) \log V)$ | $O(V)$ |
+
+BFS e DFS visitam cada nó e cada aresta no máximo uma vez, daí $O(V+E)$. UCS, A* e GBFS usam uma fila de prioridade (heap binário, a implementação do NetworkX) para decidir o próximo nó a expandir, o que custa $O(\log V)$ por operação — daí o fator extra. GBFS tem exatamente a mesma forma do A* (é literalmente a mesma função, com o peso zerado): trocar o critério de ordenação não muda a classe de complexidade no pior caso, só o comportamento típico.
+
 ## Exemplo prático
 
 ```{python}
@@ -189,17 +203,20 @@ summary = results_df.groupby('algoritmo').agg(
     arestas_media=('arestas', 'mean'),
     tempo_medio_ms=('tempo_ms', 'mean'),
 ).round(3)
+
 display(summary)
 
 ```
 
 Como o grafo gerado é conexo, `taxa_sucesso` deve ficar em `1.0` para os cinco algoritmos — todos encontram *algum* caminho em todo par testado. É nas outras colunas que as diferenças aparecem: `custo_medio` deve ser o mesmo (e o mais baixo) para UCS e A*, já que ambos garantem o caminho de menor custo; BFS e GBFS tendem a um `custo_medio` mais alto, porque otimizam outra coisa (menor número de arestas e heurística, respectivamente), não o custo acumulado. `arestas_media` costuma ser menor para a BFS, que por definição encontra o caminho com menos passos, mesmo que mais caro. Em `tempo_medio_ms`, espere a DFS ser a mais rápida (explora sem se preocupar em comparar alternativas) e o A* ser competitivo com a UCS ou mais rápido — a heurística evita expandir ramos que se afastam do objetivo, mesmo mantendo a garantia de custo mínimo.
 
+Vale conectar isso com a complexidade assintótica da seção anterior: BFS e DFS são $O(V+E)$, enquanto UCS, A* e GBFS são $O((V+E)\log V)$ por causa da fila de prioridade — por isso não é surpresa se `tempo_medio_ms` for um pouco maior para os três, mesmo num grafo pequeno como este. O ponto mais interessante é que A* e UCS têm a **mesma** complexidade de pior caso, mas na prática A* tende a ser mais rápido: a heurística poda ramos que se afastam do objetivo, então A* efetivamente processa uma fração de $V$, enquanto UCS, sem heurística nenhuma, se aproxima mais do pior caso teórico. O limite assintótico é o mesmo; o comportamento típico não.
+
 ## Avaliação de completude
 
 Completude não é uma propriedade "tudo ou nada" de um algoritmo isoladamente — ela depende de como o espaço de busca está estruturado. Esta seção testa os cinco algoritmos contra um caso-base (objetivo inalcançável num grafo bem-comportado) e quatro "armadilhas" estruturais clássicas que a literatura usa para separar algoritmos completos de incompletos: ciclos sem controle de visitados, ramos muito profundos, fator de ramificação infinito e custos de aresta nulos ou negativos.
 
-### Caso-base: objetivo inalcançável
+### Cenário A — objetivo inalcançável
 
 Adicionamos um nó propositalmente isolado (sem nenhuma aresta) e tentamos alcançá-lo a partir de um estado conectado. Um algoritmo completo deve relatar corretamente que não há solução, em vez de travar ou lançar um erro inesperado.
 
@@ -222,7 +239,7 @@ for name, search in {
 
 Espera-se que as cinco linhas impressas terminem em `None` (ou equivalente): nenhum algoritmo encontra caminho até `'isolated'`, porque não existe nenhuma aresta ligando esse nó ao resto do grafo. O ponto do teste não é o valor em si — é que nenhum algoritmo trava, entra em loop infinito ou lança um erro inesperado ao lidar com um objetivo inalcançável; cada um percorre todo o espaço de busca acessível a partir do estado inicial e conclui corretamente que não há solução.
 
-### Cenário A — Ciclos sem controle de estados visitados
+### Cenário B — Ciclos sem controle de estados visitados
 
 O resultado acima só vale porque `dfs_path` evita repetir estados (é o que `nx.dfs_tree` garante internamente) — isso a torna completa em qualquer grafo finito. Uma DFS "ingênua", sem esse controle, não tem essa garantia: num grafo com ciclos, ela pode ficar alternando entre os mesmos poucos nós indefinidamente, sem nunca esgotar as alternativas e sem nunca concluir que não há solução. Como não dá para deixar uma célula rodando para sempre, colocamos um limite de passos de segurança — se ele for atingido, é sinal de que a busca não terminaria sozinha. (O mesmo raciocínio vale para BFS, UCS e A*: qualquer um deles, sem controle de visitados, cairia na mesma armadilha num grafo cíclico. `nx.shortest_path`, `nx.dijkstra_path` e `nx.astar_path` já fazem esse controle internamente, por isso não repetimos a demonstração para cada um.)
 
@@ -260,7 +277,7 @@ print('DFS ingênua (sem controle de visitados):', naive_dfs_path(graph_with_iso
 
 O esperado é uma diferença nítida entre as duas linhas: `dfs_path` retorna `None` quase instantaneamente, porque esgota o componente alcançável e conclui corretamente que `'isolated'` não está nele. Já `naive_dfs_path`, na maioria dos grafos gerados (que costumam ter mais arestas do que uma árvore, logo têm ciclos), deve atingir `max_steps` sem terminar — sem controle de visitados, ela fica reexplorando repetidamente as mesmas arestas dentro de um ciclo, nunca "esgotando" as alternativas. É exatamente essa a incompletude teórica da DFS em árvore que o capítulo 1 menciona. (Se o grafo gerado nesta execução for uma árvore, sem ciclos, `naive_dfs_path` também terminaria corretamente — nesse caso, aumente `n_nodes` ou o raio em `generate_random_graph` para garantir arestas extras além da árvore geradora.)
 
-### Cenário B — Ramos muito profundos
+### Cenário C — Ramos muito profundos
 
 Controlar visitados resolve o problema dos ciclos, mas não resolve um segundo problema, mais fundamental: mesmo sem repetir nenhum estado, a DFS pode se comprometer com um ramo muito profundo (ou, no limite teórico, infinito) e nunca voltar para tentar um ramo raso onde o objetivo estaria a um passo de distância. Isso não depende de ciclo nenhum — depende só da ordem de exploração (profundidade primeiro).
 
@@ -312,7 +329,9 @@ print('BFS:                     ', bfs_path(deep_branch_graph, 0, 'shallow_goal'
 
 O objetivo está a **um** passo do início, mas a DFS com `max_steps=50` deve retornar "não terminou": ela mergulha pela cadeia longa (nós `0, 1, 2, 3, ...`) e só voltaria para tentar `'shallow_goal'` depois de esgotar toda a cadeia — o que, com uma cadeia de 5.000 nós e um limite de 50 passos, nunca acontece dentro do orçamento. A BFS, por explorar em camadas, encontra `'shallow_goal'` na primeira camada, independentemente de quão longa seja a cadeia ignorada. Isso ilustra por que a completude da DFS depende do tamanho/profundidade do espaço de busca, mesmo com controle de visitados — enquanto a completude da BFS (com fator de ramificação finito) não depende disso.
 
-### Cenário C — Fator de ramificação infinito
+Vale uma nota sobre notação: a distinção clássica "DFS gasta $O(b \cdot d)$ de memória, BFS gasta $O(b^d)$" (capítulos 1/2, $b$ = fator de ramificação, $d$ = profundidade) é sobre busca em **árvore**, sem grafo finito e sem conjunto de visitados — é o cenário em que a economia de memória da DFS realmente compensa. Nas nossas funções, que rodam sobre um grafo finito com controle de visitados, ambas são $O(V)$ de espaço no pior caso (tabela na seção "Funções de busca") — a vantagem de memória da DFS desaparece nesse contexto. O que sobra, como este cenário mostra, é só a fragilidade de tempo: comprometer-se com o ramo errado primeiro.
+
+### Cenário D — Fator de ramificação infinito
 
 Nem toda estrutura cabe num `networkx.Graph` (que exige uma lista finita de vizinhos por nó) — um nó com infinitos filhos só pode ser representado por uma função geradora. Simulamos isso com um gerador que nunca para de produzir "filhos" para um nó específico, e uma BFS escrita à mão que consome essa função em vez de um grafo do NetworkX.
 
@@ -324,7 +343,6 @@ def infinite_children(node):
     while True:
         yield f'{node}_child_{i}'
         i += 1
-
 
 def bfs_with_generator(root, goal, get_children, max_expansions=2000):
     """BFS sobre uma função geradora de filhos (não um grafo do NetworkX), para simular ramificação infinita."""
@@ -356,11 +374,15 @@ print('BFS com nó de ramificação infinita:', bfs_with_generator('root', 'goal
 
 ```
 
-O objetivo (`'goal_no_nivel_2'`) nem existe de fato neste grafo — o ponto é que a BFS jamais chegaria a verificar isso: como `'root'` tem infinitos filhos, o laço que enumera os vizinhos de `'root'` nunca termina naturalmente, e a BFS fica presa expandindo a primeira camada para sempre. Diferente do Cenário B, aqui é a própria **BFS** que falha — o fator de ramificação infinito ataca justamente a estratégia "explorar uma camada inteira antes de avançar", que era a vantagem da BFS nos cenários anteriores.
+O objetivo (`'goal_no_nivel_2'`) nem existe de fato neste grafo — o ponto é que a BFS jamais chegaria a verificar isso: como `'root'` tem infinitos filhos, o laço que enumera os vizinhos de `'root'` nunca termina naturalmente, e a BFS fica presa expandindo a primeira camada para sempre. Diferente do Cenário C, aqui é a própria **BFS** que falha — o fator de ramificação infinito ataca justamente a estratégia "explorar uma camada inteira antes de avançar", que era a vantagem da BFS nos cenários anteriores.
 
-### Cenário D — Custos de aresta nulos ou negativos
+### Cenário E — Custos de aresta nulos ou negativos
 
-UCS/Dijkstra garante o caminho de menor custo sob a premissa de que nenhuma aresta tem peso negativo. Arestas de custo **zero** não quebram essa premissa (uma implementação correta, como a nossa, marca um estado como resolvido assim que ele é retirado da fronteira e não o reconsidera depois, então um ciclo de custo zero não faz o algoritmo repetir esse estado). O problema real aparece com pesos **negativos**: um ciclo cujo custo total é negativo torna o próprio conceito de "caminho mais barato" mal definido — percorrer o ciclo mais vezes sempre reduz o custo, então o mínimo verdadeiro seria $-\infty$.
+O UCS/Dijkstra garante o caminho de menor custo sob a premissa de que nenhuma aresta tem peso negativo.
+
+Arestas de custo **zero** não quebram essa premissa. Uma implementação correta, como a nossa, marca um estado como resolvido assim que ele é retirado da fronteira e não o reconsidera depois — um ciclo de custo zero não faz o algoritmo repetir esse estado.
+
+O problema real aparece com pesos **negativos**. Um ciclo cujo custo total é negativo torna o próprio conceito de "caminho mais barato" mal definido: percorrer o ciclo mais vezes sempre reduz o custo, então o mínimo verdadeiro seria $-\infty$.
 
 ```{python}
 
@@ -368,21 +390,33 @@ negative_cycle_graph = nx.DiGraph()
 negative_cycle_graph.add_weighted_edges_from([
     ('A', 'B', 1),
     ('B', 'C', -3),
-    ('C', 'A', 1),  # ciclo A->B->C->A com custo total 1 + (-3) + 1 = -1 (negativo)
+    ('C', 'A', 1),  # <1>
     ('A', 'goal', 10),
 ])
 
-print('Existe ciclo de custo negativo alcançável a partir de A?', nx.negative_edge_cycle(negative_cycle_graph, weight='weight'))
-print('UCS (Dijkstra) não detecta o problema, apenas responde:', ucs_path(negative_cycle_graph, 'A', 'goal'))
+print('Existe ciclo de custo negativo alcançável a partir de A?', nx.negative_edge_cycle(negative_cycle_graph, weight='weight'))  # <2>
 
 try:
-    print('Bellman-Ford detecta corretamente:', nx.bellman_ford_path(negative_cycle_graph, 'A', 'goal', weight='weight'))
+    print('UCS (Dijkstra):', ucs_path(negative_cycle_graph, 'A', 'goal'))  # <3>
+except ValueError as erro:
+    print('UCS (Dijkstra) se recusa a responder:', erro)
+
+try:
+    print('Bellman-Ford:', nx.bellman_ford_path(negative_cycle_graph, 'A', 'goal', weight='weight'))  # <4>
 except nx.NetworkXUnbounded as erro:
     print('Bellman-Ford se recusa a responder:', erro)
 
 ```
+1. Esta aresta fecha o ciclo `A -> B -> C -> A`, com custo total `1 + (-3) + 1 = -1` — um ciclo de custo negativo.
+2. `nx.negative_edge_cycle` verifica, de forma nativa, se existe algum ciclo de custo negativo alcançável a partir de `A` — sem precisar rodar nenhuma busca para descobrir isso.
+3. UCS/Dijkstra não faz essa verificação sozinho: só percebe que algo está errado ao tentar recalcular a distância de um nó que já havia sido finalizado.
+4. O Bellman-Ford foi desenhado para tolerar pesos negativos, então ele detecta e nomeia o problema (ciclo negativo), em vez de só levantar um erro genérico.
 
-`nx.negative_edge_cycle` confirma que há um ciclo de custo negativo alcançável a partir de `'A'`. A UCS (Dijkstra) **não verifica isso**: ela assume pesos não negativos e, mesmo na presença do ciclo, ainda devolve algum caminho para `'goal'` — só que sem garantia nenhuma de que ele seja realmente o mais barato, porque o algoritmo nunca reconsidera um estado já finalizado, mesmo que um ciclo negativo pudesse, em teoria, tornar o custo arbitrariamente menor. O Bellman-Ford, que foi desenhado para tolerar pesos negativos, detecta o ciclo explicitamente e recusa-se a responder (`NetworkXUnbounded`) em vez de devolver um resultado silenciosamente incorreto. A* e a GBFS herdam a mesma dependência de custos não negativos, já que também usam `weight` para calcular $g(n)$.
+Perceba que o `nx.negative_edge_cycle` confirma que há um ciclo de custo negativo alcançável a partir de `'A'`.
+
+Rastreando o Dijkstra à mão: ele finaliza `A` com distância 0, depois `B` (1), depois `C` (1 + (-3) = -2). Ao expandir `C`, encontra `A` de novo com distância `-2 + 1 = -1` — **menor que a distância já finalizada para `A`**. O NetworkX percebe essa inconsistência e levanta `ValueError` em vez de devolver um caminho errado silenciosamente — só que sem dizer *por quê* (a mensagem é genérica: "contradictory paths found"). O Bellman-Ford vai além: identifica explicitamente a causa (o ciclo negativo) e se recusa a responder de forma direcionada (`NetworkXUnbounded`).
+
+Nos dois casos o algoritmo não trava nem retorna um resultado incorreto silenciosamente — mas nenhum dos dois calcula "o caminho mais barato", porque essa noção deixa de fazer sentido na presença de um ciclo de custo negativo. A* e a GBFS herdam a mesma dependência de custos não negativos, já que também usam `weight` para calcular $g(n)$.
 
 ### A heurística do A* e da GBFS: completude vs. otimalidade
 
@@ -405,19 +439,9 @@ print('A* (custo + heurística):', astar_result, '- custo real:', path_cost(misl
 
 ```
 
-Com essa heurística propositalmente enganosa, a GBFS deve escolher `A -> D -> goal` (custo real 11): como só olha $h(n)$, e $h(D)=1$ parece mais promissor que $h(B)=8$, ela nunca chega a considerar o caminho por B. O A*, por somar $g(n)+h(n)$, ainda prefere `B` no primeiro passo ($f(B)=1+8=9$ contra $f(D)=10+1=11$) e termina encontrando o caminho ótimo `A -> B -> C -> goal` (custo 3) — mesmo recebendo exatamente a mesma heurística ruim. Isso mostra, lado a lado, por que a GBFS é mais frágil a heurísticas de má qualidade do que o A*: o custo acumulado que o A* carrega funciona como um contrapeso que a GBFS não tem.
+Com essa heurística propositalmente enganosa, a GBFS deve escolher `A -> D -> goal` (custo real 11): como só olha $h(n)$, e $h(D)=1$ parece mais promissor que $h(B)=8$, ela nunca chega a considerar o caminho por B. 
 
-### Matriz de falhas — resumo
-
-| Algoritmo | A: Ciclos (sem visitados) | B: Ramo muito profundo | C: Ramificação infinita | D: Custo negativo |
-|---|---|---|---|---|
-| DFS | Falha | Falha | Falha | (não se aplica — ignora custo) |
-| BFS | Falha | Sobrevive | Falha | (não se aplica) |
-| UCS | Falha | Sobrevive | Falha | Falha (perde a garantia de otimalidade) |
-| A* (heurística admissível) | Falha | Sobrevive | Falha | Falha (mesma dependência da UCS) |
-| GBFS | Falha | Depende da heurística | Falha | (não se aplica) |
-
-"Falha" na coluna A significa *sem controle de visitados* — com ele (o padrão em todas as nossas funções, exceto `naive_dfs_path`), todos sobrevivem ao Cenário A. As colunas B e C mostram a assimetria central deste capítulo: BFS/UCS/A* sobrevivem a ramos profundos mas não a ramificação infinita; a DFS falha nos dois, por razões diferentes (compromisso com um único ramo vs. incapacidade de sequer terminar de enumerar os vizinhos de um nó).
+Por outro lado, o A\*, por somar $g(n)+h(n)$, ainda prefere `B` no primeiro passo ($f(B)=1+8=9$ contra $f(D)=10+1=11$) e termina encontrando o caminho ótimo `A -> B -> C -> goal` (custo 3) — mesmo recebendo exatamente a mesma heurística ruim. Isso mostra, lado a lado, por que a GBFS é mais frágil a heurísticas de má qualidade do que o A*: o custo acumulado que o A* carrega funciona como um contrapeso que a GBFS não tem.
 
 ## Perguntas para reflexão
 
@@ -434,7 +458,7 @@ Com essa heurística propositalmente enganosa, a GBFS deve escolher `A -> D -> g
 - Completude (sempre reportar corretamente quando não há solução) é uma propriedade distinta de otimalidade (encontrar o melhor caminho) — os testes deste capítulo avaliam coisas diferentes.
 - A completude não é uma propriedade fixa de um algoritmo: depende da estrutura do espaço de busca. Controle de visitados resolve ciclos, mas não resolve ramos muito profundos (onde só a BFS sobrevive) nem fator de ramificação infinito (onde nem a BFS sobrevive).
 - Heurística inadmissível compromete a otimalidade, não a completude do A* — mas compromete as duas coisas na GBFS, que não tem o custo acumulado como contrapeso.
-- UCS/A* garantem o caminho de menor custo assumindo pesos não negativos; um ciclo de custo negativo torna "o caminho mais barato" indefinido, e esses algoritmos não detectam isso sozinhos — quem detecta é o Bellman-Ford.
+- UCS/A* garantem o caminho de menor custo assumindo pesos não negativos; um ciclo de custo negativo torna "o caminho mais barato" indefinido. O Dijkstra do NetworkX percebe que algo está errado (levanta `ValueError`) mas não diz por quê; só o Bellman-Ford identifica a causa explicitamente.
 
 ## Referencias
 
