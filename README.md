@@ -5,13 +5,12 @@ Apostila de apoio construída como um site de páginas com [Quarto](https://quar
 ## Estrutura
 
 - `capitulos/`: laboratórios em Quarto Markdown (`.qmd`), fonte editorial oficial de cada tutorial;
-- `apendices/`: conteúdos complementares (mesmo formato dos capítulos);
 - `index.qmd`, `apresentacao.qmd`: páginas institucionais do site;
 - `_quarto.yml`: estrutura, navegação e configuração do site;
 - `styles.css`: identidade visual (cores, banner, blocos `<details>`);
 - `old/`: notebooks `.ipynb` originais (Colab), material histórico não publicado — ignorado pelo git.
 
-Cada capítulo declara `format: {html: default, ipynb: default}` no front matter, então o Quarto gera automaticamente, além da página HTML, um `.ipynb` equivalente com o mesmo conteúdo — é esse arquivo que aparece como link de download ("Baixar notebook") em cada tutorial publicado. O arquivo `capitulos/_metadata.yml` (espelhado em `apendices/_metadata.yml`) só contém `format-links: [ipynb]`, que habilita esse botão.
+Cada capítulo declara `format: {html: default, ipynb: default}` no front matter, então o Quarto gera automaticamente, além da página HTML, um `.ipynb` equivalente com o mesmo conteúdo — é esse arquivo que aparece como link de download ("Baixar notebook") em cada tutorial publicado. O arquivo `capitulos/_metadata.yml` só contém `format-links: [ipynb]`, que habilita esse botão.
 
 ## Renderização e publicação
 

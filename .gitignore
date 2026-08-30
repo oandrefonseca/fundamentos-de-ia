@@ -10,7 +10,3 @@ capitulos/*.html
 capitulos/*.ipynb
 capitulos/*.quarto_ipynb
 capitulos/*_files/
-apendices/*.html
-apendices/*.ipynb
-apendices/*.quarto_ipynb
-apendices/*_files/

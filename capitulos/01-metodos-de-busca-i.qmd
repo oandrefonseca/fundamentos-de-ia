@@ -8,8 +8,6 @@ format:
 jupyter: python3
 ---
 
-
-
 ## Ajustando ambiente
 
 ```{python}
@@ -17,6 +15,7 @@ jupyter: python3
 
 import matplotlib.pyplot as plt
 import networkx as nx
+
 ```
 
 ## Motivação
@@ -25,287 +24,22 @@ O estudo de agentes baseados em objetivos e métodos de busca é fundamental na 
 
 ## Objetivos de Aprendizagem
 
-* **Entender Agentes Baseados em Objetivos:** Compreender o conceito de agentes que formulam metas e buscam planos para alcançá-las.
-* **Modelagem de Problemas:** Aprender a modelar problemas de busca, definindo estado inicial, objetivo, ações, transições e custos.
-* **Compreender Métodos de Busca Não Informada:**
-    * **Busca em Largura (BFS):** Entender como a BFS explora o espaço de estados nível por nível, suas propriedades de completude e otimalidade de custo.
-    * **Busca em Profundidade (DFS):** Entender como a DFS explora o espaço de estados em profundidade, suas vantagens em uso de memória e suas limitações.
-    * **Diferenças entre BFS e DFS:** Analisar as principais diferenças entre BFS e DFS em termos de estratégia de exploração, completude e otimalidade.
-* **Implementação de Componentes do Agente:** Familiarizar-se com a estrutura de classes como `Problem`, `GraphProblem`, `Node`, `SimpleProblemSolvingAgentProgram` e `SearchAgent`.
+* **Entender agentes baseados em objetivos:** compreender como esses agentes formulam metas e buscam planos para alcançá-las.
+* **Modelar problemas de busca:** definir estado inicial, objetivo, ações, transições e custos.
+* **Entender a busca em largura (BFS):** como ela explora o espaço de estados nível por nível, garantindo completude e o menor número de passos.
+* **Entender a busca de custo uniforme (UCS):** como ela generaliza a BFS para grafos com custos de aresta diferentes, expandindo sempre o caminho de menor custo acumulado.
+* **Entender a busca em profundidade (DFS):** suas vantagens em uso de memória e suas limitações.
+* **Comparar BFS, UCS e DFS:** em termos de estratégia de exploração, completude e otimalidade.
+* **Implementar os algoritmos:** diretamente sobre um grafo representado como dicionário, sem camadas de abstração adicionais entre o estado e a lógica de busca.
 
 ## Implementação
 
-### Classes do Ambiente
+### Representação do ambiente
 
-A classe `Problem` fornece a estrutura abstrata para descrever um problema de busca, definindo conceitos como estado inicial, objetivo, ações e transições e custo. No tutorial, ela ajuda a separar o **ambiente** da **forma como o agente raciocina sobre ele**.
-
-```{python}
-class Problem:
-    def __init__(self, initial, goal=None):
-        self.initial = initial
-        self.goal = goal
-
-    def actions(self, state):
-        raise NotImplementedError
-
-    def result(self, state, action):
-        raise NotImplementedError
-
-    def goal_test(self, state):
-        return state == self.goal
-
-    def path_cost(self, c, state1, action, state2):
-        return c + 1
-```
-
-A partir da classe anterior, vamos extender `GraphProblem` a qual especializa essa formulação para o caso em que o ambiente é um **grafo**.
+O ambiente é um grafo simples: um dicionário onde cada cidade aponta para suas vizinhas (com o custo de cada aresta). Não precisamos de nenhuma classe para representá-lo — `environment[cidade]` já devolve os vizinhos.
 
 ```{python}
-class GraphProblem(Problem):
-    def __init__(self, initial, goal, graph):
-        super().__init__(initial, goal)
-        self.graph = graph
 
-    def actions(self, state):
-        return list(self.graph.get(state).keys())
-
-    def result(self, state, action):
-        return action
-
-    def path_cost(self, cost_so_far, state1, action, state2):
-        edge_cost = self.graph.get(state1, state2)
-        if edge_cost is None:
-            return float('inf')
-        return cost_so_far + edge_cost
-```
-
-Em seguida, definimos a classe `SimpleGraph` como uma estrutura auxiliar simples para representar o ambiente em forma de grafo, que será utilizada por GraphProblem.
-
-```{python}
-class SimpleGraph:
-    def __init__(self, graph_dict):
-        self.graph_dict = graph_dict
-
-    def get(self, a, b=None):
-        links = self.graph_dict.setdefault(a, {})
-        if b is None:
-            return links
-        return links.get(b)
-```
-
-Para solucionar o processo de busca em grafos, precisamos transformá-lo em uma árvore de busca. A classe `Node` representa um nó da árvore de busca. Ela guarda o estado atual, o pai, a ação usada para chegar ali e a profundidade. No tutorial, essa classe permite reconstruir o caminho encontrado pelo agente durante a etapa de simulação.
-
-```{python}
-class Node:
-    def __init__(self, state, parent=None, action=None, path_cost=0):
-        self.state = state
-        self.parent = parent
-        self.action = action
-        self.path_cost = path_cost
-        self.depth = 0 if parent is None else parent.depth + 1
-
-    def __repr__(self):
-        return '<Node {}>'.format(self.state)
-
-    def __lt__(self, node):
-        return self.state < node.state
-
-    def expand(self, problem):
-        return [self.child_node(problem, action) for action in problem.actions(self.state)]
-
-    def child_node(self, problem, action):
-        next_state = problem.result(self.state, action)
-        return Node(
-            next_state,
-            self,
-            action,
-            problem.path_cost(self.path_cost, self.state, action, next_state),
-        )
-
-    def solution(self):
-        return [node.action for node in self.path()[1:]]
-
-    def path(self):
-        node = self
-        path_back = []
-        while node is not None:
-            path_back.append(node)
-            node = node.parent
-        path_back.reverse()
-        return path_back
-
-    def __eq__(self, other):
-        return isinstance(other, Node) and self.state == other.state
-
-    def __hash__(self):
-        return hash(self.state)
-```
-
-<details>
-<summary>Explicação</summary>
-
-1.  **`class Node:`**
-
-> Define a estrutura do objeto que representará um estado dentro da **árvore de busca**. Diferente de um grafo puro, o nó da árvore armazena o histórico (rastro) de como o agente chegou até ali.
-
-2.  **`def __init__(self, state, parent=None, action=None, path_cost=0):`**
-
-> O construtor da classe. Ele inicializa os atributos fundamentais: o estado atual (`state`), o nó que o gerou (`parent`), a ação tomada para alcançá-lo (`action`) e o custo total acumulado do caminho (`path_cost`).
-
-3.  **`self.depth = 0 if parent is None else parent.depth + 1`**
-
-> Calcula automaticamente a profundidade do nó. Se não houver um pai, ele é a raiz (nível 0). Caso contrário, sua profundidade será a do pai somada a 1.
-
-4.  **`def __repr__(self):`**
-
-> Define a representação textual do objeto. Ao imprimir o nó ou vê-lo em uma lista, ele aparecerá formatado como `<Node Natal>`, facilitando o *debug*.
-
-5.  **`def __lt__(self, node):`**
-
-> Implementa o operador "menor que" (`less than`). Permite comparar dois nós (usando a ordem alfabética ou valor do estado), o que é essencial para algoritmos que organizam filas de prioridade.
-
-6.  **`def expand(self, problem):`**
-
-> Método que gera todos os nós sucessores possíveis. Ele utiliza uma *list comprehension* para varrer as ações disponíveis no `problem` e criar novos nós filhos.
-
-7.  **`def child_node(self, problem, action):`**
-
-> Cria um único nó filho específico. Ele solicita ao `problem` o resultado da ação (próximo estado) e calcula o novo custo total do caminho antes de instanciar o novo `Node`.
-
-8.  **`def solution(self):`**
-
-> Extrai a sequência de ações da raiz até o nó atual. Ele fatia a lista de caminho `[1:]` para ignorar o nó inicial, que não possui uma ação vinculada.
-
-9.  **`def path(self):`**
-
-> Reconstrói a trajetória completa. O método percorre os ponteiros de `parent` de volta até a raiz, armazena-os em uma lista e depois a inverte (`reverse`) para exibir a ordem cronológica da viagem.
-
-10. **`def __eq__(self, other):`**
-
-> Define o critério de igualdade. Dois nós são considerados iguais se forem do mesmo tipo e representarem o mesmo estado geográfico (ex: dois caminhos diferentes que terminam em "Pipa").
-
-11. **`def __hash__(self):`**
-
-> Torna o nó "mapeável". Isso permite que o objeto seja usado em conjuntos (`set`) para controle de estados visitados, evitando que o algoritmo entre em loops infinitos no mapa.
-
-</details>
-
-### Classes de Agente
-
-As classes `SimpleProblemSolvingAgentProgram` e `SearchAgent` estão relacionadas à parte deliberativa do agente no tutorial. A classe `SimpleProblemSolvingAgentProgram` define a estrutura geral de um agente baseado em objetivos: ela descreve o ciclo de perceber o estado atual, formular um objetivo, formular um problema e buscar uma sequência de ações para alcançá-lo.
-
-```{python}
-class SimpleProblemSolvingAgentProgram:
-    def __init__(self, initial_state=None):
-        self.state = initial_state
-        self.seq = []
-
-    def __call__(self, percept):
-        self.state = self.update_state(self.state, percept)
-        if not self.seq:
-            goal = self.formulate_goal(self.state)
-            problem = self.formulate_problem(self.state, goal)
-            self.seq = self.search(problem)
-            if not self.seq:
-                return None
-        return self.seq.pop(0)
-
-    def update_state(self, state, percept):
-        raise NotImplementedError
-
-    def formulate_goal(self, state):
-        raise NotImplementedError
-
-    def formulate_problem(self, state, goal):
-        raise NotImplementedError
-
-    def search(self, problem):
-        raise NotImplementedError
-```
-
-<details>
- <summary>O que é um Problem-solving Agent?</summary>
-O *problem-solving agent* (agente de resolução de problemas) é um agente baseado em objetivo. Quando a ação correta a ser tomada não é imediatamente óbvia, esse tipo de agente precisa planejar com antecedência, avaliando uma sequência de ações que formam um caminho até um **estado objetivo**.
-
-Uma característica fundamental desses agentes é o uso de **representações atômicas**, o que significa que eles encaram os estados do mundo como um todo indivisível, sem que nenhuma estrutura interna seja visível aos algoritmos envolvidos na resolução do problema. Caso o agente utilize representações fatoradas ou estruturadas dos estados para alcançar suas metas, ele é classificado de forma diferente, sendo chamado de agente de planejamento (*planning agent*).
-</details>
-
-A classe `SearchAgent` é uma implementação concreta dessa ideia, pois especializa essa estrutura para um ambiente representado por grafo e delega a geração do plano a um método de busca específico, como busca em largura ou busca em profundidade. Assim, a primeira classe fornece o modelo abstrato de raciocínio do agente, enquanto a segunda mostra como esse modelo pode ser instanciado na prática dentro do contexto do tutorial.
-
-```{python}
-class SearchAgent(SimpleProblemSolvingAgentProgram):
-    def __init__(self, goal, search_algorithm, graph):
-        super().__init__(initial_state=None)
-        self.goal = goal
-        self.search_algorithm = search_algorithm
-        self.graph = graph
-
-    def update_state(self, state, percept):
-        return percept
-
-    def formulate_goal(self, state):
-        return self.goal
-
-    def formulate_problem(self, state, goal):
-        return GraphProblem(state, goal, self.graph)
-
-    def search(self, problem):
-        node = self.search_algorithm(problem)
-        if node is None:
-            return []
-        return node.solution()
-```
-
-### Funções Auxiliares
-
-```{python}
-def state_path(node):
-    if node is None:
-        return None
-    return [step.state for step in node.path()]
-
-def verbose(node):
-    if node is None:
-        return {
-            'encontrou': False,
-            'caminho': None,
-            'acoes': None,
-            'custo': None,
-        }
-    return {
-        'encontrou': True,
-        'caminho': state_path(node),
-        'acoes': node.solution(),
-        'custo': node.path_cost,
-    }
-
-def agent_simulation(agent, initial_state, max_step=20):
-    state = initial_state
-    trajectory = [state]
-    actions = []
-
-    for _ in range(max_step):
-        action = agent(state)
-        if action is None:
-            break
-
-        actions.append(action)
-        state = action
-        trajectory.append(state)
-
-        if state == agent.goal:
-            break
-
-    return actions, trajectory
-```
-
-## Exemplo prático
-
-Agora vamos aplicar essas estruturas em um ambiente simples, com um estado inicial `A` e um objetivo `P`.
-
-### Construção do Ambiente
-
-```{python}
 environment = {
     'Natal': {'Parnamirim': 1, 'Extremoz': 1, 'São Gonçalo do Amarante': 1, 'Macaíba': 1},
     'Parnamirim': {'Natal': 1, 'São José de Mipibu': 1, 'Macaíba': 1},
@@ -321,22 +55,13 @@ environment = {
     'Tibau do Sul': {'Goianinha': 1, 'Pipa': 1},
     'Pipa': {'Tibau do Sul': 1}
 }
+
 ```
 
-```{python}
-#| colab: {base_uri: https://localhost:8080/}
-graph = SimpleGraph(environment)
-problem = GraphProblem('Natal', 'Pipa', graph)
-
-print('Estado inicial:', problem.initial)
-print('Objetivo:', problem.goal)
-print('Ações possíveis em Natal:', problem.actions('Natal'))
-```
+Para visualizar esse grafo, usamos o [NetworkX](https://networkx.org/): montamos um `nx.DiGraph()` a partir do dicionário `environment` (uma aresta para cada vizinho de cada cidade) e desenhamos com `nx.draw`. Essa visualização é só para referência — os algoritmos de busca abaixo trabalham diretamente com o dicionário, sem depender do NetworkX.
 
 ```{python}
-#| colab: {base_uri: https://localhost:8080/, height: 659}
-#| cellView: form
-# @title Estrutura do grafo
+
 G = nx.DiGraph()
 for origem, destinos in environment.items():
     for destino in destinos:
@@ -357,6 +82,37 @@ nx.draw(
 )
 plt.title('Estrutura do grafo do ambiente')
 plt.show()
+
+```
+
+### Funções auxiliares
+
+Para a busca em si, cada candidato na fronteira é **o caminho percorrido até ali** (uma lista de cidades, ex: `['Natal', 'Macaíba']`), em vez de um objeto `Node` com ponteiro para o pai. O estado atual é sempre o último elemento do caminho (`path[-1]`), e o caminho já É a solução — não precisa ser reconstruído no final.
+
+```{python}
+
+def path_cost(graph, path):
+    """Soma o custo das arestas percorridas em um caminho."""
+    return sum(graph[a][b] for a, b in zip(path, path[1:]))
+
+```
+
+`path_cost` soma o custo de cada aresta percorrida no caminho. Neste capítulo todas as arestas custam 1 (ver `environment` acima), então o custo de um caminho é simplesmente o seu comprimento.
+
+## Exemplo prático
+
+Agora vamos aplicar essas funções em um cenário concreto, com um estado inicial `Natal` e um objetivo `Pipa`.
+
+```{python}
+
+graph = environment
+estado_inicial = 'Natal'
+objetivo = 'Pipa'
+
+print('Estado inicial:', estado_inicial)
+print('Objetivo:', objetivo)
+print('Ações possíveis em Natal:', list(graph[estado_inicial].keys()))
+
 ```
 
 ### Busca em largura
@@ -364,98 +120,44 @@ plt.show()
 A busca em largura é uma estratégia de busca na qual o nó raiz é expandido primeiro, seguido por todos os seus nós sucessores, depois os sucessores destes, e assim por diante, explorando o espaço de estados nível por nível. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila FIFO (primeiro a entrar, primeiro a sair), o que garante que os nós recém-gerados (mais profundos) vão para o final da fila e os nós mais antigos e rasos sejam expandidos primeiro. Por explorar todas as opções de uma profundidade antes de avançar para a próxima, a busca em largura é sistemática, completa e garante encontrar uma solução com o número mínimo de ações necessárias.
 
 ```{python}
-def breadth_first_graph_search(problem, return_expansion_order=False):
-    node = Node(problem.initial)
-    if problem.goal_test(node.state):
-        if return_expansion_order:
-            return node, [node.state]
-        return node
 
-    frontier = [node]
-    visited = set()
+def breadth_first_search(graph, start, goal, return_expansion_order=False):
+    """Busca em largura: expande o caminho mais raso primeiro (fila FIFO)."""
+    if start == goal:
+        return ([start], [start]) if return_expansion_order else [start]
+
+    frontier = [[start]]
+    visited = {start}
     expansion_order = []
 
     while frontier:
-        node = frontier.pop(0)
-        expansion_order.append(node.state)
-        visited.add(node.state)
+        path = frontier.pop(0)  # <1>
+        current = path[-1]
+        expansion_order.append(current)
 
-        for child in node.expand(problem):
-            if child.state not in visited and child not in frontier:
-                if problem.goal_test(child.state):
-                    expansion_order.append(child.state)
-                    if return_expansion_order:
-                        return child, expansion_order
-                    return child
-                frontier.append(child)
+        for neighbor in graph.get(current, {}):
+            if neighbor in visited:
+                continue
+            new_path = path + [neighbor]
+            if neighbor == goal:  # <2>
+                expansion_order.append(neighbor)
+                return (new_path, expansion_order) if return_expansion_order else new_path
+            visited.add(neighbor)  # <3>
+            frontier.append(new_path)
 
-    if return_expansion_order:
-        return None, expansion_order
-    return None
+    return (None, expansion_order) if return_expansion_order else None
+
 ```
-
-<details>
-<summary>Explicação</summary>
-
-1.  **`def breadth_first_graph_search(problem, return_expansion_order=False):`**
-
-> Define a função de busca em largura no grafo. O parâmetro `return_expansion_order` permite que, além do resultado, a função retorne a lista de cidades na ordem em que foram "visitadas" pelo algoritmo.
-
-2.  **`node = Node(problem.initial)`**
-
-> Cria o nó raiz da árvore de busca usando o estado inicial definido no problema (ex: `'Natal'`).
-
-3.  **`if problem.goal_test(node.state):`**
-
-> Verifica imediatamente se o ponto de partida já é o destino final (o objetivo). Se for, a busca termina sem nem começar.
-
-4.  **`frontier = [node]`**
-
-> Inicializa a **fronteira** (ou borda) como uma fila (FIFO - *First-In, First-Out*). Na busca em largura, a fronteira garante que exploraremos todos os vizinhos de um nível antes de passar para o próximo.
-
-5.  **`visited = set()` e `expansion_order = []`**
-
-> `visited` é um conjunto que armazena estados já explorados para evitar ciclos infinitos (ex: ficar indo e voltando entre Natal e Macaíba). `expansion_order` registra a sequência cronológica da exploração.
-
-6.  **`while frontier:`**
-
-> Inicia o laço principal que continuará executando enquanto houver cidades na fronteira para serem exploradas.
-
-7.  **`node = frontier.pop(0)`**
-
-> Remove e retorna o **primeiro** elemento da fila. Esse comportamento de "tirar do início" é o que caracteriza a busca em largura, priorizando os nós mais rasos da árvore.
-
-8.  **`visited.add(node.state)`**
-
-> Adiciona a cidade atual ao conjunto de visitados, marcando que já verificamos todos os vizinhos deste local.
-
-9.  **`for child in node.expand(problem):`**
-
-> Expande o nó atual, gerando novos nós para todas as cidades vizinhas conectadas a ele (ex: de Natal, gera Parnamirim, Extremoz, etc.).
-
-10. **`if child.state not in visited and child not in frontier:`**
-
-> Filtro de segurança: só processa o vizinho se ele ainda não foi visitado e se já não estiver na fila para ser visitado. Isso economiza memória e tempo.
-
-11. **`if problem.goal_test(child.state):`**
-
-> O "teste de objetivo" é feito no momento em que o nó filho é gerado. Se o vizinho for o destino (ex: `'Pipa'`), a busca é interrompida com sucesso.
-
-12. **`frontier.append(child)`**
-
-> Se o vizinho não for o destino, ele é adicionado ao **final** da fila da fronteira para ser explorado posteriormente, após os seus "irmãos".
-
-13. **`return None`**
-
-> Se a fila da fronteira esvaziar e o objetivo não tiver sido encontrado, a função retorna `None`, indicando que não há caminho possível entre as cidades no mapa fornecido.
-
-</details>
+1. Remove sempre o caminho mais antigo — a fronteira se comporta como uma fila FIFO, garantindo exploração nível por nível.
+2. Teste de objetivo na geração do vizinho, não na retirada — é isso que garante o caminho com o menor número de passos.
+3. Um estado é marcado como visitado assim que é *descoberto* (adicionado à fronteira), não quando é expandido — evita colocar o mesmo estado na fila duas vezes.
 
 ```{python}
-#| colab: {base_uri: https://localhost:8080/}
-resultado_bfs, expansoes_bfs = breadth_first_graph_search(problem, return_expansion_order=True)
-print('BFS didática:', verbose(resultado_bfs))
+
+resultado_bfs, expansoes_bfs = breadth_first_search(graph, estado_inicial, objetivo, return_expansion_order=True)
+print('Caminho encontrado (BFS):', resultado_bfs)
 print('Ordem de expansão BFS:', expansoes_bfs)
+
 ```
 
 ### Busca em profundidade
@@ -463,155 +165,202 @@ print('Ordem de expansão BFS:', expansoes_bfs)
 A busca em profundidade é uma estratégia que expande sempre o nó mais profundo disponível na fronteira de busca. O algoritmo avança imediatamente para o nível mais profundo da árvore e, ao alcançar um nó sem sucessores, ele "retrocede" para o próximo nó mais profundo que ainda possui opções não exploradas. Geralmente implementada com uma estrutura de dados do tipo pilha (último a entrar, primeiro a sair), essa abordagem destaca-se pelo uso muito reduzido de memória. Contudo, ao contrário da busca em largura, ela não garante encontrar a solução de menor custo e pode ser incompleta em espaços de estados infinitos, pois corre o risco de ficar presa indefinidamente em um único caminho.
 
 ```{python}
-def depth_first_graph_search(problem, return_expansion_order=False):
-    frontier = [Node(problem.initial)]
+
+def depth_first_search(graph, start, goal, return_expansion_order=False):
+    """Busca em profundidade: expande o caminho mais recente primeiro (pilha)."""
+    frontier = [[start]]
     visited = set()
     expansion_order = []
 
     while frontier:
-        node = frontier.pop()
-        expansion_order.append(node.state)
+        path = frontier.pop()  # <1>
+        current = path[-1]
+        expansion_order.append(current)
 
-        if problem.goal_test(node.state):
-            if return_expansion_order:
-                return node, expansion_order
-            return node
+        if current == goal:  # <2>
+            return (path, expansion_order) if return_expansion_order else path
 
-        visited.add(node.state)
-        for child in node.expand(problem):
-            if child.state not in visited and child not in frontier:
-                frontier.append(child)
+        if current in visited:  # <3>
+            continue
+        visited.add(current)
 
-    if return_expansion_order:
-        return None, expansion_order
-    return None
+        for neighbor in graph.get(current, {}):
+            if neighbor not in visited:
+                frontier.append(path + [neighbor])
+
+    return (None, expansion_order) if return_expansion_order else None
+
 ```
-
-<details>
-<summary>Explicação</summary>
-
-1.  **`def depth_first_graph_search(problem, return_expansion_order=False):`**
-
-> Define a função de busca em profundidade no grafo. O objetivo aqui é explorar um ramo completo da árvore de estados até o fim antes de tentar um caminho alternativo.
-
-2.  **`frontier = [Node(problem.initial)]`**
-
-> Inicializa a **fronteira** com o nó inicial (ex: `'Natal'`). Diferente da BFS, aqui a lista será tratada como uma **Pilha** (LIFO - *Last-In, First-Out*).
-
-3.  **`visited = set()` e `expansion_order = []`**
-
-> Prepara o conjunto `visited` para rastrear cidades já processadas e a lista `expansion_order` para registrar a ordem em que os nós são retirados da fronteira.
-
-4.  **`while frontier:`**
-
-> Mantém o loop ativo enquanto houver cidades na pilha da fronteira para serem exploradas.
-
-5.  **`node = frontier.pop()`**
-
-> Remove e retorna o **último** elemento adicionado à lista. Esse é o "pulo do gato" da DFS: ao pegar sempre o último, o algoritmo mergulha verticalmente no grafo em vez de expandir horizontalmente.
-
-6.  **`expansion_order.append(node.state)`**
-
-> Registra a cidade que acaba de ser retirada da pilha para análise na lista de ordem de expansão.
-
-7.  **`if problem.goal_test(node.state):`**
-
-> Realiza o teste de objetivo. Na DFS, o teste é feito apenas quando o nó é **retirado** da fronteira (pop), e não quando é gerado. Se for o destino (ex: `'Pipa'`), a busca para.
-
-8.  **`visited.add(node.state)`**
-
-> Marca o estado atual como visitado para garantir que o algoritmo não entre em *looping* caso encontre caminhos cíclicos no mapa do RN.
-
-9.  **`for child in node.expand(problem):`**
-
-> Gera os vizinhos da cidade atual. Se estivermos em Macaíba, ele gerará Vera Cruz, Ielmo Marinho, etc.
-
-10. **`if child.state not in visited and child not in frontier:`**
-
-> Verifica se o vizinho já foi explorado ou se já está aguardando na pilha. Isso evita redundância e processamento desnecessário.
-
-11. **`frontier.append(child)`**
-
-> Adiciona o nó filho ao **topo** da pilha. Como ele foi o último a entrar, será o primeiro a ser retirado no próximo ciclo do `while`, forçando a exploração profunda.
-
-12. **`return None`**
-
-> Se a pilha esvaziar e o objetivo nunca tiver sido alcançado, a função retorna `None`, indicando que o destino é inacessível a partir da origem.
-
-</details>
+1. Remove sempre o último caminho adicionado — a fronteira se comporta como uma pilha, o que faz o algoritmo mergulhar em profundidade num único ramo antes de voltar.
+2. Diferente da BFS, o teste de objetivo só acontece quando o caminho é **retirado** da fronteira, não quando é gerado.
+3. Um mesmo estado pode entrar na fronteira mais de uma vez, por caminhos diferentes; essa checagem descarta o caminho se o estado já tiver sido processado antes.
 
 ```{python}
-#| colab: {base_uri: https://localhost:8080/}
-resultado_dfs, expansoes_dfs = depth_first_graph_search(problem, return_expansion_order=True)
-print('DFS didática:', verbose(resultado_dfs))
+
+resultado_dfs, expansoes_dfs = depth_first_search(graph, estado_inicial, objetivo, return_expansion_order=True)
+print('Caminho encontrado (DFS):', resultado_dfs)
 print('Ordem de expansão DFS:', expansoes_dfs)
+
 ```
 
-### Simulação do Agente
+## Busca uniforme
+
+A busca de custo uniforme (*Uniform Cost Search* ou UCS) é uma generalização da BFS para grafos com custos de aresta diferentes: em vez de expandir sempre o caminho mais raso, ela expande sempre o caminho de **menor custo acumulado** (`g(n)`). Quando todas as arestas custam o mesmo (como no `environment` deste capítulo), UCS e BFS produzem o mesmo resultado — a diferença só aparece em grafos com pesos variados, como o `environment_with_distance` do próximo capítulo.
 
 ```{python}
-#| colab: {base_uri: https://localhost:8080/}
-agente_bfs = SearchAgent(goal = 'Pipa', search_algorithm = breadth_first_graph_search, graph = graph)
-actions_bfs, trajetoria_bfs = agent_simulation(agente_bfs, 'Natal')
 
-print('Agente com BFS')
-print('Ações:', actions_bfs)
-print('Trajetória:', trajetoria_bfs)
+def uniform_cost_search(graph, start, goal, return_expansion_order=False):
+    """Busca de custo uniforme: expande sempre o caminho de menor custo acumulado."""
+    frontier = [[start]]
+    visited = set()
+    expansion_order = []
+
+    while frontier:
+        frontier.sort(key=lambda path: (path_cost(graph, path), path[-1]))  # <1>
+        path = frontier.pop(0)
+        current = path[-1]
+
+        if current in visited:
+            continue
+        visited.add(current)
+        expansion_order.append(current)
+
+        if current == goal:  # <2>
+            return (path, expansion_order) if return_expansion_order else path
+
+        for neighbor in graph.get(current, {}):
+            if neighbor not in visited:
+                frontier.append(path + [neighbor])
+
+    return (None, expansion_order) if return_expansion_order else None
+
 ```
+1. A fronteira inteira é reordenada pelo custo acumulado do caminho (`g(n)`) antes de cada remoção — é essa ordenação que faz a UCS sempre expandir o caminho mais barato conhecido, em vez de seguir a ordem de chegada (fila) ou de inserção (pilha).
+2. O teste de objetivo só acontece na retirada, igual à DFS — é o que garante que, ao alcançar um estado, já sabemos que nenhum caminho mais barato para ele existe.
 
 ```{python}
-#| colab: {base_uri: https://localhost:8080/}
-agente_dfs = SearchAgent(goal = 'Pipa', search_algorithm = depth_first_graph_search, graph = graph)
-actions_dfs, trajetoria_dfs = agent_simulation(agente_dfs, 'Natal')
 
-print('Agente com DFS')
-print('Ações:', actions_dfs)
-print('Trajetória:', trajetoria_dfs)
+resultado_ucs, expansoes_ucs = uniform_cost_search(graph, estado_inicial, objetivo, return_expansion_order=True)
+print('Caminho encontrado (UCS):', resultado_ucs)
+print('Ordem de expansão UCS:', expansoes_ucs)
+
 ```
 
 ## Desafio
+
+### Busca em profundidade limitada
 
 Implemente uma versão da **busca em profundidade limitada**. Nessa estratégia, a exploração segue em profundidade, mas o algoritmo só pode expandir nós até uma profundidade máxima definida por `limit`.
 
 Sua função deve:
 
-1. Começar no estado inicial do problema;
-2. Explorar os nós em profundidade;
-3. Impedir a expansão de nós com profundidade maior ou igual ao limite;
-4. Retornar o nó solução se encontrar o objetivo;
+1. Começar no estado inicial;
+2. Explorar os caminhos em profundidade (mesma lógica de pilha da DFS);
+3. Impedir a expansão de caminhos com profundidade maior ou igual ao limite;
+4. Retornar o caminho solução se encontrar o objetivo;
 5. Retornar `None` se nenhuma solução for encontrada dentro do limite.
 
-Use o atributo `node.depth` para controlar a expansão.
+A profundidade de um caminho é `len(path) - 1` (o número de arestas percorridas).
 
 ```{python}
-def depth_limited_search(problem, limit=2):
-    # Comece com o nó inicial na fronteira.
-    frontier = [Node(problem.initial)]
+
+def depth_limited_search(graph, start, goal, limit=2):
+    """Busca em profundidade sem expandir caminhos além da profundidade `limit`."""
+    # Comece com o caminho inicial na fronteira.
+    frontier = [[start]]
 
     while frontier:
-        node = frontier.pop()
+        path = frontier.pop()
+        current = path[-1]
 
         # Verifique se o objetivo foi encontrado.
-        if problem.goal_test(node.state):
-            return node
+        if current == goal:
+            return path
 
-        # Expanda o nó apenas se ele ainda estiver dentro do limite.
-        if node.depth < limit:
-            for child in node.expand(problem):
-                # Adicione os filhos à fronteira.
+        # Expanda o caminho apenas se ele ainda estiver dentro do limite.
+        if len(path) - 1 < limit:  # <1>
+            for neighbor in graph.get(current, {}):
+                # Adicione os novos caminhos à fronteira.
                 pass
+
+    return None
+
+```
+1. `len(path) - 1` é a profundidade do caminho atual (número de arestas percorridas); só expandimos enquanto ela for menor que `limit`.
+
+### Busca em profundidade iterativa
+
+A **busca em profundidade iterativa** (*Iterative Deepening Search*, IDS) combina as vantagens da BFS e da DFS: repete a busca em profundidade limitada com limites crescentes (0, 1, 2, ...) até encontrar o objetivo, obtendo o caminho mais curto (como a BFS) sem precisar manter toda a fronteira em memória de uma vez (como a DFS).
+
+Sua função deve:
+
+1. Tentar limites de `0` até `max_limit`, um de cada vez;
+2. Para cada limite, chamar `depth_limited_search(graph, start, goal, limit)`;
+3. Retornar o primeiro caminho encontrado;
+4. Retornar `None` se nenhum limite até `max_limit` encontrar o objetivo.
+
+```{python}
+
+def iterative_deepening_search(graph, start, goal, max_limit=10):
+    """Busca em profundidade iterativa: chama depth_limited_search com limites crescentes."""
+    for limit in range(max_limit + 1):
+        # Tente encontrar o objetivo com o limite atual.
+        pass
+
+    return None
+
+```
+
+<details>
+<summary>Dicas</summary>
+
+Uma implementação possível de `depth_limited_search`:
+
+```python
+def depth_limited_search(graph, start, goal, limit=2):
+    frontier = [[start]]
+
+    while frontier:
+        path = frontier.pop()
+        current = path[-1]
+
+        if current == goal:
+            return path
+
+        if len(path) - 1 < limit:
+            for neighbor in graph.get(current, {}):
+                frontier.append(path + [neighbor])
 
     return None
 ```
 
-## Key takeways
+E `iterative_deepening_search`, reaproveitando a função acima:
 
-- Um agente baseado em objetivos precisa formular um problema antes de buscar uma solução.
-- BFS e DFS usam a mesma modelagem do problema, mas exploram o espaço de estados de formas diferentes.
-- A solução pode ser representada como uma sequência de ações obtida a partir de um `Node`.
-- Separar ambiente, problema e agente torna o código mais reutilizável.
+```python
+def iterative_deepening_search(graph, start, goal, max_limit=10):
+    for limit in range(max_limit + 1):
+        result = depth_limited_search(graph, start, goal, limit)
+        if result is not None:
+            return result
+
+    return None
+```
+
+</details>
+
+## Perguntas para reflexão
+
+1. Por que a BFS testa o objetivo ao *gerar* um vizinho, enquanto a DFS e a UCS testam ao *retirar* o caminho da fronteira? O que aconteceria se a BFS testasse na retirada, ou se a DFS testasse na geração?
+2. Em que tipo de grafo a UCS encontraria um caminho diferente do encontrado pela BFS? Por que, no `environment` deste capítulo, as duas sempre coincidem?
+3. Por que representar cada candidato da fronteira como o caminho completo (lista de cidades) elimina a necessidade de uma estrutura como `Node` com ponteiro para o nó pai?
+4. Qual a relação entre a busca em profundidade limitada e a busca em profundidade iterativa? Por que a IDS é completa mesmo reaproveitando uma busca que, sozinha, não é?
+
+## Key takeaways
+
+- Um algoritmo de busca explora um grafo representando cada candidato como o caminho percorrido até ele — o estado atual é sempre o último elemento do caminho.
+- BFS e DFS usam a mesma representação de grafo, mas exploram o espaço de estados de formas diferentes (fila vs. pilha) e testam o objetivo em momentos diferentes (na geração vs. na retirada).
+- A solução já é o próprio caminho encontrado — não é preciso reconstruir nada a partir de ponteiros de pai.
 
 ## Referencias
 
 1. Russell, S. & Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.
-2. Implementações clássicas de `Problem`, `Node` e agentes baseados em objetivos no ecossistema AIMA.

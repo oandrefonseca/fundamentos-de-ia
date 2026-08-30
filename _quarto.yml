@@ -5,7 +5,6 @@ project:
     - index.qmd
     - apresentacao.qmd
     - capitulos/*.qmd
-    - apendices/*.qmd
 
 website:
   title: "Introdução à Inteligência Artificial"
@@ -50,16 +49,12 @@ website:
           href: capitulos/10-redes-bayesianas.qmd
         - text: "11. Cadeias de Markov"
           href: capitulos/11-cadeias-de-markov.qmd
-    - section: "Apêndices"
-      contents:
-        - text: "Métodos de Busca I sem OO"
-          href: apendices/metodos-de-busca-sem-oo.qmd
 
 language:
   title-block-author-single: "Autor"
 
 execute:
-  enabled: true
+  enabled: false
   freeze: true
 
 format:
