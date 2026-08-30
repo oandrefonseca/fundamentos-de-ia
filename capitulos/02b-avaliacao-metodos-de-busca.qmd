@@ -1,0 +1,235 @@
+---
+title: 'Laboratório - Avaliação de Desempenho e Completude dos Métodos de Busca'
+format:
+  html: default
+  ipynb: default
+jupyter: python3
+execute:
+  enabled: true
+---
+
+## Ajustando ambiente
+
+```{python}
+
+import random
+import time
+import math
+import pandas as pd
+import networkx as nx
+import matplotlib.pyplot as plt
+
+```
+
+## Motivação
+
+Os capítulos 1 e 2 ensinaram BFS, busca de custo uniforme (UCS), busca gulosa (GBFS) e A* sobre um grafo didático pequeno (13 cidades, a maioria com arestas de custo igual). Esse grafo é ótimo para acompanhar o algoritmo passo a passo, mas pequeno demais para revelar diferenças reais de desempenho entre as estratégias, e uniforme demais para mostrar que **nem todo algoritmo encontra o caminho de menor custo**. Este capítulo gera um grafo aleatório maior — com pesos de aresta variados e derivados de coordenadas reais — e usa as implementações prontas e testadas do [NetworkX](https://networkx.org/) para resolver dezenas de pares (estado inicial, objetivo), medindo tempo de execução, custo e completude de cada estratégia.
+
+## Objetivos de Aprendizagem
+
+* **Gerar um grafo aleatório adequado para busca:** um grafo geométrico conexo, com pesos de aresta que tornam a heurística de distância em linha reta admissível por construção.
+* **Reaproveitar buscas prontas do NetworkX:** usar as implementações nativas de busca em largura, Dijkstra (equivalente a UCS) e A*, em vez de reimplementar os algoritmos.
+* **Obter a Busca Gulosa a partir do A\*:** entender por que anular o custo acumulado no A* do NetworkX produz exatamente o comportamento da GBFS.
+* **Medir desempenho:** comparar tempo de execução, custo e comprimento do caminho encontrado por cada algoritmo em múltiplos cenários.
+* **Avaliar completude:** verificar se cada algoritmo relata corretamente a ausência de solução quando ela não existe.
+
+## Implementação
+
+### Geração do grafo aleatório
+
+Cada nó recebe uma posição aleatória num plano 2D; dois nós são conectados se a distância entre eles for menor que um raio (grafo geométrico aleatório). O peso de cada aresta é a própria distância euclidiana entre os pontos — é isso que garante que a distância em linha reta até o objetivo nunca superestima o custo real do caminho (desigualdade triangular), tornando-a uma heurística admissível para qualquer par (estado, objetivo), sem precisar de um dicionário de heurística fixo como no capítulo 2.
+
+```{python}
+
+def generate_random_graph(n_nodes=40, seed=42):
+    """Gera um grafo geométrico aleatório conexo, com nós posicionados em um plano 2D."""
+    radius = 0.2
+    graph = None
+    for _ in range(20):
+        graph = nx.random_geometric_graph(n_nodes, radius, seed=seed)
+        if nx.is_connected(graph):
+            break
+        radius += 0.05
+    else:
+        raise RuntimeError('Não foi possível gerar um grafo conexo; ajuste n_nodes ou o raio inicial.')
+
+    coords = nx.get_node_attributes(graph, 'pos')
+    for a, b in graph.edges:
+        graph[a][b]['weight'] = math.dist(coords[a], coords[b])
+
+    return graph, coords
+
+```
+
+```{python}
+
+graph, coords = generate_random_graph()
+
+plt.figure(figsize=(8, 8))
+nx.draw(graph, pos=coords, node_size=120, node_color='#d9e8fb', edgecolors='black', with_labels=True, font_size=7)
+plt.title('Grafo geométrico aleatório')
+plt.show()
+
+```
+
+### Funções de busca
+
+BFS, UCS (Dijkstra) e A* já têm implementação pronta no NetworkX — reaproveitamos essas funções em vez de reescrevê-las. A Busca Gulosa não tem uma função própria: obtemos o mesmo comportamento a partir do A*, anulando o peso das arestas (`weight=0`) para que a ordenação da fronteira dependa só da heurística $h(n)$, exatamente como a GBFS do capítulo 2.
+
+```{python}
+
+def bfs_path(graph, start, goal):
+    """Busca em largura: caminho com o menor número de arestas, via NetworkX."""
+    try:
+        return nx.shortest_path(graph, start, goal, weight=None)
+    except nx.NetworkXNoPath:
+        return None
+
+
+def dfs_path(graph, start, goal):
+    """Um caminho encontrado por busca em profundidade, via NetworkX (não é garantidamente o mais curto)."""
+    tree = nx.dfs_tree(graph, start)
+    if goal not in tree:
+        return None
+    return nx.shortest_path(tree, start, goal)
+
+
+def ucs_path(graph, start, goal):
+    """Busca de custo uniforme: caminho de menor custo, via Dijkstra do NetworkX."""
+    try:
+        return nx.dijkstra_path(graph, start, goal, weight='weight')
+    except nx.NetworkXNoPath:
+        return None
+
+
+def astar_path_search(graph, start, goal, coords):
+    """Busca A*: caminho de menor custo total estimado, via NetworkX."""
+    heuristic = lambda a, b: math.dist(coords[a], coords[b])
+    try:
+        return nx.astar_path(graph, start, goal, heuristic=heuristic, weight='weight')
+    except nx.NetworkXNoPath:
+        return None
+
+
+def gbfs_path(graph, start, goal, coords):
+    """Busca gulosa: A* do NetworkX com o custo acumulado g(n) anulado, restando só h(n)."""
+    heuristic = lambda a, b: math.dist(coords[a], coords[b])
+    try:
+        return nx.astar_path(graph, start, goal, heuristic=heuristic, weight=lambda u, v, d: 0)
+    except nx.NetworkXNoPath:
+        return None
+
+
+def path_cost(graph, path):
+    """Soma o peso das arestas de um caminho encontrado no grafo."""
+    if not path:
+        return None
+    return nx.path_weight(graph, path, weight='weight')
+
+```
+
+## Exemplo prático
+
+```{python}
+
+start_node, goal_node = 0, len(graph) - 1
+
+algorithms = {
+    'BFS': lambda: bfs_path(graph, start_node, goal_node),
+    'DFS': lambda: dfs_path(graph, start_node, goal_node),
+    'UCS': lambda: ucs_path(graph, start_node, goal_node),
+    'GBFS': lambda: gbfs_path(graph, start_node, goal_node, coords),
+    'A*': lambda: astar_path_search(graph, start_node, goal_node, coords),
+}
+
+for name, search in algorithms.items():
+    start_time = time.perf_counter()
+    path = search()
+    elapsed = time.perf_counter() - start_time
+    print(f"{name:5} | encontrou={path is not None!s:5} | custo={path_cost(graph, path)} | "
+          f"arestas={len(path) - 1 if path else None} | tempo={elapsed * 1000:.3f} ms")
+
+```
+
+## Avaliação de desempenho
+
+Sorteamos vários pares (estado inicial, objetivo) diferentes e rodamos os cinco algoritmos em cada um, registrando tempo, custo e comprimento do caminho encontrado.
+
+```{python}
+
+random.seed(42)
+NUM_TRIALS = 20
+
+nodes = list(graph.nodes)
+test_pairs = [tuple(random.sample(nodes, 2)) for _ in range(NUM_TRIALS)]
+
+results = []
+for start, goal in test_pairs:
+    for name, search in {
+        'BFS': lambda: bfs_path(graph, start, goal),
+        'DFS': lambda: dfs_path(graph, start, goal),
+        'UCS': lambda: ucs_path(graph, start, goal),
+        'GBFS': lambda: gbfs_path(graph, start, goal, coords),
+        'A*': lambda: astar_path_search(graph, start, goal, coords),
+    }.items():
+        start_time = time.perf_counter()
+        path = search()
+        elapsed = time.perf_counter() - start_time
+        results.append({
+            'algoritmo': name,
+            'encontrou': path is not None,
+            'custo': path_cost(graph, path),
+            'arestas': len(path) - 1 if path else None,
+            'tempo_ms': elapsed * 1000,
+        })
+
+results_df = pd.DataFrame(results)
+summary = results_df.groupby('algoritmo').agg(
+    taxa_sucesso=('encontrou', 'mean'),
+    custo_medio=('custo', 'mean'),
+    arestas_media=('arestas', 'mean'),
+    tempo_medio_ms=('tempo_ms', 'mean'),
+).round(3)
+display(summary)
+
+```
+
+## Avaliação de completude
+
+Adicionamos um nó propositalmente isolado (sem nenhuma aresta) e tentamos alcançá-lo a partir de um estado conectado. Um algoritmo completo deve relatar corretamente que não há solução, em vez de travar ou lançar um erro inesperado.
+
+```{python}
+
+graph_with_isolated_node = graph.copy()
+graph_with_isolated_node.add_node('isolated')
+coords_with_isolated_node = dict(coords)
+
+for name, search in {
+    'BFS': lambda: bfs_path(graph_with_isolated_node, 0, 'isolated'),
+    'DFS': lambda: dfs_path(graph_with_isolated_node, 0, 'isolated'),
+    'UCS': lambda: ucs_path(graph_with_isolated_node, 0, 'isolated'),
+    'GBFS': lambda: gbfs_path(graph_with_isolated_node, 0, 'isolated', coords_with_isolated_node) if 'isolated' in coords_with_isolated_node else 'N/A (sem coordenada)',
+    'A*': lambda: astar_path_search(graph_with_isolated_node, 0, 'isolated', coords_with_isolated_node) if 'isolated' in coords_with_isolated_node else 'N/A (sem coordenada)',
+}.items():
+    print(name, '->', search())
+
+```
+
+## Perguntas para reflexão
+
+1. No grafo gerado, por que o caminho da BFS (menor número de arestas) frequentemente não é o de menor custo total, enquanto o de UCS e A* sempre é?
+2. Por que passar `weight=lambda u, v, d: 0` para `nx.astar_path` transforma o A* em uma busca gulosa pura? O que isso revela sobre a GBFS ser um caso particular do A* em que o custo acumulado deixa de importar?
+3. Por que `dfs_path` usa `nx.dfs_tree` seguido de `nx.shortest_path` dentro da árvore, em vez de chamar `nx.shortest_path` diretamente no grafo original? O que aconteceria se chamássemos diretamente no grafo original?
+4. O teste de completude mostrou que todos os algoritmos retornam `None`/sem caminho para o nó isolado. Isso comprova que são completos? O que a completude garante — e o que ela não garante?
+
+## Key takeaways
+
+- Nem todo algoritmo de busca é ótimo em custo: BFS garante o menor número de arestas, não o menor custo — só UCS e A* garantem isso num grafo com pesos variados.
+- A Busca Gulosa não precisa de uma implementação própria: é o A* com o custo acumulado `g(n)` anulado, restando só a heurística.
+- Reaproveitar implementações testadas (NetworkX) permite focar a avaliação no comportamento dos algoritmos, não na correção do próprio código.
+- Completude (sempre reportar corretamente quando não há solução) é uma propriedade distinta de otimalidade (encontrar o melhor caminho) — os dois testes deste capítulo avaliam coisas diferentes.
+
+## Referencias
+
+1. Russell, S. & Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.
+2. [NetworkX — Shortest Paths](https://networkx.org/documentation/stable/reference/algorithms/shortest_paths.html)

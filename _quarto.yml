@@ -25,29 +25,31 @@ website:
           href: capitulos/01-metodos-de-busca-i.qmd
         - text: "2. Métodos de Busca II"
           href: capitulos/02-metodos-de-busca-ii.qmd
+        - text: "3. Avaliação de Desempenho e Completude"
+          href: capitulos/02b-avaliacao-metodos-de-busca.qmd
     - section: "Busca em ambientes complexos"
       contents:
-        - text: "3. Ambientes Complexos I"
+        - text: "4. Ambientes Complexos I"
           href: capitulos/03-ambientes-complexos-i.qmd
-        - text: "4. Ambientes Complexos II"
+        - text: "5. Ambientes Complexos II"
           href: capitulos/04-ambientes-complexos-ii.qmd
     - section: "Busca competitiva"
       contents:
-        - text: "5. Minimax e Alpha-Beta"
+        - text: "6. Minimax e Alpha-Beta"
           href: capitulos/05-busca-competitiva-i.qmd
-        - text: "6. Monte Carlo Tree Search"
+        - text: "7. Monte Carlo Tree Search"
           href: capitulos/06-busca-competitiva-ii.qmd
     - section: "Conhecimento e incerteza"
       contents:
-        - text: "7. Agentes Lógicos"
+        - text: "8. Agentes Lógicos"
           href: capitulos/07-agentes-logicos.qmd
-        - text: "8. Agentes Probabilísticos"
+        - text: "9. Agentes Probabilísticos"
           href: capitulos/08-agentes-probabilisticos.qmd
-        - text: "9. Naive Bayes"
+        - text: "10. Naive Bayes"
           href: capitulos/09-naive-bayes.qmd
-        - text: "10. Redes Bayesianas"
+        - text: "11. Redes Bayesianas"
           href: capitulos/10-redes-bayesianas.qmd
-        - text: "11. Cadeias de Markov"
+        - text: "12. Cadeias de Markov"
           href: capitulos/11-cadeias-de-markov.qmd
 
 language:
