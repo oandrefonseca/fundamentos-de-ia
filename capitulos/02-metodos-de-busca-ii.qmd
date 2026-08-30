@@ -356,26 +356,15 @@ for cidade, valor in misleading_heuristics.items():
 resultado_greedy_ruim, expansoes_greedy_ruim = greedy_best_first_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order=True)
 resultado_astar_ruim, expansoes_astar_ruim = astar_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order=True)
 
+```
+
+```{python}
+
 print('Greedy com heurística enganosa:', resultado_greedy_ruim)
 print('Ordem de expansão Greedy:', expansoes_greedy_ruim)
 print()
 print('A* com a mesma heurística:', resultado_astar_ruim)
 print('Ordem de expansão A*:', expansoes_astar_ruim)
-
-```
-
-## Simulação de agentes
-
-O caminho já é a trajetória do agente, e as ações são só o caminho sem o estado inicial (`path[1:]`) — `resultado_astar` já foi calculado com `new_heuristics` na seção anterior, então só o Greedy precisa ser recalculado com essa heurística.
-
-```{python}
-
-resultado_greedy_novo, expansoes_greedy_novo = greedy_best_first_search(graph, estado_inicial, objetivo, new_heuristics, return_expansion_order=True)
-acoes_greedy = resultado_greedy_novo[1:] if resultado_greedy_novo else []
-
-print('Agente com Greedy')
-print('Ações:', acoes_greedy)
-print('Trajetória:', resultado_greedy_novo)
 
 ```
 
