@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -112,9 +112,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Procurar"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -470,23 +467,6 @@ window.Quarto = {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Apêndices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar seção">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../apendices/metodos-de-busca-sem-oo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Métodos de Busca I sem OO</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -502,13 +482,11 @@ window.Quarto = {
   <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de Aprendizagem</a></li>
   <li><a href="#implementação" id="toc-implementação" class="nav-link" data-scroll-target="#implementação">Implementação</a>
   <ul class="collapse">
-  <li><a href="#classes-do-ambiente" id="toc-classes-do-ambiente" class="nav-link" data-scroll-target="#classes-do-ambiente">Classes do Ambiente</a></li>
-  <li><a href="#classes-de-agente" id="toc-classes-de-agente" class="nav-link" data-scroll-target="#classes-de-agente">Classes de Agente</a></li>
-  <li><a href="#funções-auxiliares" id="toc-funções-auxiliares" class="nav-link" data-scroll-target="#funções-auxiliares">Funções Auxiliares</a></li>
+  <li><a href="#representação-do-ambiente" id="toc-representação-do-ambiente" class="nav-link" data-scroll-target="#representação-do-ambiente">Representação do ambiente</a></li>
+  <li><a href="#funções-auxiliares" id="toc-funções-auxiliares" class="nav-link" data-scroll-target="#funções-auxiliares">Funções auxiliares</a></li>
   </ul></li>
   <li><a href="#exemplo-prático" id="toc-exemplo-prático" class="nav-link" data-scroll-target="#exemplo-prático">Exemplo prático</a>
   <ul class="collapse">
-  <li><a href="#construção-do-ambiente" id="toc-construção-do-ambiente" class="nav-link" data-scroll-target="#construção-do-ambiente">Construção do Ambiente</a></li>
   <li><a href="#definindo-heurística" id="toc-definindo-heurística" class="nav-link" data-scroll-target="#definindo-heurística">Definindo heurística</a></li>
   <li><a href="#relembrando-a-busca-em-profundidade" id="toc-relembrando-a-busca-em-profundidade" class="nav-link" data-scroll-target="#relembrando-a-busca-em-profundidade">Relembrando a busca em profundidade</a></li>
   <li><a href="#greedy-best-first-search" id="toc-greedy-best-first-search" class="nav-link" data-scroll-target="#greedy-best-first-search">Greedy Best-First Search</a></li>
@@ -520,9 +498,9 @@ window.Quarto = {
   <li><a href="#desafio" id="toc-desafio" class="nav-link" data-scroll-target="#desafio">Desafio</a>
   <ul class="collapse">
   <li><a href="#diretrizes-de-implementação" id="toc-diretrizes-de-implementação" class="nav-link" data-scroll-target="#diretrizes-de-implementação">Diretrizes de Implementação</a></li>
-  <li><a href="#perguntas-do-desafio" id="toc-perguntas-do-desafio" class="nav-link" data-scroll-target="#perguntas-do-desafio">Perguntas do desafio</a></li>
   </ul></li>
-  <li><a href="#key-takeways" id="toc-key-takeways" class="nav-link" data-scroll-target="#key-takeways">Key takeways</a></li>
+  <li><a href="#perguntas-para-reflexão" id="toc-perguntas-para-reflexão" class="nav-link" data-scroll-target="#perguntas-para-reflexão">Perguntas para reflexão</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/blob/main/capitulos/02-metodos-de-busca-ii.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="02-metodos-de-busca-ii.ipynb" download="02-metodos-de-busca-ii.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -552,7 +530,7 @@ window.Quarto = {
 
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="eebea970" class="cell" data-execution_count="1">
+<div id="27412cd6" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
@@ -566,791 +544,264 @@ window.Quarto = {
 <section id="objetivos-de-aprendizagem" class="level2">
 <h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de Aprendizagem</h2>
 <ul>
-<li>Entender a diferença entre Greedy Best-First Search e A* Search.</li>
-<li>Interpretar o papel de <code>g(n)</code>, <code>h(n)</code> e <code>f(n)</code> na escolha dos nós.</li>
-<li>Observar como a heurística influencia a ordem de expansão e o caminho encontrado.</li>
-<li>Implementar e adaptar versões didáticas de algoritmos de busca informada.</li>
-<li>Comparar diferentes heurísticas no mesmo problema de busca.</li>
+<li><strong>Entender a diferença entre GBFS e A*:</strong> compreender por que a busca gulosa considera só a heurística, enquanto o A* combina heurística e custo acumulado.</li>
+<li><strong>Interpretar <code>g(n)</code>, <code>h(n)</code> e <code>f(n)</code>:</strong> entender o papel de cada termo na escolha do próximo caminho a expandir.</li>
+<li><strong>Observar o efeito da heurística:</strong> como diferentes heurísticas mudam a ordem de expansão e o caminho encontrado.</li>
+<li><strong>Implementar os algoritmos:</strong> diretamente sobre um grafo representado como dicionário, com a heurística como parâmetro explícito.</li>
+<li><strong>Comparar heurísticas:</strong> avaliar o mesmo problema de busca sob heurísticas mais e menos informativas, incluindo uma heurística propositalmente enganosa.</li>
 </ul>
 </section>
 <section id="implementação" class="level2">
 <h2 class="anchored" data-anchor-id="implementação">Implementação</h2>
-<section id="classes-do-ambiente" class="level3">
-<h3 class="anchored" data-anchor-id="classes-do-ambiente">Classes do Ambiente</h3>
-<div id="717f2f77" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Problem:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial, goal<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.initial <span class="op">=</span> initial</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.goal <span class="op">=</span> goal</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> actions(<span class="va">self</span>, state):</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> result(<span class="va">self</span>, state, action):</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> goal_test(<span class="va">self</span>, state):</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> state <span class="op">==</span> <span class="va">self</span>.goal</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path_cost(<span class="va">self</span>, c, state1, action, state2):</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> c <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GraphProblem(Problem):</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial, goal, graph):</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(initial, goal)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph <span class="op">=</span> graph</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> actions(<span class="va">self</span>, state):</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">list</span>(<span class="va">self</span>.graph.get(state).keys())</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> result(<span class="va">self</span>, state, action):</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> action</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path_cost(<span class="va">self</span>, cost_so_far, state1, action, state2):</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        edge_cost <span class="op">=</span> <span class="va">self</span>.graph.get(state1, state2)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> edge_cost <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">float</span>(<span class="st">'inf'</span>)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cost_so_far <span class="op">+</span> edge_cost</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleGraph:</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, graph_dict):</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph_dict <span class="op">=</span> graph_dict</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get(<span class="va">self</span>, a, b<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        links <span class="op">=</span> <span class="va">self</span>.graph_dict.setdefault(a, {})</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> b <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> links</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> links.get(b)</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Node:</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state, parent<span class="op">=</span><span class="va">None</span>, action<span class="op">=</span><span class="va">None</span>, path_cost<span class="op">=</span><span class="dv">0</span>):</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> state</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.parent <span class="op">=</span> parent</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action <span class="op">=</span> action</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.path_cost <span class="op">=</span> path_cost</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.depth <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> parent <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> parent.depth <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">'&lt;Node </span><span class="sc">{}</span><span class="st">&gt;'</span>.<span class="bu">format</span>(<span class="va">self</span>.state)</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__lt__</span>(<span class="va">self</span>, node):</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.state <span class="op">&lt;</span> node.state</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> expand(<span class="va">self</span>, problem):</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="va">self</span>.child_node(problem, action) <span class="cf">for</span> action <span class="kw">in</span> problem.actions(<span class="va">self</span>.state)]</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> child_node(<span class="va">self</span>, problem, action):</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        next_state <span class="op">=</span> problem.result(<span class="va">self</span>.state, action)</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Node(</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>            next_state,</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>,</span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>            action,</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>            problem.path_cost(<span class="va">self</span>.path_cost, <span class="va">self</span>.state, action, next_state),</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> solution(<span class="va">self</span>):</span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [node.action <span class="cf">for</span> node <span class="kw">in</span> <span class="va">self</span>.path()[<span class="dv">1</span>:]]</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path(<span class="va">self</span>):</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> <span class="va">self</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        path_back <span class="op">=</span> []</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> node <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>            path_back.append(node)</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node.parent</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        path_back.reverse()</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> path_back</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">isinstance</span>(other, Node) <span class="kw">and</span> <span class="va">self</span>.state <span class="op">==</span> other.state</span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__hash__</span>(<span class="va">self</span>):</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">hash</span>(<span class="va">self</span>.state)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="classes-de-agente" class="level3">
-<h3 class="anchored" data-anchor-id="classes-de-agente">Classes de Agente</h3>
-<div id="97e58f17" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleProblemSolvingAgentProgram:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial_state<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> initial_state</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.seq <span class="op">=</span> []</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, percept):</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> <span class="va">self</span>.update_state(<span class="va">self</span>.state, percept)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.seq:</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>            goal <span class="op">=</span> <span class="va">self</span>.formulate_goal(<span class="va">self</span>.state)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            problem <span class="op">=</span> <span class="va">self</span>.formulate_problem(<span class="va">self</span>.state, goal)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.seq <span class="op">=</span> <span class="va">self</span>.search(problem)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.seq:</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.seq.pop(<span class="dv">0</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_state(<span class="va">self</span>, state, percept):</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_goal(<span class="va">self</span>, state):</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_problem(<span class="va">self</span>, state, goal):</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> search(<span class="va">self</span>, problem):</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SearchAgent(SimpleProblemSolvingAgentProgram):</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, goal, search_algorithm, graph):</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(initial_state<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.goal <span class="op">=</span> goal</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.search_algorithm <span class="op">=</span> search_algorithm</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph <span class="op">=</span> graph</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_state(<span class="va">self</span>, state, percept):</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> percept</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_goal(<span class="va">self</span>, state):</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.goal</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_problem(<span class="va">self</span>, state, goal):</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> GraphProblem(state, goal, <span class="va">self</span>.graph)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> search(<span class="va">self</span>, problem):</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> <span class="va">self</span>.search_algorithm(problem)</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> []</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> node.solution()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="representação-do-ambiente" class="level3">
+<h3 class="anchored" data-anchor-id="representação-do-ambiente">Representação do ambiente</h3>
+<p>Assim como no capítulo anterior, o ambiente é só um dicionário: cada cidade aponta para suas vizinhas (com o custo de cada aresta).</p>
+<div id="de742318" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Ceará-Mirim'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Ielmo Marinho'</span>: <span class="dv">1</span>, <span class="st">'Vera Cruz'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: {<span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: {<span class="st">'Vera Cruz'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: {<span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: {<span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Pipa'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: {<span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="funções-auxiliares" class="level3">
-<h3 class="anchored" data-anchor-id="funções-auxiliares">Funções Auxiliares</h3>
-<div id="91fc8cad" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> state_path(node):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [step.state <span class="cf">for</span> step <span class="kw">in</span> node.path()]</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verbose(node):</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">'encontrou'</span>: <span class="va">False</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">'caminho'</span>: <span class="va">None</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">'acoes'</span>: <span class="va">None</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">'custo'</span>: <span class="va">None</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'encontrou'</span>: <span class="va">True</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'caminho'</span>: state_path(node),</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'acoes'</span>: node.solution(),</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'custo'</span>: node.path_cost,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> agent_simulation(agent, initial_state, max_step<span class="op">=</span><span class="dv">20</span>):</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> initial_state</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    trajectory <span class="op">=</span> [state]</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    actions <span class="op">=</span> []</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_step):</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        action <span class="op">=</span> agent(state)</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        actions.append(action)</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> action</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        trajectory.append(state)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="op">==</span> agent.goal:</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> actions, trajectory</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 class="anchored" data-anchor-id="funções-auxiliares">Funções auxiliares</h3>
+<p>Cada candidato na fronteira de busca é o <strong>caminho percorrido até ali</strong> (uma lista de cidades), não um objeto <code>Node</code>. O estado atual é <code>path[-1]</code>.</p>
+<div id="b0eab0fa" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(graph, path):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Soma o custo das arestas percorridas em um caminho."""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(graph[a][b] <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(path, path[<span class="dv">1</span>:]))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Diferente do capítulo 1, aqui as arestas têm pesos diferentes (ver <code>environment_with_distance</code> mais adiante), então <code>path_cost</code> já calcula o <span class="math inline">\(g(n)\)</span> real — o custo acumulado do caminho — que os algoritmos abaixo usam diretamente.</p>
 </section>
 </section>
 <section id="exemplo-prático" class="level2">
 <h2 class="anchored" data-anchor-id="exemplo-prático">Exemplo prático</h2>
-<p>Agora vamos aplicar essas estruturas em um ambiente simples, com um estado inicial <code>Natal</code> e um objetivo <code>Pipa</code>.</p>
-<section id="construção-do-ambiente" class="level3">
-<h3 class="anchored" data-anchor-id="construção-do-ambiente">Construção do Ambiente</h3>
-<div id="003c9518" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774481959803,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Ceará-Mirim'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Ielmo Marinho'</span>: <span class="dv">1</span>, <span class="st">'Vera Cruz'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: {<span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: {<span class="st">'Vera Cruz'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: {<span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: {<span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Pipa'</span>: <span class="dv">1</span>},</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: {<span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>}</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria um objeto de grafo a partir do dicionário environment</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> SimpleGraph(environment)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o problema de busca propriamente dito. Define estado inicial e o objetivo</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> GraphProblem(<span class="st">'Natal'</span>, <span class="st">'Pipa'</span>, graph)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, problem.initial)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, problem.goal)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, problem.actions(<span class="st">'Natal'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado inicial: Natal
-Objetivo: Pipa
-Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amarante', 'Macaíba']</code></pre>
+<p>Agora vamos aplicar essas funções em um cenário concreto, com um estado inicial <code>Natal</code> e um objetivo <code>Pipa</code>.</p>
+<div id="742dd00a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> environment</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>estado_inicial <span class="op">=</span> <span class="st">'Natal'</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>objetivo <span class="op">=</span> <span class="st">'Pipa'</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, estado_inicial)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, objetivo)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, <span class="bu">list</span>(graph[estado_inicial].keys()))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-</section>
 <section id="definindo-heurística" class="level3">
 <h3 class="anchored" data-anchor-id="definindo-heurística">Definindo heurística</h3>
 <p>Aqui iremos definir o dicionário relacionado à heurística da distância em linha reta (informalmente associada à ideia da distância do ‘voo do pássaro’). Em síntese, a heurística da distância em linha reta (<span class="math inline">\(h_{SLD}\)</span>) se baseia em estimar o custo do caminho mais barato do estado atual até o objetivo calculando a distância física direta (geométrica) entre os dois pontos no mapa.</p>
-<div id="175c4248" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>heuristics <span class="op">=</span> {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: <span class="dv">76</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: <span class="dv">64</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Goianinha"</span>: <span class="dv">18</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ielmo Marinho"</span>: <span class="dv">71</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Macaíba"</span>: <span class="dv">52</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Monte Alegre"</span>: <span class="dv">35</span>,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Natal"</span>: <span class="dv">45</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parnamirim"</span>: <span class="dv">41</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pipa"</span>: <span class="dv">0</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">57</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São José de Mipibu"</span>: <span class="dv">27</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tibau do Sul"</span>: <span class="dv">6</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vera Cruz"</span>: <span class="dv">47</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="033971ed" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>heuristics <span class="op">=</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: <span class="dv">76</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: <span class="dv">64</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Goianinha"</span>: <span class="dv">18</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ielmo Marinho"</span>: <span class="dv">71</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Macaíba"</span>: <span class="dv">52</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Monte Alegre"</span>: <span class="dv">35</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Natal"</span>: <span class="dv">45</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parnamirim"</span>: <span class="dv">41</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pipa"</span>: <span class="dv">0</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">57</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São José de Mipibu"</span>: <span class="dv">27</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tibau do Sul"</span>: <span class="dv">6</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vera Cruz"</span>: <span class="dv">47</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Abaixo, vamos definir uma função h para recuperar os valores da heurística no dicionário.</p>
-<div id="52ec5e04" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_h(heuristica_dict):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> h(node):</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> heuristica_dict[node.state]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> h</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
+<p>A heurística é só isso: um dicionário. Diferente da versão anterior deste notebook, não vamos empacotá-la numa função/closure — cada algoritmo de busca informada abaixo recebe <code>heuristics</code> diretamente como parâmetro, então fica sempre explícito qual heurística está em uso em cada chamada (sem depender de uma variável global reatribuída ao longo do notebook).</p>
 </section>
 <section id="relembrando-a-busca-em-profundidade" class="level3">
 <h3 class="anchored" data-anchor-id="relembrando-a-busca-em-profundidade">Relembrando a busca em profundidade</h3>
-<p>Para entender a implementação da Busca Gulosa pela Melhor Escolha (<em>Greedy Best-First Search</em> ou GBFS), iremos relembrar o código da busca em profundidade (DFS). Embora o algoritmo de DFS seja um método de busca <strong>não informada</strong>, seu funcionamento serve como fundamento essencial para a compreensão de certos métodos de busca informada, sobretudo devido à sua mecânica de “mergulhar” profundamente explorando um único caminho por vez e ao seu uso <strong>extremamente econômico de memória</strong>.</p>
-<div id="bf7f5e0e" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [Node(problem.initial)]</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop()</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node.state)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        visited.add(node.state)</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child <span class="kw">not</span> <span class="kw">in</span> frontier:</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para entender a implementação da Busca Gulosa pela Melhor Escolha (<em>Greedy Best-First Search</em> ou GBFS), vale relembrar a busca em profundidade (DFS) do capítulo anterior. Embora o algoritmo de DFS seja um método de busca <strong>não informada</strong>, seu funcionamento serve como fundamento essencial para a compreensão de certos métodos de busca informada, sobretudo devido à sua mecânica de “mergulhar” profundamente explorando um único caminho por vez e ao seu uso <strong>extremamente econômico de memória</strong>.</p>
+<div id="e3e2f20f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_search(graph, start, goal, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade: expande o caminho mais recente primeiro (pilha)."""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>No entanto, as diferenças essenciais entre a DFS e a GBFS estão vinculadas ao critério de escolha direcionado pela incorporação da heurística como método de priorização. A heurística funciona como critério para seleção do nó que será removido da fronteira no caso da Busca Gulosa pela Melhor Escolha (GBFS), onde uma função <span class="math inline">\(h(n)\)</span> estima o custo do estado atual até o estado objetivo. O algoritmo GBFS utiliza uma fila de prioridade para avaliar esses nós, expandindo primeiro aquele que aparenta estar mais próximo da meta, agindo de forma imediatista e ignorando o custo das ações já realizadas. Em contrapartida, a Busca em Profundidade (DFS) é um método de busca não informada, ou seja, ela não recebe nenhuma estimativa ou pista sobre a localização do objetivo.</p>
 </section>
 <section id="greedy-best-first-search" class="level3">
 <h3 class="anchored" data-anchor-id="greedy-best-first-search">Greedy Best-First Search</h3>
 <p>A busca gananciosa pela melhor escolha (<em>Greedy best-first search</em>) é uma estratégia de busca informada na qual o nó que aparenta estar mais próximo do estado objetivo é expandido primeiro. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados com base exclusivamente em uma estimativa heurística (<span class="math inline">\(f(n) = h(n)\)</span>), permitindo que os nós com os menores valores (mais promissores) sejam posicionados no topo da fila e expandidos antes dos demais. Por focar apenas no benefício imediato de se aproximar da meta a cada iteração e ignorar completamente o custo das ações passadas, a busca gananciosa não é ótima (podendo gerar soluções mais caras) e é incompleta em espaços de estados infinitos, embora costume guiar a exploração de forma veloz e eficiente na maioria dos casos práticos.</p>
-<section id="passo-1-começar-pela-fronteira-inicial" class="level4">
-<h4 class="anchored" data-anchor-id="passo-1-começar-pela-fronteira-inicial">Passo 1: Começar pela fronteira inicial</h4>
-<p>No início, a fronteira contém apenas o nó inicial. Também criamos:</p>
-<ul>
-<li><code>h</code> para instanciar a heuristica</li>
-<li><code>visited</code>, para guardar os estados já visitados;</li>
-<li><code>expansion_order</code>, para registrar a ordem de expansão;</li>
-<li><code>best_h</code>, para lembrar o melhor valor heurístico já encontrado para cada estado.</li>
-</ul>
-<div id="6f30dfd3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774482912279,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>greedy_frontier <span class="op">=</span> [Node(problem.initial)]</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(heuristics)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>greedy_visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>greedy_expansion_order <span class="op">=</span> []</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>greedy_best_h <span class="op">=</span> {problem.initial: h(greedy_frontier[<span class="dv">0</span>])}</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Fronteira inicial:'</span>, [node.state <span class="cf">for</span> node <span class="kw">in</span> greedy_frontier])</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Melhor h inicial:'</span>, greedy_best_h)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Fronteira inicial: ['Natal']
-Melhor h inicial: {'Natal': 45}</code></pre>
+<p>A ideia é a mesma da DFS (fronteira tratada como lista, teste de objetivo ao retirar um caminho), com uma única mudança: em vez de tirar o último caminho adicionado (<code>pop()</code>), ordenamos a fronteira pela heurística do estado atual e tiramos sempre o mais promissor (<code>pop(0)</code> depois de ordenar).</p>
+<div id="032e5bde" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-7"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-7-1"><a href="#annotated-cell-7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greedy_best_first_search(graph, start, goal, heuristics, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="annotated-cell-7-2"><a href="#annotated-cell-7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca gulosa: expande sempre o caminho cujo estado atual parece mais perto do objetivo (h(n))."""</span></span>
+<span id="annotated-cell-7-3"><a href="#annotated-cell-7-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-7-4"><a href="#annotated-cell-7-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="annotated-cell-7-5"><a href="#annotated-cell-7-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="annotated-cell-7-6"><a href="#annotated-cell-7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-7"><a href="#annotated-cell-7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-7" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-7-8" class="code-annotation-target"><a href="#annotated-cell-7-8" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> path: (heuristics[path[<span class="op">-</span><span class="dv">1</span>]], path[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="annotated-cell-7-9"><a href="#annotated-cell-7-9" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="annotated-cell-7-10"><a href="#annotated-cell-7-10" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-7-11"><a href="#annotated-cell-7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-12"><a href="#annotated-cell-7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-7-13"><a href="#annotated-cell-7-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="annotated-cell-7-14"><a href="#annotated-cell-7-14" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="annotated-cell-7-15"><a href="#annotated-cell-7-15" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="annotated-cell-7-16"><a href="#annotated-cell-7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-17"><a href="#annotated-cell-7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="annotated-cell-7-18"><a href="#annotated-cell-7-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="annotated-cell-7-19"><a href="#annotated-cell-7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-20"><a href="#annotated-cell-7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-7-21"><a href="#annotated-cell-7-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-7-22"><a href="#annotated-cell-7-22" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="annotated-cell-7-23"><a href="#annotated-cell-7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-7-24"><a href="#annotated-cell-7-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-7" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-7" data-code-lines="8" data-code-annotation="1">A fronteira é ordenada só pelo valor heurístico do último estado de cada caminho — o resto do laço é idêntico ao da DFS, a única diferença é <em>qual</em> caminho sai da fronteira a cada iteração.</span>
+</dd>
+</dl>
 </div>
 </div>
-</section>
-<section id="passo-2-escolher-o-nó-mais-promissor" class="level4">
-<h4 class="anchored" data-anchor-id="passo-2-escolher-o-nó-mais-promissor">Passo 2: Escolher o nó mais promissor</h4>
-<p>Na DFS usávamos <code>frontier.pop()</code>.</p>
-<p>No Greedy, primeiro ordenamos a fronteira pela heurística e depois removemos o primeiro nó.</p>
-<div id="70cb7d43" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:18,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774482913777,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>greedy_frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> node: (h(node), node.state))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>current_node <span class="op">=</span> greedy_frontier.pop(<span class="dv">0</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Nó escolhido:'</span>, current_node.state)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Valor heurístico do nó escolhido:'</span>, h(current_node))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Nó escolhido: Natal
-Valor heurístico do nó escolhido: 45</code></pre>
+<div id="746d9841" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>resultado_gbfs, expansoes_gbfs <span class="op">=</span> greedy_best_first_search(graph, estado_inicial, objetivo, heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (GBFS):'</span>, resultado_gbfs)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão GBFS:'</span>, expansoes_gbfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<details>
-<summary>
-Explicação
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> node: (h(node), node.state))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Essa linha coloca os nós da <code>frontier</code> em ordem crescente.</p>
-<p>Ela funciona assim:</p>
-<ul>
-<li><code>frontier.sort(...)</code> ordena a lista no próprio lugar, sem criar outra lista.</li>
-<li><code>key=...</code> diz qual valor será usado para comparar os elementos.</li>
-<li><code>lambda node: ...</code> define uma função pequena e anônima que recebe um nó.</li>
-<li><code>h(node)</code> é o critério principal: nós com menor heurística ficam primeiro.</li>
-<li><code>node.state</code> é o critério de desempate: se dois nós tiverem o mesmo <code>h(node)</code>, a ordem é definida pelo nome do estado.</li>
-</ul>
-<p>Depois dessa ordenação, o nó mais promissor fica na posição <code>0</code> da lista. Por isso, logo em seguida usamos:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>node <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ou seja: o Greedy ordena a fronteira e remove o primeiro elemento, que é o nó com menor valor heurístico.</p>
-</details>
-</section>
-<section id="passo-3-expandir-os-filhos-do-nó-escolhido" class="level4">
-<h4 class="anchored" data-anchor-id="passo-3-expandir-os-filhos-do-nó-escolhido">Passo 3: Expandir os filhos do nó escolhido</h4>
-<p>Se o nó atual não for o objetivo, nós o marcamos como visitado e adicionamos seus filhos na fronteira.</p>
-<p>Só adicionamos um filho se:</p>
-<ul>
-<li>ele ainda não foi visitado;</li>
-<li>seu valor heurístico é melhor que o melhor valor já guardado para aquele estado.</li>
-</ul>
-<div id="f4d98a34" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:5,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774483133379,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>greedy_visited.add(current_node.state)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>greedy_expansion_order.append(current_node.state)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> child <span class="kw">in</span> current_node.expand(problem):</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    child_h <span class="op">=</span> h(child)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> greedy_visited <span class="kw">and</span> child_h <span class="op">&lt;</span> greedy_best_h.get(child.state, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        greedy_best_h[child.state] <span class="op">=</span> child_h</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        greedy_frontier.append(child)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Visitados:'</span>, greedy_visited)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Fronteira após expansão:'</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> node <span class="kw">in</span> greedy_frontier:</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">' '</span>, node.state, <span class="st">'-&gt; h ='</span>, h(node))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Visitados: {'Natal'}
-Fronteira após expansão:
-  Parnamirim -&gt; h = 41
-  Extremoz -&gt; h = 64
-  São Gonçalo do Amarante -&gt; h = 57
-  Macaíba -&gt; h = 52</code></pre>
-</div>
-</div>
-</section>
-<section id="passo-4-juntar-tudo-em-uma-função" class="level4">
-<h4 class="anchored" data-anchor-id="passo-4-juntar-tudo-em-uma-função">Passo 4: Juntar tudo em uma função</h4>
-<p>Agora que já vimos os blocos principais separadamente, podemos reunir tudo em uma única função de busca.</p>
-<div id="ae4c2c15" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greedy_best_first_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> []</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    best_h <span class="op">=</span> {}</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    initial_node <span class="op">=</span> Node(problem.initial)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    frontier.append(initial_node)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    best_h[initial_node.state] <span class="op">=</span> h(initial_node)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> node: (h(node), node.state))</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node.state <span class="kw">in</span> visited:</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> h(node) <span class="op">&gt;</span> best_h.get(node.state, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node.state)</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>        visited.add(node.state)</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>            child_h <span class="op">=</span> h(child)</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child_h <span class="op">&lt;</span> best_h.get(child.state, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>                best_h[child.state] <span class="op">=</span> child_h</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<details>
-<summary>
-Explicação
-</summary>
-<ol type="1">
-<li><p><code>def greedy_best_first_search(problem, return_expansion_order=False):</code> &gt; Define a função principal que recebe o objeto <code>problem</code> (contendo o estado inicial e regras) e um parâmetro opcional para retornar a ordem em que os nós foram explorados.</p></li>
-<li><p><code>frontier = []</code> &gt; Cria a <strong>fronteira</strong> (ou lista aberta), que armazena os nós que foram descobertos, mas ainda não foram expandidos.</p></li>
-<li><p><code>visited = set()</code> &gt; Cria um conjunto (set) para armazenar os estados já visitados, evitando que o algoritmo entre em loops infinitos ao revisitar o mesmo lugar.</p></li>
-<li><p><code>expansion_order = []</code> &gt; Inicializa uma lista vazia para registrar a sequência dos estados conforme eles são expandidos, útil para depuração ou visualização.</p></li>
-<li><p><code>best_h = {}</code> &gt; Um dicionário para rastrear o menor valor da função heurística (<span class="math inline">\(h\)</span>) encontrado para cada estado, garantindo que só processemos caminhos que pareçam mais promissores.</p></li>
-<li><p><code>initial_node = Node(problem.initial)</code> &gt; Cria o nó inicial da busca a partir do estado inicial definido no problema.</p></li>
-<li><p><code>frontier.append(initial_node)</code> &gt; Adiciona o nó inicial à fronteira para começar a busca.</p></li>
-<li><p><code>best_h[initial_node.state] = h(initial_node)</code> &gt; Armazena o valor da heurística do estado inicial no dicionário <code>best_h</code>.</p></li>
-<li><p><code>while frontier:</code> &gt; Inicia um laço de repetição que continuará enquanto houver nós na fronteira para explorar.</p></li>
-<li><p><code>frontier.sort(key=lambda node: (h(node), node.state))</code> &gt; <strong>O coração do algoritmo guloso:</strong> ordena a fronteira com base no valor da heurística <span class="math inline">\(h(n)\)</span>. O nó com o menor valor (que parece estar mais perto do objetivo) fica no início. O <code>node.state</code> serve como critério de desempate.</p></li>
-<li><p><code>node = frontier.pop(0)</code> &gt; Remove e retorna o primeiro nó da lista (o que tem o menor valor de <span class="math inline">\(h\)</span>).</p></li>
-<li><p><code>if node.state in visited:</code> &gt; Verifica se o estado do nó atual já foi processado anteriormente.</p></li>
-<li><p><code>continue</code> &gt; Se já foi visitado, ignora este nó e pula para a próxima iteração do <code>while</code>.</p></li>
-<li><p><code>if h(node) &gt; best_h.get(node.state, float('inf')):</code> &gt; Verifica se o valor heurístico do nó atual é pior do que um valor já registrado para esse mesmo estado (uma proteção extra de eficiência).</p></li>
-<li><p><code>continue</code> &gt; Se o custo atual for maior, descarta o nó.</p></li>
-<li><p><code>expansion_order.append(node.state)</code> &gt; Adiciona o estado do nó atual à lista que rastreia a ordem de expansão.</p></li>
-<li><p><code>if problem.goal_test(node.state):</code> &gt; Verifica se o estado do nó atual é o estado objetivo (a meta).</p></li>
-<li><p><code>if return_expansion_order:</code> &gt; Se o objetivo foi encontrado, verifica se o usuário solicitou a ordem de expansão.</p></li>
-<li><p><code>return node, expansion_order</code> &gt; Retorna o nó objetivo e a lista da ordem de expansão.</p></li>
-<li><p><code>return node</code> &gt; Retorna apenas o nó objetivo (caso a ordem de expansão não tenha sido solicitada).</p></li>
-<li><p><code>visited.add(node.state)</code> &gt; Marca o estado atual como visitado para não processá-lo novamente no futuro.</p></li>
-<li><p><code>for child in node.expand(problem):</code> &gt; Gera os nós filhos (sucessores) a partir do nó atual baseando-se nas ações possíveis do problema.</p></li>
-<li><p><code>child_h = h(child)</code> &gt; Calcula o valor da heurística <span class="math inline">\(h\)</span> para o nó filho recém-gerado.</p></li>
-<li><p><code>if child.state not in visited and child_h &lt; best_h.get(child.state, float('inf')):</code> &gt; Critério de inserção: só adiciona o filho à fronteira se ele não foi visitado <strong>e</strong> se este novo caminho oferece um valor de heurística menor do que o encontrado anteriormente para esse estado.</p></li>
-<li><p><code>best_h[child.state] = child_h</code> &gt; Atualiza o melhor valor de heurística conhecido para o estado do filho.</p></li>
-<li><p><code>frontier.append(child)</code> &gt; Adiciona o nó filho à fronteira para ser avaliado futuramente.</p></li>
-<li><p><code>if return_expansion_order:</code> &gt; Caso o loop termine sem encontrar o objetivo (fronteira vazia), verifica se deve retornar a ordem de expansão.</p></li>
-<li><p><code>return None, expansion_order</code> &gt; Retorna <code>None</code> (indicando que não há solução) e a ordem de expansão percorrida.</p></li>
-<li><p><code>return None</code> &gt; Retorna apenas <code>None</code>, sinalizando falha na busca por um caminho.</p></li>
-</ol>
-</details>
-<div id="b7f66878" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:8,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774483503251,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(heuristics)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>resultado_gbfs, expansoes_gbfs <span class="op">=</span> greedy_best_first_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'GBFS didática:'</span>, verbose(resultado_gbfs))</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão GBFS:'</span>, expansoes_gbfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>GBFS didática: {'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 5}
-Ordem de expansão GBFS: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
-</div>
-</section>
 </section>
 <section id="a-star-search" class="level3">
 <h3 class="anchored" data-anchor-id="a-star-search">A-star Search</h3>
 <p>A busca A* (A-estrela) é a estratégia de busca informada mais comum, na qual o nó selecionado para expansão é aquele que apresenta o menor custo total estimado do início até o objetivo. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila de prioridade, o que garante que os nós gerados sejam ordenados pela função de avaliação <span class="math inline">\(f(n) = g(n) + h(n)\)</span>, que combina o custo exato do caminho percorrido até o momento (<span class="math inline">\(g(n)\)</span>) com a estimativa heurística do custo restante (<span class="math inline">\(h(n)\)</span>). Por equilibrar o peso entre o custo das ações passadas e a aproximação da meta. A busca A* é completa e garante encontrar uma solução perfeitamente ótima, desde que a heurística utilizada seja admissível (ou seja, otimista, nunca superestimando o custo real para se atingir o objetivo). O principal desafio desse algoritmo, no entanto, reside no uso excessivo de espaço computacional, visto que ele precisa armazenar todos os nós gerados na memória, o que pode esgotar os recursos rapidamente em problemas de complexidade exponencial.</p>
-<div id="5aee02b4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:39,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774483644063,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>environment_with_distance <span class="op">=</span> {</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: {<span class="st">"Ielmo Marinho"</span>: <span class="dv">26</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">21</span>},</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: {<span class="st">"Natal"</span>: <span class="dv">25</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">17</span>},</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Goianinha"</span>: {<span class="st">"São José de Mipibu"</span>: <span class="dv">23</span>, <span class="st">"Tibau do Sul"</span>: <span class="dv">19</span>},</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ielmo Marinho"</span>: {<span class="st">"Ceará-Mirim"</span>: <span class="dv">26</span>, <span class="st">"Macaíba"</span>: <span class="dv">28</span>},</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Macaíba"</span>: {<span class="st">"Ielmo Marinho"</span>: <span class="dv">28</span>, <span class="st">"Natal"</span>: <span class="dv">21</span>, <span class="st">"Parnamirim"</span>: <span class="dv">16</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">8</span>, <span class="st">"Vera Cruz"</span>: <span class="dv">25</span>},</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Monte Alegre"</span>: {<span class="st">"São José de Mipibu"</span>: <span class="dv">12</span>, <span class="st">"Vera Cruz"</span>: <span class="dv">13</span>},</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Natal"</span>: {<span class="st">"Extremoz"</span>: <span class="dv">25</span>, <span class="st">"Macaíba"</span>: <span class="dv">21</span>, <span class="st">"Parnamirim"</span>: <span class="dv">13</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">22</span>},</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parnamirim"</span>: {<span class="st">"Macaíba"</span>: <span class="dv">16</span>, <span class="st">"Natal"</span>: <span class="dv">13</span>, <span class="st">"São José de Mipibu"</span>: <span class="dv">19</span>},</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pipa"</span>: {<span class="st">"Tibau do Sul"</span>: <span class="dv">9</span>},</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São Gonçalo do Amarante"</span>: {<span class="st">"Ceará-Mirim"</span>: <span class="dv">21</span>, <span class="st">"Extremoz"</span>: <span class="dv">17</span>, <span class="st">"Macaíba"</span>: <span class="dv">8</span>, <span class="st">"Natal"</span>: <span class="dv">22</span>},</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São José de Mipibu"</span>: {<span class="st">"Goianinha"</span>: <span class="dv">23</span>, <span class="st">"Monte Alegre"</span>: <span class="dv">12</span>, <span class="st">"Parnamirim"</span>: <span class="dv">19</span>},</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tibau do Sul"</span>: {<span class="st">"Goianinha"</span>: <span class="dv">19</span>, <span class="st">"Pipa"</span>: <span class="dv">9</span>},</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vera Cruz"</span>: {<span class="st">"Macaíba"</span>: <span class="dv">25</span>, <span class="st">"Monte Alegre"</span>: <span class="dv">13</span>}</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria um objeto de grafo a partir do dicionário environment</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> SimpleGraph(environment_with_distance)</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria o problema de busca propriamente dito. Define estado inicial e o objetivo</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> GraphProblem(<span class="st">'Natal'</span>, <span class="st">'Pipa'</span>, graph)</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, problem.initial)</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, problem.goal)</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, problem.actions(<span class="st">'Natal'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado inicial: Natal
-Objetivo: Pipa
-Ações possíveis em Natal: ['Extremoz', 'Macaíba', 'Parnamirim', 'São Gonçalo do Amarante']</code></pre>
+<div id="1ac576a7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>environment_with_distance <span class="op">=</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ceará-Mirim"</span>: {<span class="st">"Ielmo Marinho"</span>: <span class="dv">26</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">21</span>},</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Extremoz"</span>: {<span class="st">"Natal"</span>: <span class="dv">25</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">17</span>},</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Goianinha"</span>: {<span class="st">"São José de Mipibu"</span>: <span class="dv">23</span>, <span class="st">"Tibau do Sul"</span>: <span class="dv">19</span>},</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ielmo Marinho"</span>: {<span class="st">"Ceará-Mirim"</span>: <span class="dv">26</span>, <span class="st">"Macaíba"</span>: <span class="dv">28</span>},</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Macaíba"</span>: {<span class="st">"Ielmo Marinho"</span>: <span class="dv">28</span>, <span class="st">"Natal"</span>: <span class="dv">21</span>, <span class="st">"Parnamirim"</span>: <span class="dv">16</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">8</span>, <span class="st">"Vera Cruz"</span>: <span class="dv">25</span>},</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Monte Alegre"</span>: {<span class="st">"São José de Mipibu"</span>: <span class="dv">12</span>, <span class="st">"Vera Cruz"</span>: <span class="dv">13</span>},</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Natal"</span>: {<span class="st">"Extremoz"</span>: <span class="dv">25</span>, <span class="st">"Macaíba"</span>: <span class="dv">21</span>, <span class="st">"Parnamirim"</span>: <span class="dv">13</span>, <span class="st">"São Gonçalo do Amarante"</span>: <span class="dv">22</span>},</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Parnamirim"</span>: {<span class="st">"Macaíba"</span>: <span class="dv">16</span>, <span class="st">"Natal"</span>: <span class="dv">13</span>, <span class="st">"São José de Mipibu"</span>: <span class="dv">19</span>},</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pipa"</span>: {<span class="st">"Tibau do Sul"</span>: <span class="dv">9</span>},</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São Gonçalo do Amarante"</span>: {<span class="st">"Ceará-Mirim"</span>: <span class="dv">21</span>, <span class="st">"Extremoz"</span>: <span class="dv">17</span>, <span class="st">"Macaíba"</span>: <span class="dv">8</span>, <span class="st">"Natal"</span>: <span class="dv">22</span>},</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"São José de Mipibu"</span>: {<span class="st">"Goianinha"</span>: <span class="dv">23</span>, <span class="st">"Monte Alegre"</span>: <span class="dv">12</span>, <span class="st">"Parnamirim"</span>: <span class="dv">19</span>},</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tibau do Sul"</span>: {<span class="st">"Goianinha"</span>: <span class="dv">19</span>, <span class="st">"Pipa"</span>: <span class="dv">9</span>},</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Vera Cruz"</span>: {<span class="st">"Macaíba"</span>: <span class="dv">25</span>, <span class="st">"Monte Alegre"</span>: <span class="dv">13</span>}</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> environment_with_distance</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, estado_inicial)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, objetivo)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, <span class="bu">list</span>(graph[estado_inicial].keys()))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A distância entre as cidades está representada nos valores do dicionário interno, que representa as arestas do grafo — é a partir dele que <code>path_cost</code> calcula <span class="math inline">\(g(n)\)</span> para cada caminho.</p>
+<div id="ff503f9b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> astar_search(graph, start, goal, heuristics, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A*: expande sempre o caminho de menor custo total estimado (g(n) + h(n))."""</span></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> []</span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-8"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-9" class="code-annotation-target"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> path: (path_cost(graph, path) <span class="op">+</span> heuristics[path[<span class="op">-</span><span class="dv">1</span>]], path[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="annotated-cell-10-17"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a>        g <span class="op">=</span> path_cost(graph, path)</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-10-19" class="code-annotation-target"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a>        trace.append({<span class="st">'estado'</span>: current, <span class="st">'g(n)'</span>: g, <span class="st">'h(n)'</span>: heuristics[current], <span class="st">'f(n)'</span>: g <span class="op">+</span> heuristics[current]})</span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="annotated-cell-10-22"><a href="#annotated-cell-10-22" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Estado'</span><span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'g(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'h(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'f(n)'</span><span class="sc">:&gt;6}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-10-23"><a href="#annotated-cell-10-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'-'</span> <span class="op">*</span> <span class="dv">46</span>)</span>
+<span id="annotated-cell-10-24"><a href="#annotated-cell-10-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> row <span class="kw">in</span> trace:</span>
+<span id="annotated-cell-10-25"><a href="#annotated-cell-10-25" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'estado'</span>]<span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'g(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'h(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'f(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss">"</span>)</span>
+<span id="annotated-cell-10-26"><a href="#annotated-cell-10-26" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="annotated-cell-10-27"><a href="#annotated-cell-10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-28"><a href="#annotated-cell-10-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-10-29"><a href="#annotated-cell-10-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-10-30"><a href="#annotated-cell-10-30" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="annotated-cell-10-31"><a href="#annotated-cell-10-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-32"><a href="#annotated-cell-10-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="9" data-code-annotation="1">Critério de ordenação: soma <code>path_cost(graph, path)</code> (<span class="math inline">\(g(n)\)</span>, custo real já percorrido) com <code>heuristics[path[-1]]</code> (<span class="math inline">\(h(n)\)</span>, estimativa até o objetivo) — juntos formam <span class="math inline">\(f(n) = g(n) + h(n)\)</span>. Diferente do Greedy, que olha só para <span class="math inline">\(h(n)\)</span>, o A* também leva em conta o quanto já foi gasto para chegar até ali.</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="19" data-code-annotation="2"><code>trace</code> só existe para montar a tabela de <span class="math inline">\(g\)</span>/<span class="math inline">\(h\)</span>/<span class="math inline">\(f\)</span> impressa ao final; não faz parte da lógica de busca em si.</span>
+</dd>
+</dl>
 </div>
 </div>
-<p>A distância entre as cidades está representada nos valores do dicionário interno, que representa as arestas do grafo. Esse valor será mantido dentro do atributo <code>path_cost</code> para cada nó, considerando a estrutura da classe <code>Node</code>.</p>
-<div id="9c5a663e" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> astar_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> []</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    best_f <span class="op">=</span> {}</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> []</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    initial_node <span class="op">=</span> Node(problem.initial)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    frontier.append(initial_node)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    best_f[initial_node.state] <span class="op">=</span> initial_node.path_cost <span class="op">+</span> h(initial_node)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> node: (node.path_cost <span class="op">+</span> h(node), node.state))</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>        f_value <span class="op">=</span> node.path_cost <span class="op">+</span> h(node)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node.state <span class="kw">in</span> visited:</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> f_value <span class="op">&gt;</span> best_f.get(node.state, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        trace.append({</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">'estado'</span>: node.state,</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>            <span class="st">'g(n)'</span>: node.path_cost,</span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>            <span class="st">'h(n)'</span>: h(node),</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>            <span class="st">'f(n)'</span>: f_value,</span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node.state)</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Estado'</span><span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'g(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'h(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'f(n)'</span><span class="sc">:&gt;6}</span><span class="ss">"</span>)</span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'-'</span> <span class="op">*</span> <span class="dv">46</span>)</span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> row <span class="kw">in</span> trace:</span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'estado'</span>]<span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'g(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'h(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'f(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss">"</span>)</span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>        visited.add(node.state)</span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>            child_f <span class="op">=</span> child.path_cost <span class="op">+</span> h(child)</span>
-<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child_f <span class="op">&lt;</span> best_f.get(child.state, <span class="bu">float</span>(<span class="st">'inf'</span>)):</span>
-<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>                best_f[child.state] <span class="op">=</span> child_f</span>
-<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
-<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
-<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a5e12760" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (A*):'</span>, resultado_astar)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<details>
-<summary>
-Explicação
-</summary>
-<ol type="1">
-<li><p><code>def astar_search(problem, return_expansion_order=False):</code> &gt; Define a função de busca A*, que recebe o problema a ser resolvido e um booleano opcional para retornar a ordem de expansão dos nós.</p></li>
-<li><p><code>frontier = []</code> &gt; Inicializa a <strong>fronteira</strong> (lista aberta), que armazenará os nós candidatos à expansão.</p></li>
-<li><p><code>visited = set()</code> &gt; Cria um conjunto para armazenar os estados que já foram processados (expandidos), evitando redundância e ciclos.</p></li>
-<li><p><code>expansion_order = []</code> &gt; Inicializa uma lista para registrar a sequência exata em que os estados são retirados da fronteira.</p></li>
-<li><p><code>best_f = {}</code> &gt; Cria um dicionário para rastrear o menor valor da função de avaliação <span class="math inline">\(f(n) = g(n) + h(n)\)</span> encontrado para cada estado.</p></li>
-<li><p><code>initial_node = Node(problem.initial)</code> &gt; Cria o nó raiz da árvore de busca a partir do estado inicial do problema.</p></li>
-<li><p><code>frontier.append(initial_node)</code> &gt; Insere o nó inicial na fronteira para iniciar o processo de busca.</p></li>
-<li><p><code>best_f[initial_node.state] = initial_node.path_cost + h(initial_node)</code> &gt; Calcula e armazena o valor <span class="math inline">\(f\)</span> inicial (custo do caminho atual + estimativa heurística até o objetivo).</p></li>
-<li><p><code>while frontier:</code> &gt; Inicia o loop principal que executa enquanto houver caminhos possíveis para explorar na fronteira.</p></li>
-<li><p><code>frontier.sort(key=lambda node: (node.path_cost + h(node), node.state))</code> &gt; **Critério do A*:** Ordena a fronteira pelo valor de <span class="math inline">\(f(n)\)</span>. Isso garante que o nó com o menor custo total estimado seja priorizado. O <code>node.state</code> é usado como desempate.</p></li>
-<li><p><code>node = frontier.pop(0)</code> &gt; Remove da fronteira o nó que apresenta o menor valor de <span class="math inline">\(f\)</span> (o “melhor” nó atual).</p></li>
-<li><p><code>if node.state in visited:</code> &gt; Verifica se o estado deste nó já foi expandido anteriormente.</p></li>
-<li><p><code>continue</code> &gt; Caso já tenha sido visitado, ignora o nó para evitar processamento desnecessário de caminhos piores.</p></li>
-<li><p><code>if node.path_cost + h(node) &gt; best_f.get(node.state, float('inf')):</code> &gt; Verifica se o custo total <span class="math inline">\(f\)</span> deste nó é superior ao melhor custo já registrado para este mesmo estado.</p></li>
-<li><p><code>continue</code> &gt; Se for um caminho mais caro para um estado já conhecido, descarta o nó.</p></li>
-<li><p><code>expansion_order.append(node.state)</code> &gt; Registra o estado atual na lista que mantém o histórico da ordem de expansão.</p></li>
-<li><p><code>if problem.goal_test(node.state):</code> &gt; Realiza o teste de meta para verificar se o estado atual do nó é o objetivo desejado.</p></li>
-<li><p><code>if return_expansion_order:</code> &gt; Se o objetivo for atingido, checa se deve retornar também o histórico de expansão.</p></li>
-<li><p><code>return node, expansion_order</code> &gt; Retorna o nó solução (que contém o caminho completo) e a lista da ordem de expansão.</p></li>
-<li><p><code>return node</code> &gt; Retorna apenas o nó que contém a solução encontrada.</p></li>
-<li><p><code>visited.add(node.state)</code> &gt; Adiciona o estado atual ao conjunto de visitados, marcando sua expansão oficial.</p></li>
-<li><p><code>for child in node.expand(problem):</code> &gt; Gera os nós filhos (sucessores) aplicando as ações possíveis ao estado atual.</p></li>
-<li><p><code>child_f = child.path_cost + h(child)</code> &gt; Calcula o valor <span class="math inline">\(f(child)\)</span> para o novo nó: a soma do custo real para chegar até ele (<span class="math inline">\(g\)</span>) com a estimativa heurística (<span class="math inline">\(h\)</span>).</p></li>
-<li><p><code>if child.state not in visited and child_f &lt; best_f.get(child.state, float('inf')):</code> &gt; Só adiciona o filho à fronteira se ele nunca foi visitado <strong>ou</strong> se este novo caminho for mais barato (menor <span class="math inline">\(f\)</span>) do que qualquer outro encontrado antes.</p></li>
-<li><p><code>best_f[child.state] = child_f</code> &gt; Atualiza o dicionário com o novo menor valor de <span class="math inline">\(f\)</span> para este estado específico.</p></li>
-<li><p><code>frontier.append(child)</code> &gt; Adiciona o nó filho à fronteira para que possa ser avaliado nas próximas iterações.</p></li>
-<li><p><code>if return_expansion_order:</code> &gt; Caso a fronteira esvazie sem encontrar a meta, verifica a flag de retorno.</p></li>
-<li><p><code>return None, expansion_order</code> &gt; Retorna <code>None</code> (falha) e a ordem de expansão percorrida até a exaustão das possibilidades.</p></li>
-<li><p><code>return None</code> &gt; Retorna apenas <code>None</code>, indicando que não foi encontrada uma solução para o problema.</p></li>
-</ol>
-</details>
-<div id="45aa9202" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:7,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774484102187,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(heuristics)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'A* didática:'</span>, verbose(resultado_astar))</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado                     g(n)   h(n)   f(n)
-----------------------------------------------
-Natal                         0     45     45
-Parnamirim                   13     41     54
-São José de Mipibu           32     27     59
-Goianinha                    55     18     73
-Macaíba                      21     52     73
-Monte Alegre                 44     35     79
-São Gonçalo do Amarante      22     57     79
-Tibau do Sul                 74      6     80
-Pipa                         83      0     83
-A* didática: {'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 83}
-Ordem de expansão A*: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Macaíba', 'Monte Alegre', 'São Gonçalo do Amarante', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
-</div>
-<details>
-<summary>
-Explicação
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Adicione o registro da expansão</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>trace.append({</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'estado'</span>: node.state,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'g(n)'</span>: node.path_cost,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'h(n)'</span>: h(node),</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'f(n)'</span>: f_value,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Adicione um print apos</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Estado'</span><span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'g(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'h(n)'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'f(n)'</span><span class="sc">:&gt;6}</span><span class="ss">"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="st">'-'</span> <span class="op">*</span> <span class="dv">46</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> row <span class="kw">in</span> trace:</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'estado'</span>]<span class="sc">:&lt;24}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'g(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'h(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span>row[<span class="st">'f(n)'</span>]<span class="sc">:&gt;6}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </section>
 <section id="ajustando-heurística" class="level3">
 <h3 class="anchored" data-anchor-id="ajustando-heurística">Ajustando heurística</h3>
-<div id="d3c0ce66" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>new_heuristics <span class="op">=</span> {</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">74</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">61</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: <span class="dv">85</span>,</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">84</span>,</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: <span class="dv">71</span>,</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: <span class="dv">99</span>,</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: <span class="dv">85</span>,</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: <span class="dv">57</span>,</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: <span class="dv">48</span>,</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: <span class="dv">44</span>,</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: <span class="dv">24</span>,</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: <span class="dv">7</span>,</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: <span class="dv">0</span>,</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e79c8b9a" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>new_heuristics <span class="op">=</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">74</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">61</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: <span class="dv">85</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">84</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: <span class="dv">71</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: <span class="dv">99</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: <span class="dv">85</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: <span class="dv">57</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: <span class="dv">48</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: <span class="dv">44</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: <span class="dv">24</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: <span class="dv">7</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: <span class="dv">0</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f5581eab" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:21,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774484691805,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> []</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> city <span class="kw">in</span> <span class="bu">sorted</span>(heuristics.keys()):</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    old_h <span class="op">=</span> heuristics.get(city, <span class="dv">0</span>)  <span class="co"># Use 0 as default if not found</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    new_h <span class="op">=</span> new_heuristics.get(city, <span class="dv">0</span>) <span class="co"># Use 0 as default if not found</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    difference <span class="op">=</span> new_h <span class="op">-</span> old_h</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    data.append([city, old_h, new_h, difference])</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>df_heuristics <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">'Cidade'</span>, <span class="st">'Heurística Antiga'</span>, <span class="st">'Nova Heurística'</span>, <span class="st">'Diferença'</span>])</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>display(df_heuristics)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-
-
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">Cidade</th>
-<th data-quarto-table-cell-role="th">Heurística Antiga</th>
-<th data-quarto-table-cell-role="th">Nova Heurística</th>
-<th data-quarto-table-cell-role="th">Diferença</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>Ceará-Mirim</td>
-<td>76</td>
-<td>99</td>
-<td>23</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>Extremoz</td>
-<td>64</td>
-<td>85</td>
-<td>21</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>Goianinha</td>
-<td>18</td>
-<td>24</td>
-<td>6</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>Ielmo Marinho</td>
-<td>71</td>
-<td>85</td>
-<td>14</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>Macaíba</td>
-<td>52</td>
-<td>71</td>
-<td>19</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">5</th>
-<td>Monte Alegre</td>
-<td>35</td>
-<td>48</td>
-<td>13</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">6</th>
-<td>Natal</td>
-<td>45</td>
-<td>74</td>
-<td>29</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">7</th>
-<td>Parnamirim</td>
-<td>41</td>
-<td>61</td>
-<td>20</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">8</th>
-<td>Pipa</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">9</th>
-<td>São Gonçalo do Amarante</td>
-<td>57</td>
-<td>84</td>
-<td>27</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">10</th>
-<td>São José de Mipibu</td>
-<td>27</td>
-<td>44</td>
-<td>17</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">11</th>
-<td>Tibau do Sul</td>
-<td>6</td>
-<td>7</td>
-<td>1</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">12</th>
-<td>Vera Cruz</td>
-<td>47</td>
-<td>57</td>
-<td>10</td>
-</tr>
-</tbody>
-</table>
-
-</div>
-</div>
+<div id="26012396" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> []</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> city <span class="kw">in</span> <span class="bu">sorted</span>(heuristics.keys()):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    old_h <span class="op">=</span> heuristics.get(city, <span class="dv">0</span>)  <span class="co"># Use 0 as default if not found</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    new_h <span class="op">=</span> new_heuristics.get(city, <span class="dv">0</span>) <span class="co"># Use 0 as default if not found</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    difference <span class="op">=</span> new_h <span class="op">-</span> old_h</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    data.append([city, old_h, new_h, difference])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>df_heuristics <span class="op">=</span> pd.DataFrame(data, columns<span class="op">=</span>[<span class="st">'Cidade'</span>, <span class="st">'Heurística Antiga'</span>, <span class="st">'Nova Heurística'</span>, <span class="st">'Diferença'</span>])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>display(df_heuristics)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1360,142 +811,65 @@ Explicação
 <p>Como a literatura de Inteligência Artificial estabelece, <strong>é geralmente preferível utilizar uma função heurística com valores mais altos</strong>, desde que ela continue sendo admissível e consistente (ou seja, nunca superestimando o custo real da viagem). Ao refinar esses valores para que fiquem mais precisos e próximos da realidade, os contornos da busca do algoritmo A* deixam de se espalhar em todas as direções e passam a se focar de forma muito mais estreita e direcionada para a meta.</p>
 <p>Na prática, isso significa que cidades irrelevantes ou que representam “andar para trás” receberão rapidamente estimativas de custo total (<span class="math inline">\(f(n)\)</span>) superiores ao custo do caminho ótimo real. Isso permite que o algoritmo <strong>pode (elimine) esses caminhos desnecessários da árvore de exploração sem precisar sequer visitá-los</strong>. O resultado direto de uma heurística mais fidedigna é um ganho substancial de eficiência, pois o algoritmo expande uma quantidade significativamente menor de nós e resolve o problema consumindo menos tempo e memória.</p>
 </details>
-<div id="ef293c76" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774484720346,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(new_heuristics)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'A* didática:'</span>, verbose(resultado_astar))</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado                     g(n)   h(n)   f(n)
-----------------------------------------------
-Natal                         0     74     74
-Parnamirim                   13     61     74
-São José de Mipibu           32     44     76
-Goianinha                    55     24     79
-Tibau do Sul                 74      7     81
-Pipa                         83      0     83
-A* didática: {'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 83}
-Ordem de expansão A*: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
+<div id="a8b322eb" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>resultado_astar, expansoes_astar <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, new_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (A*):'</span>, resultado_astar)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="então-o-greedy-é-melhor" class="level2">
 <h2 class="anchored" data-anchor-id="então-o-greedy-é-melhor">Então, o Greedy é melhor?</h2>
 <p>Para evidenciar as fraquezas do Greedy Best-First Search, vamos usar uma heurística propositalmente enganosa. Ela faz alguns estados parecerem muito promissores localmente, mesmo quando isso não produz o melhor caminho global.</p>
-<div id="264210d3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:9,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774485101421,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>misleading_heuristics <span class="op">=</span> {</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">40</span>,</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">35</span>,</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: <span class="dv">20</span>,</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">12</span>,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: <span class="dv">10</span>,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: <span class="dv">8</span>,</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: <span class="dv">7</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: <span class="dv">9</span>,</span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: <span class="dv">11</span>,</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: <span class="dv">25</span>,</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: <span class="dv">18</span>,</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: <span class="dv">6</span>,</span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: <span class="dv">0</span>,</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(misleading_heuristics)</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Heurística enganosa:'</span>)</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cidade, valor <span class="kw">in</span> misleading_heuristics.items():</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cidade, <span class="st">'-&gt; h ='</span>, valor)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Heurística enganosa:
-Natal -&gt; h = 40
-Parnamirim -&gt; h = 35
-Extremoz -&gt; h = 20
-São Gonçalo do Amarante -&gt; h = 12
-Macaíba -&gt; h = 10
-Ceará-Mirim -&gt; h = 8
-Ielmo Marinho -&gt; h = 7
-Vera Cruz -&gt; h = 9
-Monte Alegre -&gt; h = 11
-São José de Mipibu -&gt; h = 25
-Goianinha -&gt; h = 18
-Tibau do Sul -&gt; h = 6
-Pipa -&gt; h = 0</code></pre>
+<div id="94c3e03b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>misleading_heuristics <span class="op">=</span> {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: <span class="dv">40</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: <span class="dv">35</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: <span class="dv">20</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">12</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: <span class="dv">10</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: <span class="dv">8</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: <span class="dv">7</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: <span class="dv">9</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: <span class="dv">11</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: <span class="dv">25</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: <span class="dv">18</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: <span class="dv">6</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: <span class="dv">0</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Heurística enganosa:'</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cidade, valor <span class="kw">in</span> misleading_heuristics.items():</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cidade, <span class="st">'-&gt; h ='</span>, valor)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="c08b2826" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:8,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774485105213,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>resultado_greedy_ruim, expansoes_greedy_ruim <span class="op">=</span> greedy_best_first_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>resultado_astar_ruim, expansoes_astar_ruim <span class="op">=</span> astar_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Greedy com heurística enganosa:'</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(verbose(resultado_greedy_ruim))</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão Greedy:'</span>, expansoes_greedy_ruim)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'A* com a mesma heurística:'</span>)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(verbose(resultado_astar_ruim))</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar_ruim)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado                     g(n)   h(n)   f(n)
-----------------------------------------------
-Natal                         0     40     40
-Macaíba                      21     10     31
-São Gonçalo do Amarante      22     12     34
-Extremoz                     25     20     45
-Parnamirim                   13     35     48
-Ceará-Mirim                  43      8     51
-Vera Cruz                    46      9     55
-Ielmo Marinho                49      7     56
-São José de Mipibu           32     25     57
-Monte Alegre                 44     11     55
-Goianinha                    55     18     73
-Tibau do Sul                 74      6     80
-Pipa                         83      0     83
-Greedy com heurística enganosa:
-{'encontrou': True, 'caminho': ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 122}
-Ordem de expansão Greedy: ['Natal', 'Macaíba', 'Ielmo Marinho', 'Ceará-Mirim', 'Vera Cruz', 'Monte Alegre', 'São Gonçalo do Amarante', 'Extremoz', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']
-
-A* com a mesma heurística:
-{'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 83}
-Ordem de expansão A*: ['Natal', 'Macaíba', 'São Gonçalo do Amarante', 'Extremoz', 'Parnamirim', 'Ceará-Mirim', 'Vera Cruz', 'Ielmo Marinho', 'São José de Mipibu', 'Monte Alegre', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
+<div id="004c134d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resultado_greedy_ruim, expansoes_greedy_ruim <span class="op">=</span> greedy_best_first_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>resultado_astar_ruim, expansoes_astar_ruim <span class="op">=</span> astar_search(graph, estado_inicial, objetivo, misleading_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Greedy com heurística enganosa:'</span>, resultado_greedy_ruim)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão Greedy:'</span>, expansoes_greedy_ruim)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'A* com a mesma heurística:'</span>, resultado_astar_ruim)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão A*:'</span>, expansoes_astar_ruim)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="simulação-de-agentes" class="level2">
 <h2 class="anchored" data-anchor-id="simulação-de-agentes">Simulação de agentes</h2>
-<div id="ff61019f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774485218981,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> make_h(new_heuristics)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>agente_greedy <span class="op">=</span> SearchAgent(goal<span class="op">=</span><span class="st">'Pipa'</span>, search_algorithm<span class="op">=</span>greedy_best_first_search, graph<span class="op">=</span>graph)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>acoes_greedy, trajetoria_greedy <span class="op">=</span> agent_simulation(agente_greedy, <span class="st">'Natal'</span>)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com Greedy'</span>)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, acoes_greedy)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, trajetoria_greedy)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Agente com Greedy
-Ações: ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']
-Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
+<p>O caminho já é a trajetória do agente, e as ações são só o caminho sem o estado inicial (<code>path[1:]</code>) — <code>resultado_astar</code> já foi calculado com <code>new_heuristics</code> na seção anterior, então só o Greedy precisa ser recalculado com essa heurística.</p>
+<div id="7ef91b96" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>resultado_greedy_novo, expansoes_greedy_novo <span class="op">=</span> greedy_best_first_search(graph, estado_inicial, objetivo, new_heuristics, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>acoes_greedy <span class="op">=</span> resultado_greedy_novo[<span class="dv">1</span>:] <span class="cf">if</span> resultado_greedy_novo <span class="cf">else</span> []</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com Greedy'</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, acoes_greedy)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, resultado_greedy_novo)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="d30547e7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:12,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1774485220909,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>agente_astar <span class="op">=</span> SearchAgent(goal<span class="op">=</span><span class="st">'Pipa'</span>, search_algorithm<span class="op">=</span>astar_search, graph<span class="op">=</span>graph)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>acoes_astar, trajetoria_astar <span class="op">=</span> agent_simulation(agente_astar, <span class="st">'Natal'</span>)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com A*'</span>)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, acoes_astar)</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, trajetoria_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado                     g(n)   h(n)   f(n)
-----------------------------------------------
-Natal                         0     74     74
-Parnamirim                   13     61     74
-São José de Mipibu           32     44     76
-Goianinha                    55     24     79
-Tibau do Sul                 74      7     81
-Pipa                         83      0     83
-Agente com A*
-Ações: ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']
-Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
+<div id="e7e379dc" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>acoes_astar <span class="op">=</span> resultado_astar[<span class="dv">1</span>:] <span class="cf">if</span> resultado_astar <span class="cf">else</span> []</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com A*'</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, acoes_astar)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, resultado_astar)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="desafio" class="level2">
@@ -1507,14 +881,15 @@ Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau
 <section id="diretrizes-de-implementação" class="level3">
 <h3 class="anchored" data-anchor-id="diretrizes-de-implementação">Diretrizes de Implementação</h3>
 <ol type="1">
-<li><strong>Compatibilidade:</strong> Utilize as estruturas de classe <code>Node</code>, <code>GraphProblem</code> e <code>SimpleGraph</code> já definidas no notebook.</li>
+<li><strong>Compatibilidade:</strong> Utilize a mesma representação de grafo e caminho do <code>astar_search</code> implementado acima (caminho como lista, <code>path_cost</code> para <span class="math inline">\(g(n)\)</span>).</li>
 <li><strong>Assinatura da Função:</strong> A função deve aceitar os seguintes parâmetros:
 <ul>
-<li><code>problem</code>: O problema de busca instanciado.</li>
-<li><code>w</code>: O peso da heurística (parâmetro de ponderação).</li>
+<li><code>graph</code>, <code>start</code>, <code>goal</code>: mesmos parâmetros de <code>astar_search</code>.</li>
+<li><code>heuristics</code>: dicionário de heurística.</li>
+<li><code>w</code>: o peso da heurística (parâmetro de ponderação).</li>
 <li><code>return_expansion_order</code>: Booleano (padrão <code>False</code>) que define o formato do retorno.</li>
 </ul></li>
-<li><strong>Retorno:</strong> Caso <code>return_expansion_order=True</code>, a função deve retornar uma tupla contendo o <strong>nó solução</strong> e a <strong>lista com a ordem de expansão</strong>.</li>
+<li><strong>Retorno:</strong> Caso <code>return_expansion_order=True</code>, a função deve retornar uma tupla contendo o <strong>caminho solução</strong> e a <strong>lista com a ordem de expansão</strong>.</li>
 <li><strong>Casos de Teste:</strong> Avalie o desempenho do algoritmo utilizando os seguintes pesos:
 <ul>
 <li><span class="math inline">\(w = 1.0\)</span></li>
@@ -1522,30 +897,59 @@ Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau
 <li><span class="math inline">\(w = 2.0\)</span></li>
 </ul></li>
 </ol>
-<div id="114b2758" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weighted_astar_search(problem, w<span class="op">=</span><span class="fl">1.0</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">pass</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="eea3309e" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weighted_astar_search(graph, start, goal, heuristics, w<span class="op">=</span><span class="fl">1.0</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A* ponderada: expande sempre o caminho de menor g(n) + w * h(n)."""</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<details>
+<summary>
+Dicas
+</summary>
+<p>Uma implementação possível de <code>weighted_astar_search</code>, adaptando <code>astar_search</code> para ponderar a heurística por <code>w</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weighted_astar_search(graph, start, goal, heuristics, w<span class="op">=</span><span class="fl">1.0</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> path: (path_cost(graph, path) <span class="op">+</span> w <span class="op">*</span> heuristics[path[<span class="op">-</span><span class="dv">1</span>]], path[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </section>
-<section id="perguntas-do-desafio" class="level3">
-<h3 class="anchored" data-anchor-id="perguntas-do-desafio">Perguntas do desafio</h3>
+</section>
+<section id="perguntas-para-reflexão" class="level2">
+<h2 class="anchored" data-anchor-id="perguntas-para-reflexão">Perguntas para reflexão</h2>
 <ol type="1">
-<li>Quando <code>w = 1</code>, o comportamento é igual ao A*?</li>
-<li>Ao aumentar <code>w</code>, o algoritmo expande menos nós?</li>
-<li>O caminho encontrado continua ótimo?</li>
-<li>Em que momento o algoritmo começa a se comportar mais como uma busca gananciosa?</li>
+<li>Quando <code>w = 1</code>, o A* ponderado se comporta exatamente como o A* tradicional. Por que isso decorre diretamente da fórmula <span class="math inline">\(f(n) = g(n) + w \cdot h(n)\)</span>, e o que isso revela sobre o A* clássico ser apenas um caso particular de uma família mais ampla de buscas?</li>
+<li>Por que aumentar <code>w</code> tende a reduzir o número de nós expandidos? Que trade-off está sendo feito entre velocidade da busca e qualidade (custo) da solução encontrada?</li>
+<li>A garantia de encontrar o caminho ótimo se perde à medida que <code>w</code> cresce. Explique por que isso acontece — o que muda na relação entre <span class="math inline">\(f(n)\)</span> e o custo real restante — e descreva um cenário (real ou hipotético) em que essa perda de otimalidade levaria a uma escolha claramente pior.</li>
+<li>Em que valor ou faixa de <code>w</code> o A* ponderado passa a se comportar essencialmente como a Greedy Best-First Search? O que isso sugere sobre a Greedy ser, na prática, um caso extremo do A* ponderado, em que o custo acumulado deixa de influenciar a decisão?</li>
 </ol>
 </section>
-</section>
-<section id="key-takeways" class="level2">
-<h2 class="anchored" data-anchor-id="key-takeways">Key takeways</h2>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
 <p>Greedy Best-First Search decide com base apenas na heurística, enquanto o A* combina custo acumulado e estimativa restante. A qualidade da heurística afeta diretamente a eficiência da busca: uma heurística mais informativa tende a reduzir expansões desnecessárias e a direcionar melhor o algoritmo até o objetivo.</p>
 </section>
 <section id="referencias" class="level2">
 <h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
 <ol type="1">
 <li>Russell, S. &amp; Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.</li>
-<li>Implementações clássicas de <code>Problem</code>, <code>Node</code> e agentes baseados em objetivos no ecossistema AIMA.</li>
 </ol>
 
 

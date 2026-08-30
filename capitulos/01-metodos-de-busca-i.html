@@ -438,23 +438,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Apêndices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar seção">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../apendices/metodos-de-busca-sem-oo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Métodos de Busca I sem OO</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -470,19 +453,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de Aprendizagem</a></li>
   <li><a href="#implementação" id="toc-implementação" class="nav-link" data-scroll-target="#implementação">Implementação</a>
   <ul class="collapse">
-  <li><a href="#classes-do-ambiente" id="toc-classes-do-ambiente" class="nav-link" data-scroll-target="#classes-do-ambiente">Classes do Ambiente</a></li>
-  <li><a href="#classes-de-agente" id="toc-classes-de-agente" class="nav-link" data-scroll-target="#classes-de-agente">Classes de Agente</a></li>
-  <li><a href="#funções-auxiliares" id="toc-funções-auxiliares" class="nav-link" data-scroll-target="#funções-auxiliares">Funções Auxiliares</a></li>
+  <li><a href="#representação-do-ambiente" id="toc-representação-do-ambiente" class="nav-link" data-scroll-target="#representação-do-ambiente">Representação do ambiente</a></li>
+  <li><a href="#funções-auxiliares" id="toc-funções-auxiliares" class="nav-link" data-scroll-target="#funções-auxiliares">Funções auxiliares</a></li>
   </ul></li>
   <li><a href="#exemplo-prático" id="toc-exemplo-prático" class="nav-link" data-scroll-target="#exemplo-prático">Exemplo prático</a>
   <ul class="collapse">
-  <li><a href="#construção-do-ambiente" id="toc-construção-do-ambiente" class="nav-link" data-scroll-target="#construção-do-ambiente">Construção do Ambiente</a></li>
   <li><a href="#busca-em-largura" id="toc-busca-em-largura" class="nav-link" data-scroll-target="#busca-em-largura">Busca em largura</a></li>
   <li><a href="#busca-em-profundidade" id="toc-busca-em-profundidade" class="nav-link" data-scroll-target="#busca-em-profundidade">Busca em profundidade</a></li>
-  <li><a href="#simulação-do-agente" id="toc-simulação-do-agente" class="nav-link" data-scroll-target="#simulação-do-agente">Simulação do Agente</a></li>
   </ul></li>
-  <li><a href="#desafio" id="toc-desafio" class="nav-link" data-scroll-target="#desafio">Desafio</a></li>
-  <li><a href="#key-takeways" id="toc-key-takeways" class="nav-link" data-scroll-target="#key-takeways">Key takeways</a></li>
+  <li><a href="#busca-uniforme" id="toc-busca-uniforme" class="nav-link" data-scroll-target="#busca-uniforme">Busca uniforme</a></li>
+  <li><a href="#desafio" id="toc-desafio" class="nav-link" data-scroll-target="#desafio">Desafio</a>
+  <ul class="collapse">
+  <li><a href="#busca-em-profundidade-limitada" id="toc-busca-em-profundidade-limitada" class="nav-link" data-scroll-target="#busca-em-profundidade-limitada">Busca em profundidade limitada</a></li>
+  <li><a href="#busca-em-profundidade-iterativa" id="toc-busca-em-profundidade-iterativa" class="nav-link" data-scroll-target="#busca-em-profundidade-iterativa">Busca em profundidade iterativa</a></li>
+  </ul></li>
+  <li><a href="#perguntas-para-reflexão" id="toc-perguntas-para-reflexão" class="nav-link" data-scroll-target="#perguntas-para-reflexão">Perguntas para reflexão</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/blob/main/capitulos/01-metodos-de-busca-i.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="01-metodos-de-busca-i.ipynb" download="01-metodos-de-busca-i.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
@@ -518,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="28a34b15" class="cell" data-execution_count="1">
+<div id="70ebe28e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -532,679 +518,350 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="objetivos-de-aprendizagem" class="level2">
 <h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de Aprendizagem</h2>
 <ul>
-<li><strong>Entender Agentes Baseados em Objetivos:</strong> Compreender o conceito de agentes que formulam metas e buscam planos para alcançá-las.</li>
-<li><strong>Modelagem de Problemas:</strong> Aprender a modelar problemas de busca, definindo estado inicial, objetivo, ações, transições e custos.</li>
-<li><strong>Compreender Métodos de Busca Não Informada:</strong>
-<ul>
-<li><strong>Busca em Largura (BFS):</strong> Entender como a BFS explora o espaço de estados nível por nível, suas propriedades de completude e otimalidade de custo.</li>
-<li><strong>Busca em Profundidade (DFS):</strong> Entender como a DFS explora o espaço de estados em profundidade, suas vantagens em uso de memória e suas limitações.</li>
-<li><strong>Diferenças entre BFS e DFS:</strong> Analisar as principais diferenças entre BFS e DFS em termos de estratégia de exploração, completude e otimalidade.</li>
-</ul></li>
-<li><strong>Implementação de Componentes do Agente:</strong> Familiarizar-se com a estrutura de classes como <code>Problem</code>, <code>GraphProblem</code>, <code>Node</code>, <code>SimpleProblemSolvingAgentProgram</code> e <code>SearchAgent</code>.</li>
+<li><strong>Entender agentes baseados em objetivos:</strong> compreender como esses agentes formulam metas e buscam planos para alcançá-las.</li>
+<li><strong>Modelar problemas de busca:</strong> definir estado inicial, objetivo, ações, transições e custos.</li>
+<li><strong>Entender a busca em largura (BFS):</strong> como ela explora o espaço de estados nível por nível, garantindo completude e o menor número de passos.</li>
+<li><strong>Entender a busca de custo uniforme (UCS):</strong> como ela generaliza a BFS para grafos com custos de aresta diferentes, expandindo sempre o caminho de menor custo acumulado.</li>
+<li><strong>Entender a busca em profundidade (DFS):</strong> suas vantagens em uso de memória e suas limitações.</li>
+<li><strong>Comparar BFS, UCS e DFS:</strong> em termos de estratégia de exploração, completude e otimalidade.</li>
+<li><strong>Implementar os algoritmos:</strong> diretamente sobre um grafo representado como dicionário, sem camadas de abstração adicionais entre o estado e a lógica de busca.</li>
 </ul>
 </section>
 <section id="implementação" class="level2">
 <h2 class="anchored" data-anchor-id="implementação">Implementação</h2>
-<section id="classes-do-ambiente" class="level3">
-<h3 class="anchored" data-anchor-id="classes-do-ambiente">Classes do Ambiente</h3>
-<p>A classe <code>Problem</code> fornece a estrutura abstrata para descrever um problema de busca, definindo conceitos como estado inicial, objetivo, ações e transições e custo. No tutorial, ela ajuda a separar o <strong>ambiente</strong> da <strong>forma como o agente raciocina sobre ele</strong>.</p>
-<div id="866da4d7" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Problem:</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial, goal<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.initial <span class="op">=</span> initial</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.goal <span class="op">=</span> goal</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> actions(<span class="va">self</span>, state):</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> result(<span class="va">self</span>, state, action):</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> goal_test(<span class="va">self</span>, state):</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> state <span class="op">==</span> <span class="va">self</span>.goal</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path_cost(<span class="va">self</span>, c, state1, action, state2):</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> c <span class="op">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="representação-do-ambiente" class="level3">
+<h3 class="anchored" data-anchor-id="representação-do-ambiente">Representação do ambiente</h3>
+<p>O ambiente é um grafo simples: um dicionário onde cada cidade aponta para suas vizinhas (com o custo de cada aresta). Não precisamos de nenhuma classe para representá-lo — <code>environment[cidade]</code> já devolve os vizinhos.</p>
+<div id="b92eeb9f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Ceará-Mirim'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Ielmo Marinho'</span>: <span class="dv">1</span>, <span class="st">'Vera Cruz'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: {<span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: {<span class="st">'Vera Cruz'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: {<span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: {<span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Pipa'</span>: <span class="dv">1</span>},</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: {<span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>A partir da classe anterior, vamos extender <code>GraphProblem</code> a qual especializa essa formulação para o caso em que o ambiente é um <strong>grafo</strong>.</p>
-<div id="0f44f1b4" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GraphProblem(Problem):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial, goal, graph):</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(initial, goal)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph <span class="op">=</span> graph</span>
+<p>Para visualizar esse grafo, usamos o <a href="https://networkx.org/">NetworkX</a>: montamos um <code>nx.DiGraph()</code> a partir do dicionário <code>environment</code> (uma aresta para cada vizinho de cada cidade) e desenhamos com <code>nx.draw</code>. Essa visualização é só para referência — os algoritmos de busca abaixo trabalham diretamente com o dicionário, sem depender do NetworkX.</p>
+<div id="7c852add" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.DiGraph()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> origem, destinos <span class="kw">in</span> environment.items():</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> destino <span class="kw">in</span> destinos:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        G.add_edge(origem, destino)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> actions(<span class="va">self</span>, state):</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">list</span>(<span class="va">self</span>.graph.get(state).keys())</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> result(<span class="va">self</span>, state, action):</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> action</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path_cost(<span class="va">self</span>, cost_so_far, state1, action, state2):</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        edge_cost <span class="op">=</span> <span class="va">self</span>.graph.get(state1, state2)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> edge_cost <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">float</span>(<span class="st">'inf'</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cost_so_far <span class="op">+</span> edge_cost</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Em seguida, definimos a classe <code>SimpleGraph</code> como uma estrutura auxiliar simples para representar o ambiente em forma de grafo, que será utilizada por GraphProblem.</p>
-<div id="08f3a0a8" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleGraph:</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, graph_dict):</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph_dict <span class="op">=</span> graph_dict</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get(<span class="va">self</span>, a, b<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        links <span class="op">=</span> <span class="va">self</span>.graph_dict.setdefault(a, {})</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> b <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> links</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> links.get(b)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Para solucionar o processo de busca em grafos, precisamos transformá-lo em uma árvore de busca. A classe <code>Node</code> representa um nó da árvore de busca. Ela guarda o estado atual, o pai, a ação usada para chegar ali e a profundidade. No tutorial, essa classe permite reconstruir o caminho encontrado pelo agente durante a etapa de simulação.</p>
-<div id="217b4fe3" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Node:</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state, parent<span class="op">=</span><span class="va">None</span>, action<span class="op">=</span><span class="va">None</span>, path_cost<span class="op">=</span><span class="dv">0</span>):</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> state</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.parent <span class="op">=</span> parent</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.action <span class="op">=</span> action</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.path_cost <span class="op">=</span> path_cost</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.depth <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> parent <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> parent.depth <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">'&lt;Node </span><span class="sc">{}</span><span class="st">&gt;'</span>.<span class="bu">format</span>(<span class="va">self</span>.state)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__lt__</span>(<span class="va">self</span>, node):</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.state <span class="op">&lt;</span> node.state</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> expand(<span class="va">self</span>, problem):</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [<span class="va">self</span>.child_node(problem, action) <span class="cf">for</span> action <span class="kw">in</span> problem.actions(<span class="va">self</span>.state)]</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> child_node(<span class="va">self</span>, problem, action):</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        next_state <span class="op">=</span> problem.result(<span class="va">self</span>.state, action)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Node(</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            next_state,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            action,</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>            problem.path_cost(<span class="va">self</span>.path_cost, <span class="va">self</span>.state, action, next_state),</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> solution(<span class="va">self</span>):</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [node.action <span class="cf">for</span> node <span class="kw">in</span> <span class="va">self</span>.path()[<span class="dv">1</span>:]]</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> path(<span class="va">self</span>):</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> <span class="va">self</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        path_back <span class="op">=</span> []</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> node <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>            path_back.append(node)</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>            node <span class="op">=</span> node.parent</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        path_back.reverse()</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> path_back</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">isinstance</span>(other, Node) <span class="kw">and</span> <span class="va">self</span>.state <span class="op">==</span> other.state</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__hash__</span>(<span class="va">self</span>):</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">hash</span>(<span class="va">self</span>.state)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<details>
-<summary>
-Explicação
-</summary>
-<ol type="1">
-<li><strong><code>class Node:</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Define a estrutura do objeto que representará um estado dentro da <strong>árvore de busca</strong>. Diferente de um grafo puro, o nó da árvore armazena o histórico (rastro) de como o agente chegou até ali.</p>
-</blockquote>
-<ol start="2" type="1">
-<li><strong><code>def __init__(self, state, parent=None, action=None, path_cost=0):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>O construtor da classe. Ele inicializa os atributos fundamentais: o estado atual (<code>state</code>), o nó que o gerou (<code>parent</code>), a ação tomada para alcançá-lo (<code>action</code>) e o custo total acumulado do caminho (<code>path_cost</code>).</p>
-</blockquote>
-<ol start="3" type="1">
-<li><strong><code>self.depth = 0 if parent is None else parent.depth + 1</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Calcula automaticamente a profundidade do nó. Se não houver um pai, ele é a raiz (nível 0). Caso contrário, sua profundidade será a do pai somada a 1.</p>
-</blockquote>
-<ol start="4" type="1">
-<li><strong><code>def __repr__(self):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Define a representação textual do objeto. Ao imprimir o nó ou vê-lo em uma lista, ele aparecerá formatado como <code>&lt;Node Natal&gt;</code>, facilitando o <em>debug</em>.</p>
-</blockquote>
-<ol start="5" type="1">
-<li><strong><code>def __lt__(self, node):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Implementa o operador “menor que” (<code>less than</code>). Permite comparar dois nós (usando a ordem alfabética ou valor do estado), o que é essencial para algoritmos que organizam filas de prioridade.</p>
-</blockquote>
-<ol start="6" type="1">
-<li><strong><code>def expand(self, problem):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Método que gera todos os nós sucessores possíveis. Ele utiliza uma <em>list comprehension</em> para varrer as ações disponíveis no <code>problem</code> e criar novos nós filhos.</p>
-</blockquote>
-<ol start="7" type="1">
-<li><strong><code>def child_node(self, problem, action):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Cria um único nó filho específico. Ele solicita ao <code>problem</code> o resultado da ação (próximo estado) e calcula o novo custo total do caminho antes de instanciar o novo <code>Node</code>.</p>
-</blockquote>
-<ol start="8" type="1">
-<li><strong><code>def solution(self):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Extrai a sequência de ações da raiz até o nó atual. Ele fatia a lista de caminho <code>[1:]</code> para ignorar o nó inicial, que não possui uma ação vinculada.</p>
-</blockquote>
-<ol start="9" type="1">
-<li><strong><code>def path(self):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Reconstrói a trajetória completa. O método percorre os ponteiros de <code>parent</code> de volta até a raiz, armazena-os em uma lista e depois a inverte (<code>reverse</code>) para exibir a ordem cronológica da viagem.</p>
-</blockquote>
-<ol start="10" type="1">
-<li><strong><code>def __eq__(self, other):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Define o critério de igualdade. Dois nós são considerados iguais se forem do mesmo tipo e representarem o mesmo estado geográfico (ex: dois caminhos diferentes que terminam em “Pipa”).</p>
-</blockquote>
-<ol start="11" type="1">
-<li><strong><code>def __hash__(self):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Torna o nó “mapeável”. Isso permite que o objeto seja usado em conjuntos (<code>set</code>) para controle de estados visitados, evitando que o algoritmo entre em loops infinitos no mapa.</p>
-</blockquote>
-</details>
-</section>
-<section id="classes-de-agente" class="level3">
-<h3 class="anchored" data-anchor-id="classes-de-agente">Classes de Agente</h3>
-<p>As classes <code>SimpleProblemSolvingAgentProgram</code> e <code>SearchAgent</code> estão relacionadas à parte deliberativa do agente no tutorial. A classe <code>SimpleProblemSolvingAgentProgram</code> define a estrutura geral de um agente baseado em objetivos: ela descreve o ciclo de perceber o estado atual, formular um objetivo, formular um problema e buscar uma sequência de ações para alcançá-lo.</p>
-<div id="2a2327f5" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleProblemSolvingAgentProgram:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, initial_state<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> initial_state</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.seq <span class="op">=</span> []</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, percept):</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state <span class="op">=</span> <span class="va">self</span>.update_state(<span class="va">self</span>.state, percept)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.seq:</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            goal <span class="op">=</span> <span class="va">self</span>.formulate_goal(<span class="va">self</span>.state)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            problem <span class="op">=</span> <span class="va">self</span>.formulate_problem(<span class="va">self</span>.state, goal)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.seq <span class="op">=</span> <span class="va">self</span>.search(problem)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.seq:</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.seq.pop(<span class="dv">0</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_state(<span class="va">self</span>, state, percept):</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_goal(<span class="va">self</span>, state):</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_problem(<span class="va">self</span>, state, goal):</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> search(<span class="va">self</span>, problem):</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<details>
-<summary>
-O que é um Problem-solving Agent?
-</summary>
-<p>O <em>problem-solving agent</em> (agente de resolução de problemas) é um agente baseado em objetivo. Quando a ação correta a ser tomada não é imediatamente óbvia, esse tipo de agente precisa planejar com antecedência, avaliando uma sequência de ações que formam um caminho até um <strong>estado objetivo</strong>.</p>
-Uma característica fundamental desses agentes é o uso de <strong>representações atômicas</strong>, o que significa que eles encaram os estados do mundo como um todo indivisível, sem que nenhuma estrutura interna seja visível aos algoritmos envolvidos na resolução do problema. Caso o agente utilize representações fatoradas ou estruturadas dos estados para alcançar suas metas, ele é classificado de forma diferente, sendo chamado de agente de planejamento (<em>planning agent</em>).
-</details>
-<p>A classe <code>SearchAgent</code> é uma implementação concreta dessa ideia, pois especializa essa estrutura para um ambiente representado por grafo e delega a geração do plano a um método de busca específico, como busca em largura ou busca em profundidade. Assim, a primeira classe fornece o modelo abstrato de raciocínio do agente, enquanto a segunda mostra como esse modelo pode ser instanciado na prática dentro do contexto do tutorial.</p>
-<div id="e5781f63" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SearchAgent(SimpleProblemSolvingAgentProgram):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, goal, search_algorithm, graph):</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(initial_state<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.goal <span class="op">=</span> goal</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.search_algorithm <span class="op">=</span> search_algorithm</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.graph <span class="op">=</span> graph</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_state(<span class="va">self</span>, state, percept):</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> percept</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_goal(<span class="va">self</span>, state):</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.goal</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> formulate_problem(<span class="va">self</span>, state, goal):</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> GraphProblem(state, goal, <span class="va">self</span>.graph)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> search(<span class="va">self</span>, problem):</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> <span class="va">self</span>.search_algorithm(problem)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> []</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> node.solution()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G, seed<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>nx.draw(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    G,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    pos,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    with_labels<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    node_color<span class="op">=</span><span class="st">'#d9e8fb'</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    node_size<span class="op">=</span><span class="dv">1800</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    arrows<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    font_size<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">'black'</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Estrutura do grafo do ambiente'</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="funções-auxiliares" class="level3">
-<h3 class="anchored" data-anchor-id="funções-auxiliares">Funções Auxiliares</h3>
-<div id="73ea2aa4" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> state_path(node):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [step.state <span class="cf">for</span> step <span class="kw">in</span> node.path()]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verbose(node):</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">'encontrou'</span>: <span class="va">False</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">'caminho'</span>: <span class="va">None</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">'acoes'</span>: <span class="va">None</span>,</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">'custo'</span>: <span class="va">None</span>,</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'encontrou'</span>: <span class="va">True</span>,</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'caminho'</span>: state_path(node),</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'acoes'</span>: node.solution(),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'custo'</span>: node.path_cost,</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> agent_simulation(agent, initial_state, max_step<span class="op">=</span><span class="dv">20</span>):</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> initial_state</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    trajectory <span class="op">=</span> [state]</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    actions <span class="op">=</span> []</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_step):</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        action <span class="op">=</span> agent(state)</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        actions.append(action)</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> action</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        trajectory.append(state)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="op">==</span> agent.goal:</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> actions, trajectory</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 class="anchored" data-anchor-id="funções-auxiliares">Funções auxiliares</h3>
+<p>Para a busca em si, cada candidato na fronteira é <strong>o caminho percorrido até ali</strong> (uma lista de cidades, ex: <code>['Natal', 'Macaíba']</code>), em vez de um objeto <code>Node</code> com ponteiro para o pai. O estado atual é sempre o último elemento do caminho (<code>path[-1]</code>), e o caminho já É a solução — não precisa ser reconstruído no final.</p>
+<div id="eb1ec39b" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(graph, path):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Soma o custo das arestas percorridas em um caminho."""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(graph[a][b] <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(path, path[<span class="dv">1</span>:]))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p><code>path_cost</code> soma o custo de cada aresta percorrida no caminho. Neste capítulo todas as arestas custam 1 (ver <code>environment</code> acima), então o custo de um caminho é simplesmente o seu comprimento.</p>
 </section>
 </section>
 <section id="exemplo-prático" class="level2">
 <h2 class="anchored" data-anchor-id="exemplo-prático">Exemplo prático</h2>
-<p>Agora vamos aplicar essas estruturas em um ambiente simples, com um estado inicial <code>A</code> e um objetivo <code>P</code>.</p>
-<section id="construção-do-ambiente" class="level3">
-<h3 class="anchored" data-anchor-id="construção-do-ambiente">Construção do Ambiente</h3>
-<div id="1d874be9" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Ceará-Mirim'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Ielmo Marinho'</span>: <span class="dv">1</span>, <span class="st">'Vera Cruz'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: {<span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: {<span class="st">'Vera Cruz'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: {<span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: {<span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Pipa'</span>: <span class="dv">1</span>},</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: {<span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>}</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Agora vamos aplicar essas funções em um cenário concreto, com um estado inicial <code>Natal</code> e um objetivo <code>Pipa</code>.</p>
+<div id="689fdf69" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> environment</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>estado_inicial <span class="op">=</span> <span class="st">'Natal'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>objetivo <span class="op">=</span> <span class="st">'Pipa'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, estado_inicial)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, objetivo)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, <span class="bu">list</span>(graph[estado_inicial].keys()))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="c0a3f38b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> SimpleGraph(environment)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> GraphProblem(<span class="st">'Natal'</span>, <span class="st">'Pipa'</span>, graph)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, problem.initial)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, problem.goal)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, problem.actions(<span class="st">'Natal'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Estado inicial: Natal
-Objetivo: Pipa
-Ações possíveis em Natal: ['Parnamirim', 'Extremoz', 'São Gonçalo do Amarante', 'Macaíba']</code></pre>
-</div>
-</div>
-<div id="32f67528" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:659}}" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title Estrutura do grafo</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.DiGraph()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> origem, destinos <span class="kw">in</span> environment.items():</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> destino <span class="kw">in</span> destinos:</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        G.add_edge(origem, destino)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G, seed<span class="op">=</span><span class="dv">7</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>nx.draw(</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    G,</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    pos,</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    with_labels<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    node_color<span class="op">=</span><span class="st">'#d9e8fb'</span>,</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    node_size<span class="op">=</span><span class="dv">1800</span>,</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    arrows<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    font_size<span class="op">=</span><span class="dv">11</span>,</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">'black'</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Estrutura do grafo do ambiente'</span>)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="01-metodos-de-busca-i_files/figure-html/cell-12-output-1.png" width="979" height="615" class="figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
 <section id="busca-em-largura" class="level3">
 <h3 class="anchored" data-anchor-id="busca-em-largura">Busca em largura</h3>
 <p>A busca em largura é uma estratégia de busca na qual o nó raiz é expandido primeiro, seguido por todos os seus nós sucessores, depois os sucessores destes, e assim por diante, explorando o espaço de estados nível por nível. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila FIFO (primeiro a entrar, primeiro a sair), o que garante que os nós recém-gerados (mais profundos) vão para o final da fila e os nós mais antigos e rasos sejam expandidos primeiro. Por explorar todas as opções de uma profundidade antes de avançar para a próxima, a busca em largura é sistemática, completa e garante encontrar uma solução com o número mínimo de ações necessárias.</p>
-<div id="b26260f6" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> breadth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> Node(problem.initial)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node, [node.state]</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> node</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [node]</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node.state)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        visited.add(node.state)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child <span class="kw">not</span> <span class="kw">in</span> frontier:</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> problem.goal_test(child.state):</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                    expansion_order.append(child.state)</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">return</span> child, expansion_order</span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> child</span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="7374a992" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-6"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-6-1"><a href="#annotated-cell-6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> breadth_first_search(graph, start, goal, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="annotated-cell-6-2"><a href="#annotated-cell-6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em largura: expande o caminho mais raso primeiro (fila FIFO)."""</span></span>
+<span id="annotated-cell-6-3"><a href="#annotated-cell-6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="op">==</span> goal:</span>
+<span id="annotated-cell-6-4"><a href="#annotated-cell-6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ([start], [start]) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> [start]</span>
+<span id="annotated-cell-6-5"><a href="#annotated-cell-6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-6"><a href="#annotated-cell-6-6" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-6-7"><a href="#annotated-cell-6-7" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> {start}</span>
+<span id="annotated-cell-6-8"><a href="#annotated-cell-6-8" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="annotated-cell-6-9"><a href="#annotated-cell-6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-10"><a href="#annotated-cell-6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-6-11" class="code-annotation-target"><a href="#annotated-cell-6-11" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="annotated-cell-6-12"><a href="#annotated-cell-6-12" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-6-13"><a href="#annotated-cell-6-13" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="annotated-cell-6-14"><a href="#annotated-cell-6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-15"><a href="#annotated-cell-6-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-6-16"><a href="#annotated-cell-6-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-6-17"><a href="#annotated-cell-6-17" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="annotated-cell-6-18"><a href="#annotated-cell-6-18" aria-hidden="true" tabindex="-1"></a>            new_path <span class="op">=</span> path <span class="op">+</span> [neighbor]</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-6-19" class="code-annotation-target"><a href="#annotated-cell-6-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="op">==</span> goal:</span>
+<span id="annotated-cell-6-20"><a href="#annotated-cell-6-20" aria-hidden="true" tabindex="-1"></a>                expansion_order.append(neighbor)</span>
+<span id="annotated-cell-6-21"><a href="#annotated-cell-6-21" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> (new_path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> new_path</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-6" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-6-22" class="code-annotation-target"><a href="#annotated-cell-6-22" aria-hidden="true" tabindex="-1"></a>            visited.add(neighbor)</span>
+<span id="annotated-cell-6-23"><a href="#annotated-cell-6-23" aria-hidden="true" tabindex="-1"></a>            frontier.append(new_path)</span>
+<span id="annotated-cell-6-24"><a href="#annotated-cell-6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-6-25"><a href="#annotated-cell-6-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-6" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="11" data-code-annotation="1">Remove sempre o caminho mais antigo — a fronteira se comporta como uma fila FIFO, garantindo exploração nível por nível.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="19" data-code-annotation="2">Teste de objetivo na geração do vizinho, não na retirada — é isso que garante o caminho com o menor número de passos.</span>
+</dd>
+<dt data-target-cell="annotated-cell-6" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-6" data-code-lines="22" data-code-annotation="3">Um estado é marcado como visitado assim que é <em>descoberto</em> (adicionado à fronteira), não quando é expandido — evita colocar o mesmo estado na fila duas vezes.</span>
+</dd>
+</dl>
 </div>
-<details>
-<summary>
-Explicação
-</summary>
-<ol type="1">
-<li><strong><code>def breadth_first_graph_search(problem, return_expansion_order=False):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Define a função de busca em largura no grafo. O parâmetro <code>return_expansion_order</code> permite que, além do resultado, a função retorne a lista de cidades na ordem em que foram “visitadas” pelo algoritmo.</p>
-</blockquote>
-<ol start="2" type="1">
-<li><strong><code>node = Node(problem.initial)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Cria o nó raiz da árvore de busca usando o estado inicial definido no problema (ex: <code>'Natal'</code>).</p>
-</blockquote>
-<ol start="3" type="1">
-<li><strong><code>if problem.goal_test(node.state):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Verifica imediatamente se o ponto de partida já é o destino final (o objetivo). Se for, a busca termina sem nem começar.</p>
-</blockquote>
-<ol start="4" type="1">
-<li><strong><code>frontier = [node]</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Inicializa a <strong>fronteira</strong> (ou borda) como uma fila (FIFO - <em>First-In, First-Out</em>). Na busca em largura, a fronteira garante que exploraremos todos os vizinhos de um nível antes de passar para o próximo.</p>
-</blockquote>
-<ol start="5" type="1">
-<li><strong><code>visited = set()</code> e <code>expansion_order = []</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p><code>visited</code> é um conjunto que armazena estados já explorados para evitar ciclos infinitos (ex: ficar indo e voltando entre Natal e Macaíba). <code>expansion_order</code> registra a sequência cronológica da exploração.</p>
-</blockquote>
-<ol start="6" type="1">
-<li><strong><code>while frontier:</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Inicia o laço principal que continuará executando enquanto houver cidades na fronteira para serem exploradas.</p>
-</blockquote>
-<ol start="7" type="1">
-<li><strong><code>node = frontier.pop(0)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Remove e retorna o <strong>primeiro</strong> elemento da fila. Esse comportamento de “tirar do início” é o que caracteriza a busca em largura, priorizando os nós mais rasos da árvore.</p>
-</blockquote>
-<ol start="8" type="1">
-<li><strong><code>visited.add(node.state)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Adiciona a cidade atual ao conjunto de visitados, marcando que já verificamos todos os vizinhos deste local.</p>
-</blockquote>
-<ol start="9" type="1">
-<li><strong><code>for child in node.expand(problem):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Expande o nó atual, gerando novos nós para todas as cidades vizinhas conectadas a ele (ex: de Natal, gera Parnamirim, Extremoz, etc.).</p>
-</blockquote>
-<ol start="10" type="1">
-<li><strong><code>if child.state not in visited and child not in frontier:</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Filtro de segurança: só processa o vizinho se ele ainda não foi visitado e se já não estiver na fila para ser visitado. Isso economiza memória e tempo.</p>
-</blockquote>
-<ol start="11" type="1">
-<li><strong><code>if problem.goal_test(child.state):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>O “teste de objetivo” é feito no momento em que o nó filho é gerado. Se o vizinho for o destino (ex: <code>'Pipa'</code>), a busca é interrompida com sucesso.</p>
-</blockquote>
-<ol start="12" type="1">
-<li><strong><code>frontier.append(child)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Se o vizinho não for o destino, ele é adicionado ao <strong>final</strong> da fila da fronteira para ser explorado posteriormente, após os seus “irmãos”.</p>
-</blockquote>
-<ol start="13" type="1">
-<li><strong><code>return None</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Se a fila da fronteira esvaziar e o objetivo não tiver sido encontrado, a função retorna <code>None</code>, indicando que não há caminho possível entre as cidades no mapa fornecido.</p>
-</blockquote>
-</details>
-<div id="ba3267c9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resultado_bfs, expansoes_bfs <span class="op">=</span> breadth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'BFS didática:'</span>, verbose(resultado_bfs))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão BFS:'</span>, expansoes_bfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>BFS didática: {'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 5}
-Ordem de expansão BFS: ['Natal', 'Parnamirim', 'Extremoz', 'São Gonçalo do Amarante', 'Macaíba', 'São José de Mipibu', 'Ceará-Mirim', 'Ielmo Marinho', 'Vera Cruz', 'Goianinha', 'Monte Alegre', 'Tibau do Sul', 'Pipa']</code></pre>
 </div>
+<div id="9eb2f272" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>resultado_bfs, expansoes_bfs <span class="op">=</span> breadth_first_search(graph, estado_inicial, objetivo, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (BFS):'</span>, resultado_bfs)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão BFS:'</span>, expansoes_bfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="busca-em-profundidade" class="level3">
 <h3 class="anchored" data-anchor-id="busca-em-profundidade">Busca em profundidade</h3>
 <p>A busca em profundidade é uma estratégia que expande sempre o nó mais profundo disponível na fronteira de busca. O algoritmo avança imediatamente para o nível mais profundo da árvore e, ao alcançar um nó sem sucessores, ele “retrocede” para o próximo nó mais profundo que ainda possui opções não exploradas. Geralmente implementada com uma estrutura de dados do tipo pilha (último a entrar, primeiro a sair), essa abordagem destaca-se pelo uso muito reduzido de memória. Contudo, ao contrário da busca em largura, ela não garante encontrar a solução de menor custo e pode ser incompleta em espaços de estados infinitos, pois corre o risco de ficar presa indefinidamente em um único caminho.</p>
-<div id="5036ebb3" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [Node(problem.initial)]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop()</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node.state)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        visited.add(node.state)</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child.state <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child <span class="kw">not</span> <span class="kw">in</span> frontier:</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="98725ff1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-8"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-8-1"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_search(graph, start, goal, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade: expande o caminho mais recente primeiro (pilha)."""</span></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-8-8" class="code-annotation-target"><a href="#annotated-cell-8-8" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="annotated-cell-8-9"><a href="#annotated-cell-8-9" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-8-10"><a href="#annotated-cell-8-10" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="annotated-cell-8-11"><a href="#annotated-cell-8-11" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-8-12" class="code-annotation-target"><a href="#annotated-cell-8-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="annotated-cell-8-13"><a href="#annotated-cell-8-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="annotated-cell-8-14"><a href="#annotated-cell-8-14" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-8-15" class="code-annotation-target"><a href="#annotated-cell-8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-8-16"><a href="#annotated-cell-8-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="annotated-cell-8-17"><a href="#annotated-cell-8-17" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="annotated-cell-8-18"><a href="#annotated-cell-8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-8-19"><a href="#annotated-cell-8-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-8-20"><a href="#annotated-cell-8-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-8-21"><a href="#annotated-cell-8-21" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="annotated-cell-8-22"><a href="#annotated-cell-8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-8-23"><a href="#annotated-cell-8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="8" data-code-annotation="1">Remove sempre o último caminho adicionado — a fronteira se comporta como uma pilha, o que faz o algoritmo mergulhar em profundidade num único ramo antes de voltar.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="12" data-code-annotation="2">Diferente da BFS, o teste de objetivo só acontece quando o caminho é <strong>retirado</strong> da fronteira, não quando é gerado.</span>
+</dd>
+<dt data-target-cell="annotated-cell-8" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="15" data-code-annotation="3">Um mesmo estado pode entrar na fronteira mais de uma vez, por caminhos diferentes; essa checagem descarta o caminho se o estado já tiver sido processado antes.</span>
+</dd>
+</dl>
 </div>
-<details>
-<summary>
-Explicação
-</summary>
-<ol type="1">
-<li><strong><code>def depth_first_graph_search(problem, return_expansion_order=False):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Define a função de busca em profundidade no grafo. O objetivo aqui é explorar um ramo completo da árvore de estados até o fim antes de tentar um caminho alternativo.</p>
-</blockquote>
-<ol start="2" type="1">
-<li><strong><code>frontier = [Node(problem.initial)]</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Inicializa a <strong>fronteira</strong> com o nó inicial (ex: <code>'Natal'</code>). Diferente da BFS, aqui a lista será tratada como uma <strong>Pilha</strong> (LIFO - <em>Last-In, First-Out</em>).</p>
-</blockquote>
-<ol start="3" type="1">
-<li><strong><code>visited = set()</code> e <code>expansion_order = []</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Prepara o conjunto <code>visited</code> para rastrear cidades já processadas e a lista <code>expansion_order</code> para registrar a ordem em que os nós são retirados da fronteira.</p>
-</blockquote>
-<ol start="4" type="1">
-<li><strong><code>while frontier:</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Mantém o loop ativo enquanto houver cidades na pilha da fronteira para serem exploradas.</p>
-</blockquote>
-<ol start="5" type="1">
-<li><strong><code>node = frontier.pop()</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Remove e retorna o <strong>último</strong> elemento adicionado à lista. Esse é o “pulo do gato” da DFS: ao pegar sempre o último, o algoritmo mergulha verticalmente no grafo em vez de expandir horizontalmente.</p>
-</blockquote>
-<ol start="6" type="1">
-<li><strong><code>expansion_order.append(node.state)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Registra a cidade que acaba de ser retirada da pilha para análise na lista de ordem de expansão.</p>
-</blockquote>
-<ol start="7" type="1">
-<li><strong><code>if problem.goal_test(node.state):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Realiza o teste de objetivo. Na DFS, o teste é feito apenas quando o nó é <strong>retirado</strong> da fronteira (pop), e não quando é gerado. Se for o destino (ex: <code>'Pipa'</code>), a busca para.</p>
-</blockquote>
-<ol start="8" type="1">
-<li><strong><code>visited.add(node.state)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Marca o estado atual como visitado para garantir que o algoritmo não entre em <em>looping</em> caso encontre caminhos cíclicos no mapa do RN.</p>
-</blockquote>
-<ol start="9" type="1">
-<li><strong><code>for child in node.expand(problem):</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Gera os vizinhos da cidade atual. Se estivermos em Macaíba, ele gerará Vera Cruz, Ielmo Marinho, etc.</p>
-</blockquote>
-<ol start="10" type="1">
-<li><strong><code>if child.state not in visited and child not in frontier:</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Verifica se o vizinho já foi explorado ou se já está aguardando na pilha. Isso evita redundância e processamento desnecessário.</p>
-</blockquote>
-<ol start="11" type="1">
-<li><strong><code>frontier.append(child)</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Adiciona o nó filho ao <strong>topo</strong> da pilha. Como ele foi o último a entrar, será o primeiro a ser retirado no próximo ciclo do <code>while</code>, forçando a exploração profunda.</p>
-</blockquote>
-<ol start="12" type="1">
-<li><strong><code>return None</code></strong></li>
-</ol>
-<blockquote class="blockquote">
-<p>Se a pilha esvaziar e o objetivo nunca tiver sido alcançado, a função retorna <code>None</code>, indicando que o destino é inacessível a partir da origem.</p>
-</blockquote>
-</details>
-<div id="4c583f91" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>resultado_dfs, expansoes_dfs <span class="op">=</span> depth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS didática:'</span>, verbose(resultado_dfs))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão DFS:'</span>, expansoes_dfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>DFS didática: {'encontrou': True, 'caminho': ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'custo': 7}
-Ordem de expansão DFS: ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
 </div>
+<div id="fdbd7289" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>resultado_dfs, expansoes_dfs <span class="op">=</span> depth_first_search(graph, estado_inicial, objetivo, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (DFS):'</span>, resultado_dfs)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão DFS:'</span>, expansoes_dfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="simulação-do-agente" class="level3">
-<h3 class="anchored" data-anchor-id="simulação-do-agente">Simulação do Agente</h3>
-<div id="6c9c2660" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>agente_bfs <span class="op">=</span> SearchAgent(goal <span class="op">=</span> <span class="st">'Pipa'</span>, search_algorithm <span class="op">=</span> breadth_first_graph_search, graph <span class="op">=</span> graph)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>actions_bfs, trajetoria_bfs <span class="op">=</span> agent_simulation(agente_bfs, <span class="st">'Natal'</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com BFS'</span>)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, actions_bfs)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, trajetoria_bfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Agente com BFS
-Ações: ['Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']
-Trajetória: ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
-</div>
-<div id="a41d38f6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>agente_dfs <span class="op">=</span> SearchAgent(goal <span class="op">=</span> <span class="st">'Pipa'</span>, search_algorithm <span class="op">=</span> depth_first_graph_search, graph <span class="op">=</span> graph)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>actions_dfs, trajetoria_dfs <span class="op">=</span> agent_simulation(agente_dfs, <span class="st">'Natal'</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Agente com DFS'</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações:'</span>, actions_dfs)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Trajetória:'</span>, trajetoria_dfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Agente com DFS
-Ações: ['Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']
-Trajetória: ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
-</div>
-</div>
 </section>
+<section id="busca-uniforme" class="level2">
+<h2 class="anchored" data-anchor-id="busca-uniforme">Busca uniforme</h2>
+<p>A busca de custo uniforme (<em>Uniform Cost Search</em> ou UCS) é uma generalização da BFS para grafos com custos de aresta diferentes: em vez de expandir sempre o caminho mais raso, ela expande sempre o caminho de <strong>menor custo acumulado</strong> (<code>g(n)</code>). Quando todas as arestas custam o mesmo (como no <code>environment</code> deste capítulo), UCS e BFS produzem o mesmo resultado — a diferença só aparece em grafos com pesos variados, como o <code>environment_with_distance</code> do próximo capítulo.</p>
+<div id="dd7ac3e0" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-10"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-10-1"><a href="#annotated-cell-10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> uniform_cost_search(graph, start, goal, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="annotated-cell-10-2"><a href="#annotated-cell-10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca de custo uniforme: expande sempre o caminho de menor custo acumulado."""</span></span>
+<span id="annotated-cell-10-3"><a href="#annotated-cell-10-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-10-4"><a href="#annotated-cell-10-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="annotated-cell-10-5"><a href="#annotated-cell-10-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="annotated-cell-10-6"><a href="#annotated-cell-10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-7"><a href="#annotated-cell-10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-10-8" class="code-annotation-target"><a href="#annotated-cell-10-8" aria-hidden="true" tabindex="-1"></a>        frontier.sort(key<span class="op">=</span><span class="kw">lambda</span> path: (path_cost(graph, path), path[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="annotated-cell-10-9"><a href="#annotated-cell-10-9" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="annotated-cell-10-10"><a href="#annotated-cell-10-10" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-10-11"><a href="#annotated-cell-10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-12"><a href="#annotated-cell-10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-10-13"><a href="#annotated-cell-10-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="annotated-cell-10-14"><a href="#annotated-cell-10-14" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="annotated-cell-10-15"><a href="#annotated-cell-10-15" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(current)</span>
+<span id="annotated-cell-10-16"><a href="#annotated-cell-10-16" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-10" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-10-17" class="code-annotation-target"><a href="#annotated-cell-10-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="annotated-cell-10-18"><a href="#annotated-cell-10-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> (path, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> path</span>
+<span id="annotated-cell-10-19"><a href="#annotated-cell-10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-20"><a href="#annotated-cell-10-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-10-21"><a href="#annotated-cell-10-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="annotated-cell-10-22"><a href="#annotated-cell-10-22" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="annotated-cell-10-23"><a href="#annotated-cell-10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-10-24"><a href="#annotated-cell-10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="va">None</span>, expansion_order) <span class="cf">if</span> return_expansion_order <span class="cf">else</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-10" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="8" data-code-annotation="1">A fronteira inteira é reordenada pelo custo acumulado do caminho (<code>g(n)</code>) antes de cada remoção — é essa ordenação que faz a UCS sempre expandir o caminho mais barato conhecido, em vez de seguir a ordem de chegada (fila) ou de inserção (pilha).</span>
+</dd>
+<dt data-target-cell="annotated-cell-10" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-10" data-code-lines="17" data-code-annotation="2">O teste de objetivo só acontece na retirada, igual à DFS — é o que garante que, ao alcançar um estado, já sabemos que nenhum caminho mais barato para ele existe.</span>
+</dd>
+</dl>
+</div>
+</div>
+<div id="e153f9ca" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>resultado_ucs, expansoes_ucs <span class="op">=</span> uniform_cost_search(graph, estado_inicial, objetivo, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho encontrado (UCS):'</span>, resultado_ucs)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão UCS:'</span>, expansoes_ucs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="desafio" class="level2">
 <h2 class="anchored" data-anchor-id="desafio">Desafio</h2>
+<section id="busca-em-profundidade-limitada" class="level3">
+<h3 class="anchored" data-anchor-id="busca-em-profundidade-limitada">Busca em profundidade limitada</h3>
 <p>Implemente uma versão da <strong>busca em profundidade limitada</strong>. Nessa estratégia, a exploração segue em profundidade, mas o algoritmo só pode expandir nós até uma profundidade máxima definida por <code>limit</code>.</p>
 <p>Sua função deve:</p>
 <ol type="1">
-<li>Começar no estado inicial do problema;</li>
-<li>Explorar os nós em profundidade;</li>
-<li>Impedir a expansão de nós com profundidade maior ou igual ao limite;</li>
-<li>Retornar o nó solução se encontrar o objetivo;</li>
+<li>Começar no estado inicial;</li>
+<li>Explorar os caminhos em profundidade (mesma lógica de pilha da DFS);</li>
+<li>Impedir a expansão de caminhos com profundidade maior ou igual ao limite;</li>
+<li>Retornar o caminho solução se encontrar o objetivo;</li>
 <li>Retornar <code>None</code> se nenhuma solução for encontrada dentro do limite.</li>
 </ol>
-<p>Use o atributo <code>node.depth</code> para controlar a expansão.</p>
-<div id="4c4d63d9" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_limited_search(problem, limit<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Comece com o nó inicial na fronteira.</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [Node(problem.initial)]</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop()</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Verifique se o objetivo foi encontrado.</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> problem.goal_test(node.state):</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Expanda o nó apenas se ele ainda estiver dentro do limite.</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node.depth <span class="op">&lt;</span> limit:</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> child <span class="kw">in</span> node.expand(problem):</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Adicione os filhos à fronteira.</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A profundidade de um caminho é <code>len(path) - 1</code> (o número de arestas percorridas).</p>
+<div id="3832795c" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-12"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-12-1"><a href="#annotated-cell-12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_limited_search(graph, start, goal, limit<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="annotated-cell-12-2"><a href="#annotated-cell-12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade sem expandir caminhos além da profundidade `limit`."""</span></span>
+<span id="annotated-cell-12-3"><a href="#annotated-cell-12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Comece com o caminho inicial na fronteira.</span></span>
+<span id="annotated-cell-12-4"><a href="#annotated-cell-12-4" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="annotated-cell-12-5"><a href="#annotated-cell-12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-6"><a href="#annotated-cell-12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="annotated-cell-12-7"><a href="#annotated-cell-12-7" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="annotated-cell-12-8"><a href="#annotated-cell-12-8" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="annotated-cell-12-9"><a href="#annotated-cell-12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-10"><a href="#annotated-cell-12-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Verifique se o objetivo foi encontrado.</span></span>
+<span id="annotated-cell-12-11"><a href="#annotated-cell-12-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="annotated-cell-12-12"><a href="#annotated-cell-12-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="annotated-cell-12-13"><a href="#annotated-cell-12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-14"><a href="#annotated-cell-12-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Expanda o caminho apenas se ele ainda estiver dentro do limite.</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-12" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-12-15" class="code-annotation-target"><a href="#annotated-cell-12-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span> <span class="op">&lt;</span> limit:</span>
+<span id="annotated-cell-12-16"><a href="#annotated-cell-12-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="annotated-cell-12-17"><a href="#annotated-cell-12-17" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Adicione os novos caminhos à fronteira.</span></span>
+<span id="annotated-cell-12-18"><a href="#annotated-cell-12-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span></span>
+<span id="annotated-cell-12-19"><a href="#annotated-cell-12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-12-20"><a href="#annotated-cell-12-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-12" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-12" data-code-lines="15" data-code-annotation="1"><code>len(path) - 1</code> é a profundidade do caminho atual (número de arestas percorridas); só expandimos enquanto ela for menor que <code>limit</code>.</span>
+</dd>
+</dl>
+</div>
 </div>
 </section>
-<section id="key-takeways" class="level2">
-<h2 class="anchored" data-anchor-id="key-takeways">Key takeways</h2>
+<section id="busca-em-profundidade-iterativa" class="level3">
+<h3 class="anchored" data-anchor-id="busca-em-profundidade-iterativa">Busca em profundidade iterativa</h3>
+<p>A <strong>busca em profundidade iterativa</strong> (<em>Iterative Deepening Search</em>, IDS) combina as vantagens da BFS e da DFS: repete a busca em profundidade limitada com limites crescentes (0, 1, 2, …) até encontrar o objetivo, obtendo o caminho mais curto (como a BFS) sem precisar manter toda a fronteira em memória de uma vez (como a DFS).</p>
+<p>Sua função deve:</p>
+<ol type="1">
+<li>Tentar limites de <code>0</code> até <code>max_limit</code>, um de cada vez;</li>
+<li>Para cada limite, chamar <code>depth_limited_search(graph, start, goal, limit)</code>;</li>
+<li>Retornar o primeiro caminho encontrado;</li>
+<li>Retornar <code>None</code> se nenhum limite até <code>max_limit</code> encontrar o objetivo.</li>
+</ol>
+<div id="96ec0685" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> iterative_deepening_search(graph, start, goal, max_limit<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade iterativa: chama depth_limited_search com limites crescentes."""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> limit <span class="kw">in</span> <span class="bu">range</span>(max_limit <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Tente encontrar o objetivo com o limite atual.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Dicas
+</summary>
+<p>Uma implementação possível de <code>depth_limited_search</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_limited_search(graph, start, goal, limit<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span> <span class="op">&lt;</span> limit:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> neighbor <span class="kw">in</span> graph.get(current, {}):</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>E <code>iterative_deepening_search</code>, reaproveitando a função acima:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> iterative_deepening_search(graph, start, goal, max_limit<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> limit <span class="kw">in</span> <span class="bu">range</span>(max_limit <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> depth_limited_search(graph, start, goal, limit)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> result <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+</section>
+<section id="perguntas-para-reflexão" class="level2">
+<h2 class="anchored" data-anchor-id="perguntas-para-reflexão">Perguntas para reflexão</h2>
+<ol type="1">
+<li>Por que a BFS testa o objetivo ao <em>gerar</em> um vizinho, enquanto a DFS e a UCS testam ao <em>retirar</em> o caminho da fronteira? O que aconteceria se a BFS testasse na retirada, ou se a DFS testasse na geração?</li>
+<li>Em que tipo de grafo a UCS encontraria um caminho diferente do encontrado pela BFS? Por que, no <code>environment</code> deste capítulo, as duas sempre coincidem?</li>
+<li>Por que representar cada candidato da fronteira como o caminho completo (lista de cidades) elimina a necessidade de uma estrutura como <code>Node</code> com ponteiro para o nó pai?</li>
+<li>Qual a relação entre a busca em profundidade limitada e a busca em profundidade iterativa? Por que a IDS é completa mesmo reaproveitando uma busca que, sozinha, não é?</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
 <ul>
-<li>Um agente baseado em objetivos precisa formular um problema antes de buscar uma solução.</li>
-<li>BFS e DFS usam a mesma modelagem do problema, mas exploram o espaço de estados de formas diferentes.</li>
-<li>A solução pode ser representada como uma sequência de ações obtida a partir de um <code>Node</code>.</li>
-<li>Separar ambiente, problema e agente torna o código mais reutilizável.</li>
+<li>Um algoritmo de busca explora um grafo representando cada candidato como o caminho percorrido até ele — o estado atual é sempre o último elemento do caminho.</li>
+<li>BFS e DFS usam a mesma representação de grafo, mas exploram o espaço de estados de formas diferentes (fila vs.&nbsp;pilha) e testam o objetivo em momentos diferentes (na geração vs.&nbsp;na retirada).</li>
+<li>A solução já é o próprio caminho encontrado — não é preciso reconstruir nada a partir de ponteiros de pai.</li>
 </ul>
 </section>
 <section id="referencias" class="level2">
 <h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
 <ol type="1">
 <li>Russell, S. &amp; Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.</li>
-<li>Implementações clássicas de <code>Problem</code>, <code>Node</code> e agentes baseados em objetivos no ecossistema AIMA.</li>
 </ol>
 
 

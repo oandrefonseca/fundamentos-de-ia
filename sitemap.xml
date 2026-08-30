@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/apendices/metodos-de-busca-sem-oo.html</loc>
-    <lastmod>2026-08-30T18:55:34.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/10-redes-bayesianas.html</loc>
-    <lastmod>2026-08-30T18:55:34.590Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/08-agentes-probabilisticos.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/06-busca-competitiva-ii.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/04-ambientes-complexos-ii.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/02-metodos-de-busca-ii.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/apresentacao.html</loc>
-    <lastmod>2026-08-30T18:55:34.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/index.html</loc>
-    <lastmod>2026-08-30T18:55:34.591Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/01-metodos-de-busca-i.html</loc>
-    <lastmod>2026-08-30T18:55:34.588Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/03-ambientes-complexos-i.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/05-busca-competitiva-i.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/07-agentes-logicos.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/11-cadeias-de-markov.html</loc>
+    <lastmod>2026-08-30T20:13:47.187Z</lastmod>
   </url>
   <url>
     <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/09-naive-bayes.html</loc>
-    <lastmod>2026-08-30T18:55:34.589Z</lastmod>
+    <lastmod>2026-08-30T20:13:47.185Z</lastmod>
   </url>
   <url>
-    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/11-cadeias-de-markov.html</loc>
-    <lastmod>2026-08-30T18:55:34.591Z</lastmod>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/07-agentes-logicos.html</loc>
+    <lastmod>2026-08-30T20:13:47.184Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/05-busca-competitiva-i.html</loc>
+    <lastmod>2026-08-30T20:13:47.183Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/03-ambientes-complexos-i.html</loc>
+    <lastmod>2026-08-30T20:13:47.183Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/01-metodos-de-busca-i.html</loc>
+    <lastmod>2026-08-30T20:13:47.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/index.html</loc>
+    <lastmod>2026-08-30T20:13:47.187Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/apresentacao.html</loc>
+    <lastmod>2026-08-30T20:13:47.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/02-metodos-de-busca-ii.html</loc>
+    <lastmod>2026-08-30T20:13:47.182Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/04-ambientes-complexos-ii.html</loc>
+    <lastmod>2026-08-30T20:13:47.183Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/06-busca-competitiva-ii.html</loc>
+    <lastmod>2026-08-30T20:13:47.184Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/08-agentes-probabilisticos.html</loc>
+    <lastmod>2026-08-30T20:13:47.184Z</lastmod>
+  </url>
+  <url>
+    <loc>https://oandrefonseca.github.io/fundamentos-de-ia/capitulos/10-redes-bayesianas.html</loc>
+    <lastmod>2026-08-30T20:13:47.186Z</lastmod>
   </url>
 </urlset>

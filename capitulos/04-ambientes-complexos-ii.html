@@ -467,23 +467,6 @@ window.Quarto = {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Apêndices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar seção">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../apendices/metodos-de-busca-sem-oo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Métodos de Busca I sem OO</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -545,7 +528,7 @@ window.Quarto = {
 <hr>
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="44d2d238" class="cell" data-execution_count="1">
+<div id="11f193df" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -578,7 +561,7 @@ window.Quarto = {
 <p>Para ilustrar os algoritmos, utilizaremos novamente o <strong>problema das 8-Rainhas</strong>. O objetivo é posicionar oito rainhas em um tabuleiro de xadrez 8x8 de forma que nenhuma rainha ataque outra. Isso significa que não pode haver duas rainhas na mesma linha, coluna ou diagonal. No final, iremos contabilizar quantas rainhas estão <strong>apaziguadas</strong>. Como ja discutido, a solução ideal é aquela em que o valor chega a <code>8</code>.</p>
 <section id="função-de-objetivo" class="level3">
 <h3 class="anchored" data-anchor-id="função-de-objetivo">Função de Objetivo</h3>
-<div id="f4ef8698" class="cell" data-execution_count="2">
+<div id="2bf81957" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_peaceful_queens(board):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Conta quantas rainhas nao atacam nenhuma outra rainha no tabuleiro."""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    peaceful_queens <span class="op">=</span> <span class="dv">0</span></span>
@@ -605,7 +588,7 @@ window.Quarto = {
 </section>
 <section id="função-para-gerar-tabuleiro" class="level3">
 <h3 class="anchored" data-anchor-id="função-para-gerar-tabuleiro">Função para gerar tabuleiro</h3>
-<div id="285dd764" class="cell" data-execution_count="3">
+<div id="981f3271" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_random_board(n_queen <span class="op">=</span> <span class="dv">8</span>):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Gera um tabuleiro aleatório para o problema das N-Rainhas.</span></span>
@@ -616,7 +599,7 @@ window.Quarto = {
 </section>
 <section id="função-para-visualizar-tabuleiro" class="level3">
 <h3 class="anchored" data-anchor-id="função-para-visualizar-tabuleiro">Função para visualizar tabuleiro</h3>
-<div id="eb6f0270" class="cell" data-execution_count="4">
+<div id="bb5e28a5" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_board(board):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Gera e exibe uma representacao visual do tabuleiro de xadrez como uma imagem.</span></span>
@@ -657,7 +640,7 @@ window.Quarto = {
 <section id="local-beam-search" class="level3">
 <h3 class="anchored" data-anchor-id="local-beam-search">Local Beam Search</h3>
 <p>O <strong>Local Beam Search</strong> é uma extensão do Hill Climbing que mantém <code>k</code> estados em vez de apenas um. Em cada passo, ele gera todos os sucessores de todos os <code>k</code> estados atuais e, em seguida, seleciona os <code>k</code> melhores sucessores para serem os novos estados atuais. Isso permite que o algoritmo explore múltiplas partes do espaço de busca simultaneamente, reduzindo a chance de ficar preso em um ótimo local.</p>
-<div id="2a5cdc23" class="cell" data-execution_count="5">
+<div id="ea125ced" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> local_beam_search(k, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Implementa a Busca em Feixe Local (Local Beam Search) para as N-Rainhas.</span></span>
@@ -731,7 +714,7 @@ Explicação
 <li><code>best_fitness, best_board = beam[0]</code> / <code>return best_board, best_fitness</code> &gt; Retorna o melhor resultado encontrado (tabuleiro e fitness) ao final do processo, na mesma ordem usada pelo retorno antecipado do passo 11.
 <details></details></li>
 </ol>
-<div id="93aa540f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:187,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299297406,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="6">
+<div id="376cbdf1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299297406,&quot;user_tz&quot;:180,&quot;elapsed&quot;:187,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>best_board_lbs, best_fitness_lbs <span class="op">=</span> local_beam_search(k<span class="op">=</span><span class="dv">4</span>, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Resultados do Local Beam Search ---"</span>)</span>
@@ -746,62 +729,49 @@ Explicação
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    print_board(best_board_lbs)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Nenhum tabuleiro válido foi retornado."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
---- Resultados do Local Beam Search ---
-Melhor Tabuleiro encontrado: [5, 2, 6, 1, 3, 7, 0, 4]
-Fitness (rainhas pacíficas): 8</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-7-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
 </div>
 </details></section>
 <section id="stochastic-beam-search" class="level3">
 <h3 class="anchored" data-anchor-id="stochastic-beam-search">Stochastic Beam Search</h3>
 <p>O Stochastic Beam Search é uma variação do Local Beam Search. Em vez de selecionar os k melhores sucessores de forma determinística, ele seleciona os k sucessores de forma estocástica (probabilística), onde a probabilidade de um sucessor ser escolhido é proporcional à sua qualidade (ou inversamente proporcional ao número de ataques, no nosso caso). Isso ajuda a evitar ótimos locais, permitindo que o algoritmo explore estados menos promissores que podem levar a soluções melhores a longo prazo.</p>
-<div id="af0fba6e" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stochastic_beam_search(k, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Adiciona o componente estocástico na Busca Local em Feixe para as N-Rainhas.</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    beam <span class="op">=</span> []</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(k):</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      board <span class="op">=</span> generate_random_board(n_queens)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      beam.append((count_peaceful_queens(board), board))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_iterations):</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        beam.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        best_fitness, best_board <span class="op">=</span> beam[<span class="dv">0</span>]</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        all_successors <span class="op">=</span> []</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best_fitness <span class="op">==</span> n_queens:</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> best_fitness, best_board</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _, state <span class="kw">in</span> beam:</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(n_queens):</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(n_queens):</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> row <span class="op">!=</span> state[col]:</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>                        successor <span class="op">=</span> <span class="bu">list</span>(state)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>                        successor[col] <span class="op">=</span> row</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>                        fitness <span class="op">=</span> count_peaceful_queens(successor)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                        all_successors.append((fitness, successor))</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> all_successors:</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extrai os valores de fitness de todos os sucessores gerados para servirem como pesos</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        successors_weights <span class="op">=</span> [sucessor[<span class="dv">0</span>] <span class="cf">for</span> sucessor <span class="kw">in</span> all_successors]</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        beam <span class="op">=</span> random.choices(all_successors, weights<span class="op">=</span>successors_weights, k<span class="op">=</span>k)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    beam.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beam[<span class="dv">0</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="23b28900" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stochastic_beam_search(k, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Adiciona o componente estocástico na Busca Local em Feixe para as N-Rainhas.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    beam <span class="op">=</span> []</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      board <span class="op">=</span> generate_random_board(n_queens)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      beam.append((count_peaceful_queens(board), board))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_iterations):</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        beam.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        best_fitness, best_board <span class="op">=</span> beam[<span class="dv">0</span>]</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        all_successors <span class="op">=</span> []</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best_fitness <span class="op">==</span> n_queens:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>          <span class="cf">return</span> best_fitness, best_board</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _, state <span class="kw">in</span> beam:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(n_queens):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> row <span class="kw">in</span> <span class="bu">range</span>(n_queens):</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> row <span class="op">!=</span> state[col]:</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                        successor <span class="op">=</span> <span class="bu">list</span>(state)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                        successor[col] <span class="op">=</span> row</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>                        fitness <span class="op">=</span> count_peaceful_queens(successor)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>                        all_successors.append((fitness, successor))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> all_successors:</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extrai os valores de fitness de todos os sucessores gerados para servirem como pesos</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        successors_weights <span class="op">=</span> [sucessor[<span class="dv">0</span>] <span class="cf">for</span> sucessor <span class="kw">in</span> all_successors]</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>        beam <span class="op">=</span> random.choices(all_successors, weights<span class="op">=</span>successors_weights, k<span class="op">=</span>k)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    beam.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> beam[<span class="dv">0</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -958,34 +928,21 @@ Explicação
 <p>Retorna o melhor estado encontrado (tupla fitness e tabuleiro) ao final de todas as iterações.</p>
 </blockquote>
 </details>
-<div id="18fd8ded" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:786,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299298195,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>best_fitness_sbs, best_board_sbs <span class="op">=</span> stochastic_beam_search(k<span class="op">=</span><span class="dv">4</span>, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Resultados do Stochastic Beam Search ---"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Melhor Tabuleiro encontrado: </span><span class="sc">{</span>best_board_sbs<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fitness (rainhas pacíficas): </span><span class="sc">{</span>best_fitness_sbs<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se uma solução foi encontrada, visualize o tabuleiro</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> best_board_sbs <span class="kw">and</span> best_fitness_sbs <span class="op">==</span> <span class="dv">8</span>:</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    print_board(best_board_sbs)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> best_board_sbs:</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Não foi encontrada uma solução ótima. O melhor tabuleiro tem </span><span class="sc">{</span>best_fitness_sbs<span class="sc">}</span><span class="ss"> rainhas pacíficas."</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    print_board(best_board_sbs)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Nenhum tabuleiro válido foi retornado."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
---- Resultados do Stochastic Beam Search ---
-Melhor Tabuleiro encontrado: [5, 3, 0, 4, 7, 1, 6, 2]
-Fitness (rainhas pacíficas): 8</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-9-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="210317a8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299298195,&quot;user_tz&quot;:180,&quot;elapsed&quot;:786,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>best_fitness_sbs, best_board_sbs <span class="op">=</span> stochastic_beam_search(k<span class="op">=</span><span class="dv">4</span>, n_queens<span class="op">=</span><span class="dv">8</span>, max_iterations<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">--- Resultados do Stochastic Beam Search ---"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Melhor Tabuleiro encontrado: </span><span class="sc">{</span>best_board_sbs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fitness (rainhas pacíficas): </span><span class="sc">{</span>best_fitness_sbs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se uma solução foi encontrada, visualize o tabuleiro</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> best_board_sbs <span class="kw">and</span> best_fitness_sbs <span class="op">==</span> <span class="dv">8</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    print_board(best_board_sbs)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> best_board_sbs:</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Não foi encontrada uma solução ótima. O melhor tabuleiro tem </span><span class="sc">{</span>best_fitness_sbs<span class="sc">}</span><span class="ss"> rainhas pacíficas."</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    print_board(best_board_sbs)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Nenhum tabuleiro válido foi retornado."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="algoritmos-genéticos" class="level3">
@@ -1003,30 +960,30 @@ Fitness (rainhas pacíficas): 8</code></pre>
 <section id="aptidão" class="level4">
 <h4 class="anchored" data-anchor-id="aptidão">Aptidão</h4>
 <p>Para definir a função de Aptidão utilizamos a pontuação máxima de 28 porque a avaliação baseia-se no <strong>número de pares de rainhas que não se atacam</strong> (valor calculado pela fórmula <span class="math inline">\(8 \times 7 / 2 = 28\)</span>). Tal aspecto permitirá produzir notas com maior granularidade, as quais permitem que a Seleção e a Recombinação consigam guiar a população passo a passo em direção à solução perfeita (o pico máximo).</p>
-<div id="c5d7031a" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_non_attacking_pairs(chromosome):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula a aptidão avaliando o número de pares de rainhas que não se atacam.</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Para o problema das 8-rainhas, a pontuação máxima (solução perfeita) é 28.</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    peaceful_pairs <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(chromosome)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compara a rainha 'i' com as próximas rainhas 'j' (formando os pares)</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i <span class="op">+</span> <span class="dv">1</span>, n):</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se estão na mesma linha (mesmo valor da lista), o par se ataca</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> chromosome[i] <span class="op">==</span> chromosome[j]:</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se estão na mesma diagonal (diferença de linhas == diferença de colunas)</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">abs</span>(chromosome[i] <span class="op">-</span> chromosome[j]) <span class="op">==</span> <span class="bu">abs</span>(i <span class="op">-</span> j):</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se passou pelos dois testes acima, não se atacam. É um par pacífico!</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            peaceful_pairs <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> peaceful_pairs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3e48e953" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_non_attacking_pairs(chromosome):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula a aptidão avaliando o número de pares de rainhas que não se atacam.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Para o problema das 8-rainhas, a pontuação máxima (solução perfeita) é 28.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    peaceful_pairs <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(chromosome)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compara a rainha 'i' com as próximas rainhas 'j' (formando os pares)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i <span class="op">+</span> <span class="dv">1</span>, n):</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se estão na mesma linha (mesmo valor da lista), o par se ataca</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> chromosome[i] <span class="op">==</span> chromosome[j]:</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se estão na mesma diagonal (diferença de linhas == diferença de colunas)</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">abs</span>(chromosome[i] <span class="op">-</span> chromosome[j]) <span class="op">==</span> <span class="bu">abs</span>(i <span class="op">-</span> j):</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Se passou pelos dois testes acima, não se atacam. É um par pacífico!</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            peaceful_pairs <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> peaceful_pairs</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="seleção" class="level4">
@@ -1042,32 +999,32 @@ Fitness (rainhas pacíficas): 8</code></pre>
 <li><strong>O Giro:</strong> Um número aleatório é sorteado no intervalo de 0 até o valor do <em>fitness</em> total. Este número simula o local exato onde o ponteiro da roleta irá parar.</li>
 <li><strong>A Escolha:</strong> A roleta é percorrida (somando-se o <em>fitness</em> de cada indivíduo sequencialmente) até que a soma acumulada atinja ou ultrapasse o número sorteado. O indivíduo no qual esse limite é atingido torna-se o pai selecionado para a próxima etapa de evolução, a recombinação (<em>crossover</em>).</li>
 </ol>
-<div id="1c2fceb8" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_roulette(population, fitness_function <span class="op">=</span> count_non_attacking_pairs):</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Roleta. A probabilidade de seleção é proporcional ao fitness.</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular todos os fitnesses</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    fitnesses <span class="op">=</span> [fitness_function(chromosome) <span class="cf">for</span> chromosome <span class="kw">in</span> population]</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    total_fitness <span class="op">=</span> <span class="bu">sum</span>(fitnesses)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se o fitness total for zero, selecione aleatoriamente para evitar divisão por zero</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> total_fitness <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.choice(population)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sortear um número aleatório (ponto na roleta)</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> random.uniform(<span class="dv">0</span>, total_fitness)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar o indivíduo correspondente</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(population)):</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        cumulative_sum <span class="op">+=</span> fitnesses[i]</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Se a soma acumulada atingir ou passar o ponto r, este é o indivíduo selecionado</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cumulative_sum <span class="op">&gt;=</span> r:</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> population[i]</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Caso de erro (deve ser o último indivíduo)</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> population[<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cd44a7cd" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_roulette(population, fitness_function <span class="op">=</span> count_non_attacking_pairs):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Roleta. A probabilidade de seleção é proporcional ao fitness.</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular todos os fitnesses</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    fitnesses <span class="op">=</span> [fitness_function(chromosome) <span class="cf">for</span> chromosome <span class="kw">in</span> population]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    total_fitness <span class="op">=</span> <span class="bu">sum</span>(fitnesses)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Se o fitness total for zero, selecione aleatoriamente para evitar divisão por zero</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> total_fitness <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> random.choice(population)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sortear um número aleatório (ponto na roleta)</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> random.uniform(<span class="dv">0</span>, total_fitness)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar o indivíduo correspondente</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(population)):</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        cumulative_sum <span class="op">+=</span> fitnesses[i]</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Se a soma acumulada atingir ou passar o ponto r, este é o indivíduo selecionado</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cumulative_sum <span class="op">&gt;=</span> r:</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> population[i]</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Caso de erro (deve ser o último indivíduo)</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> population[<span class="op">-</span><span class="dv">1</span>]</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1132,17 +1089,17 @@ Explicação
 <li><strong>Competição:</strong> A aptidão (<em>fitness</em>) de cada um desses <span class="math inline">\(n\)</span> competidores sorteados é calculada e comparada.</li>
 <li><strong>O Vencedor:</strong> O indivíduo com o melhor <em>fitness</em> (a maior aptidão) entre os selecionados é declarado o vencedor. Este vencedor é escolhido como o pai que irá fornecer seus “genes” para a próxima fase, a recombinação (<em>crossover</em>).</li>
 </ol>
-<div id="d5f7565e" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_tournament(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Torneio genérica. Escolhe o melhor entre 'k_tournament' indivíduos.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sorteia k indivíduos da população</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    tournament <span class="op">=</span> random.sample(population, k_tournament)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Acha o indivíduo (pai) com maior fitness</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    best_parent <span class="op">=</span> <span class="bu">max</span>(tournament, key<span class="op">=</span>fitness_function)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_parent</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="af0e4457" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> select_parent_tournament(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleção por Torneio genérica. Escolhe o melhor entre 'k_tournament' indivíduos.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sorteia k indivíduos da população</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    tournament <span class="op">=</span> random.sample(population, k_tournament)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Acha o indivíduo (pai) com maior fitness</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    best_parent <span class="op">=</span> <span class="bu">max</span>(tournament, key<span class="op">=</span>fitness_function)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_parent</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1182,42 +1139,42 @@ Explicação
 </section>
 <section id="função-para-selecionar-métodos" class="level4">
 <h4 class="anchored" data-anchor-id="função-para-selecionar-métodos">Função para selecionar métodos</h4>
-<div id="678c5021" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> selection(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, method<span class="op">=</span><span class="st">"roulette"</span>, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleciona um indivíduo (pai) da população atual para reprodução.</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="op">==</span> <span class="st">"roulette"</span>:</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Chama a função de roleta</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> select_parent_roulette(population, fitness_function)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> method <span class="op">==</span> <span class="st">"tournament"</span>:</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Chama a função de torneio passando a população e o tamanho do torneio (k)</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> select_parent_tournament(population, fitness_function, k_tournament)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Método inválido. Escolha 'roulette' ou 'tournament'."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ae6ddfa0" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> selection(population, fitness_function <span class="op">=</span> count_non_attacking_pairs, method<span class="op">=</span><span class="st">"roulette"</span>, k_tournament<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Seleciona um indivíduo (pai) da população atual para reprodução.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> method <span class="op">==</span> <span class="st">"roulette"</span>:</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Chama a função de roleta</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> select_parent_roulette(population, fitness_function)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> method <span class="op">==</span> <span class="st">"tournament"</span>:</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Chama a função de torneio passando a população e o tamanho do torneio (k)</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> select_parent_tournament(population, fitness_function, k_tournament)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Método inválido. Escolha 'roulette' ou 'tournament'."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="recombinação" class="level4">
 <h4 class="anchored" data-anchor-id="recombinação">Recombinação</h4>
 <p>A Recombinação é o principal motor da exploração eficiente. O objetivo é combinar características de dois pais para gerar novos indivíduos, permitindo que o algoritmo teste novas soluções que herdam as “boas partes” de dois indivíduos distintos. Esta troca de material genético possibilita grandes saltos no espaço de busca e acelera a convergência ao unir blocos de soluções de alta qualidade.</p>
-<div id="bb63aa70" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recombination(parent1, parent2):</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Recombinação de Ponto Único (Single-Point Crossover).</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Combina dois pais para gerar dois novos descendentes.</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    chrom_length <span class="op">=</span> <span class="bu">len</span>(parent1)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Garante que o ponto de corte não seja nas extremidades</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    cut_point <span class="op">=</span> random.randint(<span class="dv">1</span>, chrom_length <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gera os dois filhos combinando as partes</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    child1 <span class="op">=</span> parent1[:cut_point] <span class="op">+</span> parent2[cut_point:]</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    child2 <span class="op">=</span> parent2[:cut_point] <span class="op">+</span> parent1[cut_point:]</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> child1, child2</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="28e411d1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> recombination(parent1, parent2):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Recombinação de Ponto Único (Single-Point Crossover).</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Combina dois pais para gerar dois novos descendentes.</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    chrom_length <span class="op">=</span> <span class="bu">len</span>(parent1)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Garante que o ponto de corte não seja nas extremidades</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    cut_point <span class="op">=</span> random.randint(<span class="dv">1</span>, chrom_length <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gera os dois filhos combinando as partes</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    child1 <span class="op">=</span> parent1[:cut_point] <span class="op">+</span> parent2[cut_point:]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    child2 <span class="op">=</span> parent2[:cut_point] <span class="op">+</span> parent1[cut_point:]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> child1, child2</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1229,84 +1186,84 @@ Como a Recombinação acelera a convergência nos Algoritmos Genéticos e qual �
 <section id="mutação" class="level4">
 <h4 class="anchored" data-anchor-id="mutação">Mutação</h4>
 <p>A Mutação é o mecanismo de segurança que garante a <strong>diversidade</strong> e evita a estagnação. Seu objetivo é introduzir pequenas alterações aleatórias no código genético (cromossomo) dos filhos. Essa variabilidade é crucial para que o algoritmo não se prenda a um ótimo local (local optimum), garantindo que novas áreas do espaço de busca possam ser testadas e que o AG consiga, eventualmente, encontrar o ótimo global.</p>
-<div id="b197aca2" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mutation(chromosome, mutation_rate):</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Mutação: Altera o valor (linha) de um gene (coluna) aleatoriamente.</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    new_chromosome <span class="op">=</span> <span class="bu">list</span>(chromosome)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    chrom_length <span class="op">=</span> <span class="bu">len</span>(new_chromosome)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(chrom_length):</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> random.random() <span class="op">&lt;</span> mutation_rate:</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Altera o valor da linha para outro número aleatório entre 0 e N-1</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>            new_chromosome[i] <span class="op">=</span> random.randint(<span class="dv">0</span>, chrom_length <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> new_chromosome</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d63cd2ee" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mutation(chromosome, mutation_rate):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Mutação: Altera o valor (linha) de um gene (coluna) aleatoriamente.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    new_chromosome <span class="op">=</span> <span class="bu">list</span>(chromosome)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    chrom_length <span class="op">=</span> <span class="bu">len</span>(new_chromosome)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(chrom_length):</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> random.random() <span class="op">&lt;</span> mutation_rate:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Altera o valor da linha para outro número aleatório entre 0 e N-1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            new_chromosome[i] <span class="op">=</span> random.randint(<span class="dv">0</span>, chrom_length <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> new_chromosome</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="função-para-executar-ag-básico" class="level4">
 <h4 class="anchored" data-anchor-id="função-para-executar-ag-básico">Função para executar AG Básico</h4>
-<div id="ba0597be" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> running_genetic_algorithm(n_queens<span class="op">=</span><span class="dv">8</span>, population_size<span class="op">=</span><span class="dv">100</span>, max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                      mutation_rate<span class="op">=</span><span class="fl">0.1</span>, selection_method<span class="op">=</span><span class="st">"tournament"</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, use_elitism <span class="op">=</span> <span class="va">False</span>):</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Executa o Algoritmo Genético de ponta a ponta em uma única função unificada.</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gera a população inicial aleatoriamente</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    population <span class="op">=</span> [[random.randint(<span class="dv">0</span>, n_queens <span class="op">-</span> <span class="dv">1</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_queens)] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(population_size)]</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"--- Iniciando GA: Seleção=</span><span class="sc">{</span>selection_method<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss"> | Mutação=</span><span class="sc">{</span>mutation_rate<span class="sc">}</span><span class="ss"> | Elitismo=</span><span class="sc">{</span>use_elitism<span class="sc">}</span><span class="ss">---"</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ciclo de Gerações (Repete até que o critério de parada seja atingido)</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> generation <span class="kw">in</span> <span class="bu">range</span>(max_generations):</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Avalia o melhor indivíduo da geração atual</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        best_individual <span class="op">=</span> <span class="bu">max</span>(population, key<span class="op">=</span>count_non_attacking_pairs)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        best_fitness <span class="op">=</span> count_non_attacking_pairs(best_individual)</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Condição de Sucesso: se o indivíduo for "apto o suficiente" (28 pares não atacantes)</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best_fitness <span class="op">==</span> <span class="dv">28</span>:</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Solução perfeita (28/28) encontrada na Geração </span><span class="sc">{</span>generation<span class="sc">}</span><span class="ss">!"</span>)</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Indivíduo (Tabuleiro): </span><span class="sc">{</span>best_individual<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> best_individual, best_fitness, generation</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> generation <span class="op">%</span> <span class="dv">50</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Geração </span><span class="sc">{</span>generation<span class="sc">:03d}</span><span class="ss"> | Melhor Fitness atual: </span><span class="sc">{</span>best_fitness<span class="sc">}</span><span class="ss">/28"</span>)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Produz uma nova geração</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        new_population <span class="op">=</span> []</span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Aplica o Elitismo APENAS se o parâmetro estiver ativado</span></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> use_elitism:</span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>            new_population.append(<span class="bu">list</span>(best_individual))</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Cria a prole até atingir o tamanho máximo da população</span></span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="bu">len</span>(new_population) <span class="op">&lt;</span> population_size:</span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo A: Seleciona dois pais da população atual</span></span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>            parent1 <span class="op">=</span> selection(population, count_non_attacking_pairs, method<span class="op">=</span>selection_method, k_tournament<span class="op">=</span>k_tournament)</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>            parent2 <span class="op">=</span> selection(population, count_non_attacking_pairs, method<span class="op">=</span>selection_method, k_tournament<span class="op">=</span>k_tournament)</span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo B: Recombinação (cruzamento das partes para formar descendentes)</span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>            child1, child2 <span class="op">=</span> recombination(parent1, parent2)</span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo C: Aplica a mutação aleatória aos descendentes gerados</span></span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>            child1 <span class="op">=</span> mutation(child1, mutation_rate)</span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>            child2 <span class="op">=</span> mutation(child2, mutation_rate)</span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Adiciona os novos descendentes à nova população</span></span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>            new_population.extend([child1, child2])</span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ajuste Final e substituição: A antiga população é substituída pela nova</span></span>
-<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a>        population <span class="op">=</span> new_population[:population_size]</span>
-<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Retorna o melhor indivíduo caso o limite de tempo (gerações) se esgote</span></span>
-<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a>    best_individual <span class="op">=</span> <span class="bu">max</span>(population, key<span class="op">=</span>count_non_attacking_pairs)</span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a>    best_fitness <span class="op">=</span> count_non_attacking_pairs(best_individual)</span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Máximo de </span><span class="sc">{</span>max_generations<span class="sc">}</span><span class="ss"> gerações atingido sem solução perfeita."</span>)</span>
-<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Preso no Máximo Local com fitness: </span><span class="sc">{</span>best_fitness<span class="sc">}</span><span class="ss">/28"</span>)</span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Indivíduo (Tabuleiro): </span><span class="sc">{</span>best_individual<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
-<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_individual, best_fitness, max_generations</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="8263e3b1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> running_genetic_algorithm(n_queens<span class="op">=</span><span class="dv">8</span>, population_size<span class="op">=</span><span class="dv">100</span>, max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                      mutation_rate<span class="op">=</span><span class="fl">0.1</span>, selection_method<span class="op">=</span><span class="st">"tournament"</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, use_elitism <span class="op">=</span> <span class="va">False</span>):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Executa o Algoritmo Genético de ponta a ponta em uma única função unificada.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gera a população inicial aleatoriamente</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    population <span class="op">=</span> [[random.randint(<span class="dv">0</span>, n_queens <span class="op">-</span> <span class="dv">1</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n_queens)] <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(population_size)]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"--- Iniciando GA: Seleção=</span><span class="sc">{</span>selection_method<span class="sc">.</span>upper()<span class="sc">}</span><span class="ss"> | Mutação=</span><span class="sc">{</span>mutation_rate<span class="sc">}</span><span class="ss"> | Elitismo=</span><span class="sc">{</span>use_elitism<span class="sc">}</span><span class="ss">---"</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ciclo de Gerações (Repete até que o critério de parada seja atingido)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> generation <span class="kw">in</span> <span class="bu">range</span>(max_generations):</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Avalia o melhor indivíduo da geração atual</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>        best_individual <span class="op">=</span> <span class="bu">max</span>(population, key<span class="op">=</span>count_non_attacking_pairs)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>        best_fitness <span class="op">=</span> count_non_attacking_pairs(best_individual)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Condição de Sucesso: se o indivíduo for "apto o suficiente" (28 pares não atacantes)</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best_fitness <span class="op">==</span> <span class="dv">28</span>:</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Solução perfeita (28/28) encontrada na Geração </span><span class="sc">{</span>generation<span class="sc">}</span><span class="ss">!"</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Indivíduo (Tabuleiro): </span><span class="sc">{</span>best_individual<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> best_individual, best_fitness, generation</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> generation <span class="op">%</span> <span class="dv">50</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Geração </span><span class="sc">{</span>generation<span class="sc">:03d}</span><span class="ss"> | Melhor Fitness atual: </span><span class="sc">{</span>best_fitness<span class="sc">}</span><span class="ss">/28"</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Produz uma nova geração</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        new_population <span class="op">=</span> []</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Aplica o Elitismo APENAS se o parâmetro estiver ativado</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> use_elitism:</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>            new_population.append(<span class="bu">list</span>(best_individual))</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Cria a prole até atingir o tamanho máximo da população</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="bu">len</span>(new_population) <span class="op">&lt;</span> population_size:</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo A: Seleciona dois pais da população atual</span></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>            parent1 <span class="op">=</span> selection(population, count_non_attacking_pairs, method<span class="op">=</span>selection_method, k_tournament<span class="op">=</span>k_tournament)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>            parent2 <span class="op">=</span> selection(population, count_non_attacking_pairs, method<span class="op">=</span>selection_method, k_tournament<span class="op">=</span>k_tournament)</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo B: Recombinação (cruzamento das partes para formar descendentes)</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>            child1, child2 <span class="op">=</span> recombination(parent1, parent2)</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Passo C: Aplica a mutação aleatória aos descendentes gerados</span></span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>            child1 <span class="op">=</span> mutation(child1, mutation_rate)</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>            child2 <span class="op">=</span> mutation(child2, mutation_rate)</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Adiciona os novos descendentes à nova população</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>            new_population.extend([child1, child2])</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ajuste Final e substituição: A antiga população é substituída pela nova</span></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>        population <span class="op">=</span> new_population[:population_size]</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Retorna o melhor indivíduo caso o limite de tempo (gerações) se esgote</span></span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>    best_individual <span class="op">=</span> <span class="bu">max</span>(population, key<span class="op">=</span>count_non_attacking_pairs)</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>    best_fitness <span class="op">=</span> count_non_attacking_pairs(best_individual)</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Máximo de </span><span class="sc">{</span>max_generations<span class="sc">}</span><span class="ss"> gerações atingido sem solução perfeita."</span>)</span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Preso no Máximo Local com fitness: </span><span class="sc">{</span>best_fitness<span class="sc">}</span><span class="ss">/28"</span>)</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Indivíduo (Tabuleiro): </span><span class="sc">{</span>best_individual<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_individual, best_fitness, max_generations</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1453,99 +1410,35 @@ Qual é a função do elitismo em um Algoritmo Genético?
 <section id="cenário-1---a-busca-sem-rumo" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-1---a-busca-sem-rumo">Cenário 1 - A Busca Sem Rumo</h3>
 <p>Para iniciarmos os testes, definiremos uma configuração inicial baseada no método de seleção por Roleta com parâmetros de mutação padrão e ausência de elitismo. Aqui, a probabilidade de um indivíduo ser escolhido como progenitor é proporcional à sua desvantagem, mas não há garantias de que os membros mais aptos da geração atual sobrevivam para a próxima iteração.</p>
-<div id="796e453c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:54197,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299538716,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 24/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 26/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 26/28
-Geração 400 | Melhor Fitness atual: 24/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 26/28
-Geração 800 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 817!
-Indivíduo (Tabuleiro): [2, 5, 3, 1, 7, 4, 6, 0]
-</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-17-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="06ac6295" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299538716,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54197,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cenário-2---aumento-na-taxa-mutacional" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-2---aumento-na-taxa-mutacional">Cenário 2 - Aumento na taxa mutacional</h3>
 <p>Nesta etapa, elevamos a taxa de mutação a níveis extremos. O objetivo é observar o comportamento do algoritmo quando alterações aleatórias são aplicadas a uma vasta parcela dos descendentes em cada ciclo, testando a capacidade de exploração global do espaço de busca.</p>
-<div id="113ab932" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:6281,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299580386,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 26/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 26/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 26/28
-Geração 700 | Melhor Fitness atual: 26/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 26/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [2, 6, 3, 1, 7, 4, 0, 3]
-</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-18-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="5b3a471f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299580386,&quot;user_tz&quot;:180,&quot;elapsed&quot;:6281,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1557,83 +1450,35 @@ Como a mutação de 0.5 ajudou a escapar do máximo local?
 <section id="cenário-3---com-eletismo" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-3---com-eletismo">Cenário 3 - Com Eletismo</h3>
 <p>Neste experimento, iremos combinar uma mutação elevada com a técnica de elitismo. Ao preservar obrigatoriamente os indivíduos de maior pontuação na transição de gerações, asseguramos que o melhor fitness alcançado pelo sistema seja mantido, impedindo retrocessos na evolução da solução.</p>
-<div id="2a6181ed" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:54379,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299758901,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.8</span>,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--- Iniciando GA: Seleção=ROULETTE | Mutação=0.8 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 26/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [2, 2, 7, 1, 3, 5, 0, 4]
-</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-19-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="6738073d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299758901,&quot;user_tz&quot;:180,&quot;elapsed&quot;:54379,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"roulette"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cenário-4---pressão-seletiva-roleta-vs.-torneio" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-4---pressão-seletiva-roleta-vs.-torneio">Cenário 4 - Pressão Seletiva (Roleta vs.&nbsp;Torneio)</h3>
 <p>Agora, vamos dar foco ao mecanismo de seleção, substituiremos a Roleta pela seleção por Torneio. Ao classificar grupos de k indivíduos e selecionar apenas os mais fortes de cada embate, apresentamos uma pressão competitiva rigorosa, acelerando a convergência em direção a soluções com maiores valores de aptidão.</p>
-<div id="542585c0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:1199,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299849853,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"tournament"</span>,</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>--- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 24!
-Indivíduo (Tabuleiro): [5, 3, 1, 7, 4, 6, 0, 2]
-</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-20-output-2.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="fb92ec25" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776299849853,&quot;user_tz&quot;:180,&quot;elapsed&quot;:1199,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>best_board_ga, best_fitness_ga, generation <span class="op">=</span> running_genetic_algorithm(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    n_queens<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    population_size<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    max_generations<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    mutation_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    selection_method<span class="op">=</span><span class="st">"tournament"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    use_elitism<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    k_tournament<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>print_board(best_board_ga)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1651,745 +1496,65 @@ O torneio com k=2 seria mais lento que o de k=5?
 <section id="cenário-5---comparação-exaustiva" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-5---comparação-exaustiva">Cenário 5 - Comparação exaustiva</h3>
 <p>Finalmente, realizaremos uma análise comparativa profunda entre todos os experimentos anteriores. O objetivo é avaliar qual conjunto de parâmetros oferece o melhor equilíbrio entre diversidade e velocidade de convergência, identificando a configuração mais eficiente para solucionar o problema das rainhas sob diferentes condições de estresse algorítmico.</p>
-<div id="ae777749" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:863558,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924061,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;},&quot;user_tz&quot;:180}}" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>NUM_EXECUCOES <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>MAX_GERACOES <span class="op">=</span> <span class="dv">1000</span> <span class="co"># Valor retornado caso fique preso em um máximo local</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Dicionários para armazenar em qual geração a solução foi encontrada em cada execução</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>resultados <span class="op">=</span> {</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 1"</span>: [], <span class="co"># Roleta | Mut: 0.1 | Elit: False</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 2"</span>: [], <span class="co"># Roleta | Mut: 0.5 | Elit: True</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 3"</span>: [], <span class="co"># Roleta | Mut: 0.5 | Elit: False</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 4"</span>: []  <span class="co"># Torneio | Mut: 0.1 | Elit: False</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Iniciando </span><span class="sc">{</span>NUM_EXECUCOES<span class="sc">}</span><span class="ss"> execuções para todos os cenários. Isso pode levar alguns minutos..."</span>)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_EXECUCOES):</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Progresso: Execução </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>NUM_EXECUCOES<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 1: A Busca Sem Rumo</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    _, _, gen1 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.1</span>, use_elitism<span class="op">=</span><span class="va">False</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 1"</span>].append(gen1)</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 2: A Âncora e a Força Bruta</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    _, _, gen2 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.5</span>, use_elitism<span class="op">=</span><span class="va">True</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 2"</span>].append(gen2)</span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 3: A Liberdade Caótica</span></span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    _, _, gen3 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.5</span>, use_elitism<span class="op">=</span><span class="va">False</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 3"</span>].append(gen3)</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 4: O Equilíbrio Perfeito</span></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    _, _, gen4 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"tournament"</span>, mutation_rate<span class="op">=</span><span class="fl">0.1</span>, use_elitism<span class="op">=</span><span class="va">False</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 4"</span>].append(gen4)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Iniciando 10 execuções para todos os cenários. Isso pode levar alguns minutos...
-Progresso: Execução 1/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 200!
-Indivíduo (Tabuleiro): [3, 1, 6, 2, 5, 7, 0, 4]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [6, 1, 7, 7, 3, 0, 2, 4]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 24/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 26/28
-Geração 250 | Melhor Fitness atual: 26/28
-Geração 300 | Melhor Fitness atual: 24/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 24/28
-Geração 500 | Melhor Fitness atual: 26/28
-Geração 550 | Melhor Fitness atual: 24/28
-Geração 600 | Melhor Fitness atual: 26/28
-Geração 650 | Melhor Fitness atual: 24/28
-Geração 700 | Melhor Fitness atual: 26/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 26/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 25/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 24/28
-Indivíduo (Tabuleiro): [4, 4, 1, 6, 2, 2, 7, 1]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 8!
-Indivíduo (Tabuleiro): [4, 7, 3, 0, 2, 5, 1, 6]
-
-Progresso: Execução 2/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 24/28
-Geração 150 | Melhor Fitness atual: 26/28
-Geração 200 | Melhor Fitness atual: 24/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 24/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 24/28
-Geração 600 | Melhor Fitness atual: 26/28
-Geração 650 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 679!
-Indivíduo (Tabuleiro): [3, 1, 6, 4, 0, 7, 5, 2]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [1, 5, 0, 6, 4, 2, 5, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 24/28
-Geração 400 | Melhor Fitness atual: 24/28
-Geração 450 | Melhor Fitness atual: 24/28
-Geração 500 | Melhor Fitness atual: 24/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 24/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 24/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 24/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 26/28
-Indivíduo (Tabuleiro): [2, 7, 3, 1, 5, 4, 6, 0]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 22!
-Indivíduo (Tabuleiro): [4, 1, 7, 0, 3, 6, 2, 5]
-
-Progresso: Execução 3/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 118!
-Indivíduo (Tabuleiro): [1, 5, 7, 2, 0, 3, 6, 4]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Solução perfeita (28/28) encontrada na Geração 466!
-Indivíduo (Tabuleiro): [4, 2, 0, 5, 7, 1, 3, 6]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 24/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 24/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 26/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 26/28
-Geração 550 | Melhor Fitness atual: 24/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 24/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 992!
-Indivíduo (Tabuleiro): [2, 5, 7, 1, 3, 0, 6, 4]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Solução perfeita (28/28) encontrada na Geração 17!
-Indivíduo (Tabuleiro): [2, 5, 1, 6, 0, 3, 7, 4]
-
-Progresso: Execução 4/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 144!
-Indivíduo (Tabuleiro): [2, 4, 7, 3, 0, 6, 1, 5]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Solução perfeita (28/28) encontrada na Geração 547!
-Indivíduo (Tabuleiro): [4, 0, 7, 5, 2, 6, 1, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 24/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 26/28
-Geração 300 | Melhor Fitness atual: 26/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 26/28
-Geração 450 | Melhor Fitness atual: 26/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 26/28
-Geração 600 | Melhor Fitness atual: 24/28
-Geração 650 | Melhor Fitness atual: 24/28
-Geração 700 | Melhor Fitness atual: 24/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 25/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [7, 2, 0, 7, 0, 4, 6, 4]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [0, 2, 4, 6, 1, 3, 5, 0]
-
-Progresso: Execução 5/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 26/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 26/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 26/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 691!
-Indivíduo (Tabuleiro): [4, 0, 7, 3, 1, 6, 2, 5]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [5, 7, 1, 3, 0, 7, 4, 2]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 24/28
-Geração 150 | Melhor Fitness atual: 24/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 24/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 26/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 26/28
-Geração 950 | Melhor Fitness atual: 24/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [6, 6, 4, 7, 1, 4, 2, 5]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 7!
-Indivíduo (Tabuleiro): [5, 3, 6, 0, 7, 1, 4, 2]
-
-Progresso: Execução 6/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 24/28
-Geração 150 | Melhor Fitness atual: 26/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 26/28
-Geração 350 | Melhor Fitness atual: 26/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 26/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 25/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [4, 3, 7, 2, 7, 6, 0, 5]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 82!
-Indivíduo (Tabuleiro): [1, 4, 6, 0, 2, 7, 5, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 27/28
-Geração 050 | Melhor Fitness atual: 24/28
-Geração 100 | Melhor Fitness atual: 24/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 24/28
-Geração 550 | Melhor Fitness atual: 26/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 24/28
-Geração 750 | Melhor Fitness atual: 24/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 26/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 26/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [1, 4, 6, 3, 6, 4, 7, 0]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Solução perfeita (28/28) encontrada na Geração 166!
-Indivíduo (Tabuleiro): [3, 7, 0, 4, 6, 1, 5, 2]
-
-Progresso: Execução 7/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 221!
-Indivíduo (Tabuleiro): [4, 7, 3, 0, 2, 5, 1, 6]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [0, 3, 7, 4, 2, 0, 5, 1]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 24/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 24/28
-Solução perfeita (28/28) encontrada na Geração 263!
-Indivíduo (Tabuleiro): [3, 6, 0, 7, 4, 1, 5, 2]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 24/28
-Solução perfeita (28/28) encontrada na Geração 8!
-Indivíduo (Tabuleiro): [3, 1, 6, 2, 5, 7, 0, 4]
-
-Progresso: Execução 8/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 26/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 26/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 24/28
-Geração 750 | Melhor Fitness atual: 26/28
-Geração 800 | Melhor Fitness atual: 26/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 25/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [1, 5, 2, 6, 1, 7, 1, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 24/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [7, 3, 2, 0, 5, 1, 4, 6]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 25/28
-Geração 150 | Melhor Fitness atual: 26/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 24/28
-Geração 300 | Melhor Fitness atual: 26/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 25/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 26/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 26/28
-Geração 950 | Melhor Fitness atual: 25/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 26/28
-Indivíduo (Tabuleiro): [1, 5, 2, 0, 7, 3, 6, 2]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 31!
-Indivíduo (Tabuleiro): [3, 7, 0, 2, 5, 1, 6, 4]
-
-Progresso: Execução 9/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 99!
-Indivíduo (Tabuleiro): [5, 0, 4, 1, 7, 2, 6, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 26/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [1, 6, 5, 3, 0, 7, 4, 2]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Geração 050 | Melhor Fitness atual: 25/28
-Solução perfeita (28/28) encontrada na Geração 52!
-Indivíduo (Tabuleiro): [5, 2, 6, 3, 0, 7, 1, 4]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [6, 0, 3, 1, 5, 7, 2, 4]
-
-Progresso: Execução 10/10
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 26/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 25/28
-Geração 300 | Melhor Fitness atual: 25/28
-Geração 350 | Melhor Fitness atual: 25/28
-Geração 400 | Melhor Fitness atual: 26/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 25/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 24/28
-Geração 700 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 714!
-Indivíduo (Tabuleiro): [4, 2, 7, 3, 6, 0, 5, 1]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=True---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 27/28
-Geração 100 | Melhor Fitness atual: 27/28
-Geração 150 | Melhor Fitness atual: 27/28
-Geração 200 | Melhor Fitness atual: 27/28
-Geração 250 | Melhor Fitness atual: 27/28
-Geração 300 | Melhor Fitness atual: 27/28
-Geração 350 | Melhor Fitness atual: 27/28
-Geração 400 | Melhor Fitness atual: 27/28
-Geração 450 | Melhor Fitness atual: 27/28
-Geração 500 | Melhor Fitness atual: 27/28
-Geração 550 | Melhor Fitness atual: 27/28
-Geração 600 | Melhor Fitness atual: 27/28
-Geração 650 | Melhor Fitness atual: 27/28
-Geração 700 | Melhor Fitness atual: 27/28
-Geração 750 | Melhor Fitness atual: 27/28
-Geração 800 | Melhor Fitness atual: 27/28
-Geração 850 | Melhor Fitness atual: 27/28
-Geração 900 | Melhor Fitness atual: 27/28
-Geração 950 | Melhor Fitness atual: 27/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 27/28
-Indivíduo (Tabuleiro): [1, 6, 0, 5, 7, 4, 0, 3]
-
---- Iniciando GA: Seleção=ROULETTE | Mutação=0.5 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 25/28
-Geração 050 | Melhor Fitness atual: 25/28
-Geração 100 | Melhor Fitness atual: 24/28
-Geração 150 | Melhor Fitness atual: 25/28
-Geração 200 | Melhor Fitness atual: 25/28
-Geração 250 | Melhor Fitness atual: 24/28
-Geração 300 | Melhor Fitness atual: 26/28
-Geração 350 | Melhor Fitness atual: 26/28
-Geração 400 | Melhor Fitness atual: 25/28
-Geração 450 | Melhor Fitness atual: 25/28
-Geração 500 | Melhor Fitness atual: 24/28
-Geração 550 | Melhor Fitness atual: 25/28
-Geração 600 | Melhor Fitness atual: 25/28
-Geração 650 | Melhor Fitness atual: 26/28
-Geração 700 | Melhor Fitness atual: 25/28
-Geração 750 | Melhor Fitness atual: 25/28
-Geração 800 | Melhor Fitness atual: 25/28
-Geração 850 | Melhor Fitness atual: 25/28
-Geração 900 | Melhor Fitness atual: 25/28
-Geração 950 | Melhor Fitness atual: 26/28
-Máximo de 1000 gerações atingido sem solução perfeita.
-Preso no Máximo Local com fitness: 25/28
-Indivíduo (Tabuleiro): [6, 1, 2, 5, 5, 0, 7, 4]
-
---- Iniciando GA: Seleção=TOURNAMENT | Mutação=0.1 | Elitismo=False---
-Geração 000 | Melhor Fitness atual: 26/28
-Solução perfeita (28/28) encontrada na Geração 12!
-Indivíduo (Tabuleiro): [2, 5, 7, 0, 3, 6, 4, 1]
-</code></pre>
+<div id="5dcffe09" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924061,&quot;user_tz&quot;:180,&quot;elapsed&quot;:863558,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NUM_EXECUCOES <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>MAX_GERACOES <span class="op">=</span> <span class="dv">1000</span> <span class="co"># Valor retornado caso fique preso em um máximo local</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Dicionários para armazenar em qual geração a solução foi encontrada em cada execução</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>resultados <span class="op">=</span> {</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 1"</span>: [], <span class="co"># Roleta | Mut: 0.1 | Elit: False</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 2"</span>: [], <span class="co"># Roleta | Mut: 0.5 | Elit: True</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 3"</span>: [], <span class="co"># Roleta | Mut: 0.5 | Elit: False</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Cenário 4"</span>: []  <span class="co"># Torneio | Mut: 0.1 | Elit: False</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Iniciando </span><span class="sc">{</span>NUM_EXECUCOES<span class="sc">}</span><span class="ss"> execuções para todos os cenários. Isso pode levar alguns minutos..."</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_EXECUCOES):</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Progresso: Execução </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>NUM_EXECUCOES<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 1: A Busca Sem Rumo</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    _, _, gen1 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.1</span>, use_elitism<span class="op">=</span><span class="va">False</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 1"</span>].append(gen1)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 2: A Âncora e a Força Bruta</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    _, _, gen2 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.5</span>, use_elitism<span class="op">=</span><span class="va">True</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 2"</span>].append(gen2)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 3: A Liberdade Caótica</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    _, _, gen3 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"roulette"</span>, mutation_rate<span class="op">=</span><span class="fl">0.5</span>, use_elitism<span class="op">=</span><span class="va">False</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 3"</span>].append(gen3)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Cenário 4: O Equilíbrio Perfeito</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    _, _, gen4 <span class="op">=</span> running_genetic_algorithm(selection_method<span class="op">=</span><span class="st">"tournament"</span>, mutation_rate<span class="op">=</span><span class="fl">0.1</span>, use_elitism<span class="op">=</span><span class="va">False</span>, k_tournament<span class="op">=</span><span class="dv">5</span>, max_generations<span class="op">=</span>MAX_GERACOES)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    resultados[<span class="st">"Cenário 4"</span>].append(gen4)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="4085d53c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:755,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924818,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;},&quot;user_tz&quot;:180}}" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Eixo X será as múltiplas execuções de 1 a 100</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>eixo_x <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, NUM_EXECUCOES <span class="op">+</span> <span class="dv">1</span>))</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotando as linhas com pontos (markers) e cores diferentes</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 1"</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 1: Roleta | Mut 0.1 | Sem Elitismo'</span>)</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 2"</span>], marker<span class="op">=</span><span class="st">'s'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 2: Roleta | Mut 0.5 | Com Elitismo'</span>)</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 3"</span>], marker<span class="op">=</span><span class="st">'^'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 3: Roleta | Mut 0.5 | Sem Elitismo'</span>)</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 4"</span>], marker<span class="op">=</span><span class="st">'d'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'purple'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 4: Torneio | Mut 0.1 | Sem Elitismo'</span>)</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurações de Rótulos e Título</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Desempenho dos Métodos de Seleção: Geração de Encontro da Solução Ótima por Execução'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Número da Execução'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Geração (1000 = Não encontrou solução)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando legenda e grade para facilitar a leitura</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Evita que o gráfico corte as bordas</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibe o gráfico na tela</span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="04-ambientes-complexos-ii_files/figure-html/cell-22-output-1.png" width="1337" height="663" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="00e6c261" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1776223924818,&quot;user_tz&quot;:180,&quot;elapsed&quot;:755,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Fonseca&quot;,&quot;userId&quot;:&quot;12568214442175122569&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">7</span>))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Eixo X será as múltiplas execuções de 1 a 100</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>eixo_x <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">1</span>, NUM_EXECUCOES <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotando as linhas com pontos (markers) e cores diferentes</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 1"</span>], marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 1: Roleta | Mut 0.1 | Sem Elitismo'</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 2"</span>], marker<span class="op">=</span><span class="st">'s'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 2: Roleta | Mut 0.5 | Com Elitismo'</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 3"</span>], marker<span class="op">=</span><span class="st">'^'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 3: Roleta | Mut 0.5 | Sem Elitismo'</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>plt.plot(eixo_x, resultados[<span class="st">"Cenário 4"</span>], marker<span class="op">=</span><span class="st">'d'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, color<span class="op">=</span><span class="st">'purple'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Cenário 4: Torneio | Mut 0.1 | Sem Elitismo'</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurações de Rótulos e Título</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Desempenho dos Métodos de Seleção: Geração de Encontro da Solução Ótima por Execução'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, pad<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Número da Execução'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Geração (1000 = Não encontrou solução)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando legenda e grade para facilitar a leitura</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Evita que o gráfico corte as bordas</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibe o gráfico na tela</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>

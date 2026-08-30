@@ -467,23 +467,6 @@ window.Quarto = {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">Apêndices</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Alternar seção">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../apendices/metodos-de-busca-sem-oo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Métodos de Busca I sem OO</span></a>
-  </div>
-</li>
-      </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -548,7 +531,7 @@ window.Quarto = {
 <hr>
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="84303c23" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:63,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499478,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="1">
+<div id="e1a81f9b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499478,&quot;user_tz&quot;:180,&quot;elapsed&quot;:63,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -617,7 +600,7 @@ O que ganhamos ao representar o estado como uma lista, em vez de um tabuleiro co
 <section id="função-de-objetivo" class="level3">
 <h3 class="anchored" data-anchor-id="função-de-objetivo">Função de Objetivo</h3>
 <p>Para o Hill Climbing e para o Simulated Annealing, precisamos de uma função que diga o quão boa é uma configuração. Neste laboratório, vamos usar uma medida mais intuitiva: contar quantas rainhas estão <strong>apaziguadas</strong>, isto é, quantas não estão sendo atacadas por nenhuma outra. Quanto maior essa pontuação, melhor o estado. A solução ideal é aquela em que o valor chega a <code>8</code>.</p>
-<div id="d9a03e35" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:1,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499482,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="2">
+<div id="30a8d5a2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499482,&quot;user_tz&quot;:180,&quot;elapsed&quot;:1,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> count_peaceful_queens(board):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Conta quantas rainhas nao atacam nenhuma outra rainha no tabuleiro."""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    peaceful_queens <span class="op">=</span> <span class="dv">0</span></span>
@@ -673,7 +656,7 @@ Explicação
 <section id="hill-climbing-padrão-inclinação-máxima" class="level3">
 <h3 class="anchored" data-anchor-id="hill-climbing-padrão-inclinação-máxima">Hill Climbing Padrão (inclinação máxima)</h3>
 <p>O Hill Climbing puro é como um alpinista com amnésia tentando escalar o Monte Everest sob um forte nevoeiro. Ele não consegue enxergar o topo da montanha nem lembrar por onde passou; apenas tateia o terreno imediatamente ao seu redor e dá o próximo passo na direção mais íngreme que encontrar. Se ele chegar ao topo de um pequeno morro, ele não encontra nenhum vizinho mais alto e para, achando que chegou ao cume absoluto, ignorando completamente que a verdadeira montanha pode estar logo ao lado.</p>
-<div id="8df99dd1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:1,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499484,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="3">
+<div id="e0ca520f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499484,&quot;user_tz&quot;:180,&quot;elapsed&quot;:1,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> hill_climbing(num_queens):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Algoritmo de Hill Climbing maximizando rainhas apaziguadas."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -727,7 +710,7 @@ Explicação
 <section id="hill-climbing-estocástico" class="level3">
 <h3 class="anchored" data-anchor-id="hill-climbing-estocástico">Hill Climbing Estocástico</h3>
 <p>O Hill Climbing puro é obcecado em pegar sempre o caminho mais íngreme disponível. O Hill Climbing Estocástico adiciona uma estratégia mais relaxada: o alpinista olha para todos os caminhos que levam para cima e escolhe um deles aleatoriamente, sendo que os caminhos mais inclinados têm apenas uma probabilidade maior de serem escolhidos. Sendo assim, a ideia é que, ao não ser estritamente ganancioso e perfeito em suas escolhas, o algoritmo converge um pouco mais devagar, mas tem muito mais chances de evitar caminhos enganosos e encontrar picos melhores na cordilheira.</p>
-<div id="d6f46e22" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499499,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="4">
+<div id="fbb1ddaa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499499,&quot;user_tz&quot;:180,&quot;elapsed&quot;:14,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stochastic_hill_climbing(num_queens):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Hill Climbing Estocástico maximizando rainhas apaziguadas."""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -795,7 +778,7 @@ Explicação
 <section id="hill-climbing-de-primeira-escolha" class="level3">
 <h3 class="anchored" data-anchor-id="hill-climbing-de-primeira-escolha">Hill Climbing de Primeira Escolha</h3>
 <p>Agora, imagine que o nosso alpinista está em um terreno tão complexo que ele tem milhares de opções de passos possíveis ao seu redor. Avaliar todas elas para montar probabilidades (como na variante estocástica) demoraria muito. O Hill Climbing de Primeira Escolha adiciona uma estratégia de ganho de desempenho computacional: o alpinista simplesmente sorteia direções aleatórias uma por uma e, assim que encontra a <em>primeira</em> direção que o leva para cima, ele dá o passo. Sendo assim, a ideia é manter a aleatoriedade da subida, mas economizando processamento ao não precisar listar e avaliar todos os milhares de vizinhos antes de se mover.</p>
-<div id="19971527" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:9,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499506,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="5">
+<div id="2c09d06e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499506,&quot;user_tz&quot;:180,&quot;elapsed&quot;:9,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first_choice_hill_climbing(num_queens, max_attempts<span class="op">=</span><span class="dv">100</span>):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Hill Climbing de Primeira Escolha maximizando rainhas apaziguadas."""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -860,7 +843,7 @@ Explicação
 <section id="hill-climbing-com-reinicio-aleatório" class="level3">
 <h3 class="anchored" data-anchor-id="hill-climbing-com-reinicio-aleatório">Hill Climbing com Reinicio Aleatório</h3>
 <p>Finalmente, diferente do Hill Climbing puro onde o alpinista que só pode subir. O Hill Climbing com Reinício Aleatório adiciona uma estratégia simples, mas poderosa, para resolver esse problema. Se o algoritmo ficar preso em um máximo local, ele simplesmente “teletransporta” o alpinista para uma nova posição aleatória e começa a busca por um novo pico a partir dali. A ideia é que, ao reiniciar a busca várias vezes a partir de diferentes pontos de partida, a probabilidade de um desses inícios aleatórios levar ao máximo global (a solução ideal) aumenta drasticamente.</p>
-<div id="b74e412f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:10,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499508,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="6">
+<div id="2cef5886" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499508,&quot;user_tz&quot;:180,&quot;elapsed&quot;:10,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> random_restart_hill_climbing(num_queens, max_restarts<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Resolve o problema das n rainhas usando Hill Climbing com reinício aleatório.</span></span>
@@ -911,7 +894,7 @@ Explicação
 <li><p><strong>Alta Temperatura:</strong> O algoritmo tem uma alta probabilidade de aceitar um movimento que leva a um estado pior. Isso permite que ele “salte” para fora de máximos/mínimos locais e explore novas áreas da paisagem de busca.</p></li>
 <li><p><strong>Baixa Temperatura:</strong> A probabilidade de aceitar um movimento ruim diminui. O algoritmo começa a se comportar de forma mais parecida com o Hill Climbing, concentrando-se em movimentos que melhoram a solução e se acomodando em um estado de baixa energia (poucos ataques).</p></li>
 </ul>
-<div id="732d168d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:16,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499539,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="7">
+<div id="bfda046b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499539,&quot;user_tz&quot;:180,&quot;elapsed&quot;:16,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulated_annealing(num_queens, initial_temp<span class="op">=</span><span class="fl">100.0</span>, cooling_rate<span class="op">=</span><span class="fl">0.99</span>, verbose<span class="op">=</span><span class="va">False</span>):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Resolve o problema das n rainhas maximizando rainhas apaziguadas."""</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    current_board <span class="op">=</span> [random.randint(<span class="dv">0</span>, num_queens <span class="op">-</span> <span class="dv">1</span>) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_queens)]</span>
@@ -998,7 +981,7 @@ Explicação
 </section>
 <section id="visualizar-tabuleiro" class="level3">
 <h3 class="anchored" data-anchor-id="visualizar-tabuleiro">Visualizar tabuleiro</h3>
-<div id="bff61118" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:4,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499543,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="8">
+<div id="a296e324" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775520499543,&quot;user_tz&quot;:180,&quot;elapsed&quot;:4,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title Função para gerar tabuleiro</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_board(board):</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
@@ -1043,7 +1026,7 @@ Explicação
 <section id="cenário-1---hill-climbing-padrão" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-1---hill-climbing-padrão">Cenário 1 - Hill Climbing padrão</h3>
 <p>Neste cenário, vamos executar o <strong>Hill Climbing padrão</strong>. O algoritmo começa em um tabuleiro aleatório, avalia todos os vizinhos possíveis em cada passo e sempre escolhe o melhor deles. Se não existir vizinho melhor, a execução para, mesmo que a solução ideal ainda não tenha sido encontrada.</p>
-<div id="839748c0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:23,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521495458,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="9">
+<div id="9eb5668e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521495458,&quot;user_tz&quot;:180,&quot;elapsed&quot;:23,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>solution, score <span class="op">=</span> hill_climbing(<span class="dv">8</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board: </span><span class="sc">{</span>solution<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -1053,30 +1036,9 @@ Explicação
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Success! Solution found."</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Failure! Stuck at a local maximum."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Moving to: [3, 6, 1, 0, 5, 1, 2, 3] | Peaceful queens: 2
-Moving to: [4, 6, 1, 0, 5, 1, 2, 3] | Peaceful queens: 3
-Moving to: [4, 6, 1, 0, 5, 7, 2, 3] | Peaceful queens: 4
-Moving to: [4, 6, 1, 3, 5, 7, 2, 3] | Peaceful queens: 5
-Moving to: [4, 6, 1, 3, 5, 7, 2, 0] | Peaceful queens: 6
-
-Algorithm stopped. Local maximum or solution found.
-
-Final Solution:
-Board: [4, 6, 1, 3, 5, 7, 2, 0]
-Peaceful queens: 6
-Failure! Stuck at a local maximum.</code></pre>
 </div>
-</div>
-<div id="6143abf9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:229,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521502520,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>print_board(solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-11-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="e980a6f5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521502520,&quot;user_tz&quot;:180,&quot;elapsed&quot;:229,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>print_board(solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1088,155 +1050,63 @@ O que observar neste resultado?
 <section id="cenário-2---hill-climbing-estocástico" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-2---hill-climbing-estocástico">Cenário 2 - Hill Climbing Estocástico</h3>
 <p>Agora vamos executar o <strong>Hill Climbing Estocástico</strong>. Diferentemente da versão padrão, ele não escolhe sempre o melhor vizinho. Em cada rodada, ele reúne todos os vizinhos que melhoram o estado atual e sorteia um deles, dando maior chance para as melhorias maiores.</p>
-<div id="1636e90c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:11,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521587893,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>stochastic_solution, stochastic_score <span class="op">=</span> stochastic_hill_climbing(<span class="dv">8</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board: </span><span class="sc">{</span>stochastic_solution<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>stochastic_score<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> stochastic_score <span class="op">==</span> <span class="dv">8</span>:</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Success! Solution found."</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Failure! Stuck at a local maximum."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Moving to: [2, 5, 3, 1, 6, 2, 4, 4] | Peaceful queens: 2
-Moving to: [2, 5, 3, 1, 6, 2, 2, 4] | Peaceful queens: 3
-Moving to: [2, 5, 3, 1, 6, 2, 2, 7] | Peaceful queens: 4
-Moving to: [2, 5, 3, 1, 6, 4, 2, 7] | Peaceful queens: 5
-Moving to: [7, 5, 3, 1, 6, 4, 2, 7] | Peaceful queens: 6
-
-Algorithm stopped. Local maximum or solution found.
-
-Final Solution:
-Board: [7, 5, 3, 1, 6, 4, 2, 7]
-Peaceful queens: 6
-Failure! Stuck at a local maximum.</code></pre>
+<div id="eac51250" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521587893,&quot;user_tz&quot;:180,&quot;elapsed&quot;:11,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>stochastic_solution, stochastic_score <span class="op">=</span> stochastic_hill_climbing(<span class="dv">8</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board: </span><span class="sc">{</span>stochastic_solution<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>stochastic_score<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> stochastic_score <span class="op">==</span> <span class="dv">8</span>:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Success! Solution found."</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Failure! Stuck at a local maximum."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="2ee1381f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:170,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521593534,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>print_board(stochastic_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-13-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="933f51c9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521593534,&quot;user_tz&quot;:180,&quot;elapsed&quot;:170,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>print_board(stochastic_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cenário-3---hill-climbing-de-primeira-escolha" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-3---hill-climbing-de-primeira-escolha">Cenário 3 - Hill Climbing de Primeira Escolha</h3>
 <p>Neste cenário, vamos testar o <strong>Hill Climbing de Primeira Escolha</strong>. Em vez de analisar toda a vizinhança, o algoritmo sorteia movimentos aleatórios e aceita imediatamente o primeiro que melhora a solução atual. Isso torna a execução mais leve, mas também mais dependente do acaso.</p>
-<div id="0628def4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521732334,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>first_choice_solution, first_choice_score <span class="op">=</span> first_choice_hill_climbing(<span class="dv">8</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board: </span><span class="sc">{</span>first_choice_solution<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>first_choice_score<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> first_choice_score <span class="op">==</span> <span class="dv">8</span>:</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Success! Solution found."</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Failure! Stuck at a local maximum."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Moving to: [7, 1, 7, 7, 6, 0, 2, 0] | Peaceful queens: 2
-Moving to: [3, 1, 7, 7, 6, 0, 2, 0] | Peaceful queens: 3
-Moving to: [3, 1, 7, 7, 6, 0, 2, 6] | Peaceful queens: 4
-Moving to: [3, 1, 7, 7, 6, 0, 2, 4] | Peaceful queens: 5
-Moving to: [3, 1, 7, 4, 6, 0, 2, 4] | Peaceful queens: 6
-
-Algorithm stopped. Local maximum or solution found.
-
-Final Solution:
-Board: [3, 1, 7, 4, 6, 0, 2, 4]
-Peaceful queens: 6
-Failure! Stuck at a local maximum.</code></pre>
+<div id="bf9380f7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521732334,&quot;user_tz&quot;:180,&quot;elapsed&quot;:15,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>first_choice_solution, first_choice_score <span class="op">=</span> first_choice_hill_climbing(<span class="dv">8</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board: </span><span class="sc">{</span>first_choice_solution<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>first_choice_score<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> first_choice_score <span class="op">==</span> <span class="dv">8</span>:</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Success! Solution found."</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Failure! Stuck at a local maximum."</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="a2dcdcd7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:159,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521702714,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>print_board(first_choice_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-15-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="42c2c060" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521702714,&quot;user_tz&quot;:180,&quot;elapsed&quot;:159,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>print_board(first_choice_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cenário-4---hill-climbing-com-reinício-aleatório" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-4---hill-climbing-com-reinício-aleatório">Cenário 4 - Hill Climbing com Reinício Aleatório</h3>
 <p>Agora vamos executar o <strong>Hill Climbing com Reinício Aleatório</strong>. A cada tentativa, o algoritmo roda o Hill Climbing padrão a partir de um novo estado inicial aleatório. Se uma execução ficar presa em máximo local, outra tentativa é iniciada até encontrar uma solução ou atingir o número máximo de reinícios.</p>
-<div id="5abe5e21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:19,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521775621,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>final_solution, final_score <span class="op">=</span> random_restart_hill_climbing(<span class="dv">8</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Solucao Final:"</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Tabuleiro: </span><span class="sc">{</span>final_solution<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rainhas apaziguadas: </span><span class="sc">{</span>final_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Moving to: [6, 5, 2, 4, 6, 0, 3, 1] | Peaceful queens: 5
-Moving to: [3, 5, 2, 4, 6, 0, 3, 1] | Peaceful queens: 6
-
-Algorithm stopped. Local maximum or solution found.
-Attempt 1 failed. Restarting...
-Moving to: [6, 3, 0, 2, 3, 4, 1, 7] | Peaceful queens: 3
-Moving to: [6, 3, 0, 2, 5, 4, 1, 7] | Peaceful queens: 5
-
-Algorithm stopped. Local maximum or solution found.
-Attempt 2 failed. Restarting...
-Moving to: [2, 5, 3, 4, 0, 3, 6, 1] | Peaceful queens: 4
-Moving to: [2, 5, 7, 4, 0, 3, 6, 1] | Peaceful queens: 6
-
-Algorithm stopped. Local maximum or solution found.
-Attempt 3 failed. Restarting...
-Moving to: [0, 6, 0, 5, 2, 4, 0, 4] | Peaceful queens: 2
-Moving to: [0, 6, 0, 5, 2, 4, 0, 3] | Peaceful queens: 4
-Moving to: [1, 6, 0, 5, 2, 4, 0, 3] | Peaceful queens: 5
-Moving to: [1, 6, 0, 5, 7, 4, 0, 3] | Peaceful queens: 6
-Moving to: [1, 6, 2, 5, 7, 4, 0, 3] | Peaceful queens: 8
-
-Algorithm stopped. Local maximum or solution found.
-Success! Solution found in 4 attempts.
-
-Solucao Final:
-Tabuleiro: [1, 6, 2, 5, 7, 4, 0, 3]
-Rainhas apaziguadas: 8</code></pre>
+<div id="fce9d3ca" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521775621,&quot;user_tz&quot;:180,&quot;elapsed&quot;:19,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>final_solution, final_score <span class="op">=</span> random_restart_hill_climbing(<span class="dv">8</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Solucao Final:"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Tabuleiro: </span><span class="sc">{</span>final_solution<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rainhas apaziguadas: </span><span class="sc">{</span>final_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="a48dd400" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:152,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521788005,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>print_board(final_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-17-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="a80bf69d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521788005,&quot;user_tz&quot;:180,&quot;elapsed&quot;:152,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>print_board(final_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cenário-5---simulated-annealing" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-5---simulated-annealing">Cenário 5 - Simulated Annealing</h3>
 <p>Por fim, vamos executar o <strong>Simulated Annealing</strong> em seu modo normal. Esse algoritmo começa em um estado aleatório e pode aceitar movimentos que pioram temporariamente a solução. Conforme a temperatura diminui, a busca fica mais conservadora e passa a refinar a melhor região encontrada.</p>
-<div id="c2a6d546" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:22,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521845513,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>annealing_solution, annealing_score <span class="op">=</span> simulated_annealing(<span class="dv">8</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board configuration: </span><span class="sc">{</span>annealing_solution<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>annealing_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Success. Optimal solution was found.
-
-Final Solution:
-Board configuration: [4, 2, 0, 5, 7, 1, 3, 6]
-Peaceful queens: 8</code></pre>
+<div id="7b355dd8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521845513,&quot;user_tz&quot;:180,&quot;elapsed&quot;:22,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>annealing_solution, annealing_score <span class="op">=</span> simulated_annealing(<span class="dv">8</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board configuration: </span><span class="sc">{</span>annealing_solution<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>annealing_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="a1782de4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:257,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521865061,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>print_board(annealing_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-19-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="69923b7b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521865061,&quot;user_tz&quot;:180,&quot;elapsed&quot;:257,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>print_board(annealing_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -1248,1175 +1118,14 @@ O que observar neste resultado?
 <section id="cenário-6---simulated-annealing-com-verbose" class="level3">
 <h3 class="anchored" data-anchor-id="cenário-6---simulated-annealing-com-verbose">Cenário 6 - Simulated Annealing com verbose</h3>
 <p>Neste cenário, vamos executar novamente o <strong>Simulated Annealing</strong>, mas agora com <code>verbose=True</code>. Assim, além do resultado final, será possível acompanhar a temperatura diminuindo durante a busca e observar como o algoritmo vai ficando menos exploratório a cada iteração.</p>
-<div id="feea7585" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:47,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521871940,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>verbose_solution, verbose_score <span class="op">=</span> simulated_annealing(<span class="dv">8</span>, verbose<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board configuration: </span><span class="sc">{</span>verbose_solution<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>verbose_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Step 0 | Temperature: 100.0000 | Peaceful queens: 1
-Step 1 | Temperature: 99.0000 | Peaceful queens: 1
-Step 2 | Temperature: 98.0100 | Peaceful queens: 1
-Step 3 | Temperature: 97.0299 | Peaceful queens: 1
-Step 4 | Temperature: 96.0596 | Peaceful queens: 0
-Step 5 | Temperature: 95.0990 | Peaceful queens: 1
-Step 6 | Temperature: 94.1480 | Peaceful queens: 1
-Step 7 | Temperature: 93.2065 | Peaceful queens: 0
-Step 8 | Temperature: 92.2745 | Peaceful queens: 0
-Step 9 | Temperature: 91.3517 | Peaceful queens: 0
-Step 10 | Temperature: 90.4382 | Peaceful queens: 1
-Step 11 | Temperature: 89.5338 | Peaceful queens: 1
-Step 12 | Temperature: 88.6385 | Peaceful queens: 3
-Step 13 | Temperature: 87.7521 | Peaceful queens: 1
-Step 14 | Temperature: 86.8746 | Peaceful queens: 1
-Step 15 | Temperature: 86.0058 | Peaceful queens: 0
-Step 16 | Temperature: 85.1458 | Peaceful queens: 0
-Step 17 | Temperature: 84.2943 | Peaceful queens: 0
-Step 18 | Temperature: 83.4514 | Peaceful queens: 0
-Step 19 | Temperature: 82.6169 | Peaceful queens: 0
-Step 20 | Temperature: 81.7907 | Peaceful queens: 0
-Step 21 | Temperature: 80.9728 | Peaceful queens: 0
-Step 22 | Temperature: 80.1631 | Peaceful queens: 0
-Step 23 | Temperature: 79.3614 | Peaceful queens: 0
-Step 24 | Temperature: 78.5678 | Peaceful queens: 0
-Step 25 | Temperature: 77.7821 | Peaceful queens: 0
-Step 26 | Temperature: 77.0043 | Peaceful queens: 0
-Step 27 | Temperature: 76.2343 | Peaceful queens: 0
-Step 28 | Temperature: 75.4719 | Peaceful queens: 0
-Step 29 | Temperature: 74.7172 | Peaceful queens: 0
-Step 30 | Temperature: 73.9700 | Peaceful queens: 0
-Step 31 | Temperature: 73.2303 | Peaceful queens: 1
-Step 32 | Temperature: 72.4980 | Peaceful queens: 1
-Step 33 | Temperature: 71.7731 | Peaceful queens: 0
-Step 34 | Temperature: 71.0553 | Peaceful queens: 1
-Step 35 | Temperature: 70.3448 | Peaceful queens: 0
-Step 36 | Temperature: 69.6413 | Peaceful queens: 0
-Step 37 | Temperature: 68.9449 | Peaceful queens: 0
-Step 38 | Temperature: 68.2555 | Peaceful queens: 0
-Step 39 | Temperature: 67.5729 | Peaceful queens: 0
-Step 40 | Temperature: 66.8972 | Peaceful queens: 0
-Step 41 | Temperature: 66.2282 | Peaceful queens: 0
-Step 42 | Temperature: 65.5659 | Peaceful queens: 0
-Step 43 | Temperature: 64.9103 | Peaceful queens: 0
-Step 44 | Temperature: 64.2612 | Peaceful queens: 0
-Step 45 | Temperature: 63.6185 | Peaceful queens: 0
-Step 46 | Temperature: 62.9824 | Peaceful queens: 0
-Step 47 | Temperature: 62.3525 | Peaceful queens: 0
-Step 48 | Temperature: 61.7290 | Peaceful queens: 0
-Step 49 | Temperature: 61.1117 | Peaceful queens: 1
-Step 50 | Temperature: 60.5006 | Peaceful queens: 0
-Step 51 | Temperature: 59.8956 | Peaceful queens: 0
-Step 52 | Temperature: 59.2966 | Peaceful queens: 0
-Step 53 | Temperature: 58.7037 | Peaceful queens: 0
-Step 54 | Temperature: 58.1166 | Peaceful queens: 1
-Step 55 | Temperature: 57.5355 | Peaceful queens: 0
-Step 56 | Temperature: 56.9601 | Peaceful queens: 0
-Step 57 | Temperature: 56.3905 | Peaceful queens: 0
-Step 58 | Temperature: 55.8266 | Peaceful queens: 0
-Step 59 | Temperature: 55.2683 | Peaceful queens: 0
-Step 60 | Temperature: 54.7157 | Peaceful queens: 0
-Step 61 | Temperature: 54.1685 | Peaceful queens: 1
-Step 62 | Temperature: 53.6268 | Peaceful queens: 0
-Step 63 | Temperature: 53.0906 | Peaceful queens: 0
-Step 64 | Temperature: 52.5596 | Peaceful queens: 0
-Step 65 | Temperature: 52.0341 | Peaceful queens: 0
-Step 66 | Temperature: 51.5137 | Peaceful queens: 0
-Step 67 | Temperature: 50.9986 | Peaceful queens: 0
-Step 68 | Temperature: 50.4886 | Peaceful queens: 1
-Step 69 | Temperature: 49.9837 | Peaceful queens: 1
-Step 70 | Temperature: 49.4839 | Peaceful queens: 0
-Step 71 | Temperature: 48.9890 | Peaceful queens: 0
-Step 72 | Temperature: 48.4991 | Peaceful queens: 0
-Step 73 | Temperature: 48.0141 | Peaceful queens: 0
-Step 74 | Temperature: 47.5340 | Peaceful queens: 0
-Step 75 | Temperature: 47.0587 | Peaceful queens: 0
-Step 76 | Temperature: 46.5881 | Peaceful queens: 0
-Step 77 | Temperature: 46.1222 | Peaceful queens: 0
-Step 78 | Temperature: 45.6610 | Peaceful queens: 0
-Step 79 | Temperature: 45.2044 | Peaceful queens: 0
-Step 80 | Temperature: 44.7523 | Peaceful queens: 0
-Step 81 | Temperature: 44.3048 | Peaceful queens: 0
-Step 82 | Temperature: 43.8618 | Peaceful queens: 0
-Step 83 | Temperature: 43.4231 | Peaceful queens: 0
-Step 84 | Temperature: 42.9889 | Peaceful queens: 1
-Step 85 | Temperature: 42.5590 | Peaceful queens: 2
-Step 86 | Temperature: 42.1334 | Peaceful queens: 0
-Step 87 | Temperature: 41.7121 | Peaceful queens: 0
-Step 88 | Temperature: 41.2950 | Peaceful queens: 1
-Step 89 | Temperature: 40.8820 | Peaceful queens: 0
-Step 90 | Temperature: 40.4732 | Peaceful queens: 0
-Step 91 | Temperature: 40.0685 | Peaceful queens: 0
-Step 92 | Temperature: 39.6678 | Peaceful queens: 0
-Step 93 | Temperature: 39.2711 | Peaceful queens: 1
-Step 94 | Temperature: 38.8784 | Peaceful queens: 1
-Step 95 | Temperature: 38.4896 | Peaceful queens: 0
-Step 96 | Temperature: 38.1047 | Peaceful queens: 2
-Step 97 | Temperature: 37.7237 | Peaceful queens: 2
-Step 98 | Temperature: 37.3464 | Peaceful queens: 2
-Step 99 | Temperature: 36.9730 | Peaceful queens: 3
-Step 100 | Temperature: 36.6032 | Peaceful queens: 2
-Step 101 | Temperature: 36.2372 | Peaceful queens: 1
-Step 102 | Temperature: 35.8748 | Peaceful queens: 0
-Step 103 | Temperature: 35.5161 | Peaceful queens: 0
-Step 104 | Temperature: 35.1609 | Peaceful queens: 0
-Step 105 | Temperature: 34.8093 | Peaceful queens: 0
-Step 106 | Temperature: 34.4612 | Peaceful queens: 2
-Step 107 | Temperature: 34.1166 | Peaceful queens: 2
-Step 108 | Temperature: 33.7754 | Peaceful queens: 0
-Step 109 | Temperature: 33.4377 | Peaceful queens: 1
-Step 110 | Temperature: 33.1033 | Peaceful queens: 2
-Step 111 | Temperature: 32.7723 | Peaceful queens: 1
-Step 112 | Temperature: 32.4446 | Peaceful queens: 1
-Step 113 | Temperature: 32.1201 | Peaceful queens: 1
-Step 114 | Temperature: 31.7989 | Peaceful queens: 0
-Step 115 | Temperature: 31.4809 | Peaceful queens: 1
-Step 116 | Temperature: 31.1661 | Peaceful queens: 1
-Step 117 | Temperature: 30.8544 | Peaceful queens: 0
-Step 118 | Temperature: 30.5459 | Peaceful queens: 0
-Step 119 | Temperature: 30.2404 | Peaceful queens: 1
-Step 120 | Temperature: 29.9380 | Peaceful queens: 1
-Step 121 | Temperature: 29.6387 | Peaceful queens: 0
-Step 122 | Temperature: 29.3423 | Peaceful queens: 1
-Step 123 | Temperature: 29.0488 | Peaceful queens: 0
-Step 124 | Temperature: 28.7584 | Peaceful queens: 1
-Step 125 | Temperature: 28.4708 | Peaceful queens: 0
-Step 126 | Temperature: 28.1861 | Peaceful queens: 1
-Step 127 | Temperature: 27.9042 | Peaceful queens: 0
-Step 128 | Temperature: 27.6252 | Peaceful queens: 0
-Step 129 | Temperature: 27.3489 | Peaceful queens: 0
-Step 130 | Temperature: 27.0754 | Peaceful queens: 0
-Step 131 | Temperature: 26.8047 | Peaceful queens: 0
-Step 132 | Temperature: 26.5366 | Peaceful queens: 0
-Step 133 | Temperature: 26.2713 | Peaceful queens: 0
-Step 134 | Temperature: 26.0085 | Peaceful queens: 1
-Step 135 | Temperature: 25.7485 | Peaceful queens: 0
-Step 136 | Temperature: 25.4910 | Peaceful queens: 0
-Step 137 | Temperature: 25.2361 | Peaceful queens: 1
-Step 138 | Temperature: 24.9837 | Peaceful queens: 1
-Step 139 | Temperature: 24.7339 | Peaceful queens: 0
-Step 140 | Temperature: 24.4865 | Peaceful queens: 0
-Step 141 | Temperature: 24.2417 | Peaceful queens: 1
-Step 142 | Temperature: 23.9992 | Peaceful queens: 1
-Step 143 | Temperature: 23.7593 | Peaceful queens: 1
-Step 144 | Temperature: 23.5217 | Peaceful queens: 1
-Step 145 | Temperature: 23.2864 | Peaceful queens: 2
-Step 146 | Temperature: 23.0536 | Peaceful queens: 1
-Step 147 | Temperature: 22.8230 | Peaceful queens: 1
-Step 148 | Temperature: 22.5948 | Peaceful queens: 1
-Step 149 | Temperature: 22.3689 | Peaceful queens: 1
-Step 150 | Temperature: 22.1452 | Peaceful queens: 1
-Step 151 | Temperature: 21.9237 | Peaceful queens: 1
-Step 152 | Temperature: 21.7045 | Peaceful queens: 0
-Step 153 | Temperature: 21.4874 | Peaceful queens: 0
-Step 154 | Temperature: 21.2726 | Peaceful queens: 0
-Step 155 | Temperature: 21.0598 | Peaceful queens: 0
-Step 156 | Temperature: 20.8492 | Peaceful queens: 0
-Step 157 | Temperature: 20.6408 | Peaceful queens: 0
-Step 158 | Temperature: 20.4343 | Peaceful queens: 0
-Step 159 | Temperature: 20.2300 | Peaceful queens: 0
-Step 160 | Temperature: 20.0277 | Peaceful queens: 1
-Step 161 | Temperature: 19.8274 | Peaceful queens: 1
-Step 162 | Temperature: 19.6292 | Peaceful queens: 0
-Step 163 | Temperature: 19.4329 | Peaceful queens: 0
-Step 164 | Temperature: 19.2385 | Peaceful queens: 0
-Step 165 | Temperature: 19.0461 | Peaceful queens: 0
-Step 166 | Temperature: 18.8557 | Peaceful queens: 0
-Step 167 | Temperature: 18.6671 | Peaceful queens: 0
-Step 168 | Temperature: 18.4805 | Peaceful queens: 0
-Step 169 | Temperature: 18.2957 | Peaceful queens: 0
-Step 170 | Temperature: 18.1127 | Peaceful queens: 0
-Step 171 | Temperature: 17.9316 | Peaceful queens: 0
-Step 172 | Temperature: 17.7523 | Peaceful queens: 0
-Step 173 | Temperature: 17.5747 | Peaceful queens: 1
-Step 174 | Temperature: 17.3990 | Peaceful queens: 0
-Step 175 | Temperature: 17.2250 | Peaceful queens: 0
-Step 176 | Temperature: 17.0527 | Peaceful queens: 0
-Step 177 | Temperature: 16.8822 | Peaceful queens: 0
-Step 178 | Temperature: 16.7134 | Peaceful queens: 0
-Step 179 | Temperature: 16.5463 | Peaceful queens: 0
-Step 180 | Temperature: 16.3808 | Peaceful queens: 0
-Step 181 | Temperature: 16.2170 | Peaceful queens: 0
-Step 182 | Temperature: 16.0548 | Peaceful queens: 0
-Step 183 | Temperature: 15.8943 | Peaceful queens: 2
-Step 184 | Temperature: 15.7353 | Peaceful queens: 2
-Step 185 | Temperature: 15.5780 | Peaceful queens: 0
-Step 186 | Temperature: 15.4222 | Peaceful queens: 0
-Step 187 | Temperature: 15.2680 | Peaceful queens: 0
-Step 188 | Temperature: 15.1153 | Peaceful queens: 0
-Step 189 | Temperature: 14.9641 | Peaceful queens: 0
-Step 190 | Temperature: 14.8145 | Peaceful queens: 0
-Step 191 | Temperature: 14.6664 | Peaceful queens: 0
-Step 192 | Temperature: 14.5197 | Peaceful queens: 0
-Step 193 | Temperature: 14.3745 | Peaceful queens: 0
-Step 194 | Temperature: 14.2307 | Peaceful queens: 1
-Step 195 | Temperature: 14.0884 | Peaceful queens: 1
-Step 196 | Temperature: 13.9476 | Peaceful queens: 0
-Step 197 | Temperature: 13.8081 | Peaceful queens: 0
-Step 198 | Temperature: 13.6700 | Peaceful queens: 1
-Step 199 | Temperature: 13.5333 | Peaceful queens: 1
-Step 200 | Temperature: 13.3980 | Peaceful queens: 1
-Step 201 | Temperature: 13.2640 | Peaceful queens: 1
-Step 202 | Temperature: 13.1313 | Peaceful queens: 1
-Step 203 | Temperature: 13.0000 | Peaceful queens: 1
-Step 204 | Temperature: 12.8700 | Peaceful queens: 1
-Step 205 | Temperature: 12.7413 | Peaceful queens: 1
-Step 206 | Temperature: 12.6139 | Peaceful queens: 2
-Step 207 | Temperature: 12.4878 | Peaceful queens: 1
-Step 208 | Temperature: 12.3629 | Peaceful queens: 2
-Step 209 | Temperature: 12.2393 | Peaceful queens: 2
-Step 210 | Temperature: 12.1169 | Peaceful queens: 2
-Step 211 | Temperature: 11.9957 | Peaceful queens: 0
-Step 212 | Temperature: 11.8758 | Peaceful queens: 0
-Step 213 | Temperature: 11.7570 | Peaceful queens: 0
-Step 214 | Temperature: 11.6394 | Peaceful queens: 0
-Step 215 | Temperature: 11.5230 | Peaceful queens: 1
-Step 216 | Temperature: 11.4078 | Peaceful queens: 1
-Step 217 | Temperature: 11.2937 | Peaceful queens: 1
-Step 218 | Temperature: 11.1808 | Peaceful queens: 1
-Step 219 | Temperature: 11.0690 | Peaceful queens: 0
-Step 220 | Temperature: 10.9583 | Peaceful queens: 1
-Step 221 | Temperature: 10.8487 | Peaceful queens: 0
-Step 222 | Temperature: 10.7402 | Peaceful queens: 0
-Step 223 | Temperature: 10.6328 | Peaceful queens: 0
-Step 224 | Temperature: 10.5265 | Peaceful queens: 1
-Step 225 | Temperature: 10.4212 | Peaceful queens: 0
-Step 226 | Temperature: 10.3170 | Peaceful queens: 1
-Step 227 | Temperature: 10.2138 | Peaceful queens: 1
-Step 228 | Temperature: 10.1117 | Peaceful queens: 1
-Step 229 | Temperature: 10.0106 | Peaceful queens: 0
-Step 230 | Temperature: 9.9105 | Peaceful queens: 0
-Step 231 | Temperature: 9.8114 | Peaceful queens: 0
-Step 232 | Temperature: 9.7133 | Peaceful queens: 0
-Step 233 | Temperature: 9.6161 | Peaceful queens: 1
-Step 234 | Temperature: 9.5200 | Peaceful queens: 0
-Step 235 | Temperature: 9.4248 | Peaceful queens: 0
-Step 236 | Temperature: 9.3305 | Peaceful queens: 0
-Step 237 | Temperature: 9.2372 | Peaceful queens: 0
-Step 238 | Temperature: 9.1448 | Peaceful queens: 1
-Step 239 | Temperature: 9.0534 | Peaceful queens: 1
-Step 240 | Temperature: 8.9629 | Peaceful queens: 1
-Step 241 | Temperature: 8.8732 | Peaceful queens: 1
-Step 242 | Temperature: 8.7845 | Peaceful queens: 1
-Step 243 | Temperature: 8.6967 | Peaceful queens: 0
-Step 244 | Temperature: 8.6097 | Peaceful queens: 2
-Step 245 | Temperature: 8.5236 | Peaceful queens: 1
-Step 246 | Temperature: 8.4384 | Peaceful queens: 2
-Step 247 | Temperature: 8.3540 | Peaceful queens: 1
-Step 248 | Temperature: 8.2704 | Peaceful queens: 2
-Step 249 | Temperature: 8.1877 | Peaceful queens: 1
-Step 250 | Temperature: 8.1059 | Peaceful queens: 1
-Step 251 | Temperature: 8.0248 | Peaceful queens: 1
-Step 252 | Temperature: 7.9445 | Peaceful queens: 1
-Step 253 | Temperature: 7.8651 | Peaceful queens: 1
-Step 254 | Temperature: 7.7864 | Peaceful queens: 1
-Step 255 | Temperature: 7.7086 | Peaceful queens: 1
-Step 256 | Temperature: 7.6315 | Peaceful queens: 1
-Step 257 | Temperature: 7.5552 | Peaceful queens: 2
-Step 258 | Temperature: 7.4796 | Peaceful queens: 2
-Step 259 | Temperature: 7.4048 | Peaceful queens: 1
-Step 260 | Temperature: 7.3308 | Peaceful queens: 1
-Step 261 | Temperature: 7.2575 | Peaceful queens: 2
-Step 262 | Temperature: 7.1849 | Peaceful queens: 2
-Step 263 | Temperature: 7.1131 | Peaceful queens: 2
-Step 264 | Temperature: 7.0419 | Peaceful queens: 2
-Step 265 | Temperature: 6.9715 | Peaceful queens: 2
-Step 266 | Temperature: 6.9018 | Peaceful queens: 1
-Step 267 | Temperature: 6.8328 | Peaceful queens: 1
-Step 268 | Temperature: 6.7644 | Peaceful queens: 0
-Step 269 | Temperature: 6.6968 | Peaceful queens: 1
-Step 270 | Temperature: 6.6298 | Peaceful queens: 0
-Step 271 | Temperature: 6.5635 | Peaceful queens: 0
-Step 272 | Temperature: 6.4979 | Peaceful queens: 2
-Step 273 | Temperature: 6.4329 | Peaceful queens: 2
-Step 274 | Temperature: 6.3686 | Peaceful queens: 2
-Step 275 | Temperature: 6.3049 | Peaceful queens: 3
-Step 276 | Temperature: 6.2419 | Peaceful queens: 3
-Step 277 | Temperature: 6.1794 | Peaceful queens: 3
-Step 278 | Temperature: 6.1176 | Peaceful queens: 3
-Step 279 | Temperature: 6.0565 | Peaceful queens: 2
-Step 280 | Temperature: 5.9959 | Peaceful queens: 2
-Step 281 | Temperature: 5.9359 | Peaceful queens: 1
-Step 282 | Temperature: 5.8766 | Peaceful queens: 0
-Step 283 | Temperature: 5.8178 | Peaceful queens: 0
-Step 284 | Temperature: 5.7596 | Peaceful queens: 1
-Step 285 | Temperature: 5.7020 | Peaceful queens: 0
-Step 286 | Temperature: 5.6450 | Peaceful queens: 0
-Step 287 | Temperature: 5.5886 | Peaceful queens: 0
-Step 288 | Temperature: 5.5327 | Peaceful queens: 1
-Step 289 | Temperature: 5.4774 | Peaceful queens: 0
-Step 290 | Temperature: 5.4226 | Peaceful queens: 1
-Step 291 | Temperature: 5.3684 | Peaceful queens: 1
-Step 292 | Temperature: 5.3147 | Peaceful queens: 1
-Step 293 | Temperature: 5.2615 | Peaceful queens: 1
-Step 294 | Temperature: 5.2089 | Peaceful queens: 1
-Step 295 | Temperature: 5.1568 | Peaceful queens: 1
-Step 296 | Temperature: 5.1053 | Peaceful queens: 1
-Step 297 | Temperature: 5.0542 | Peaceful queens: 1
-Step 298 | Temperature: 5.0037 | Peaceful queens: 0
-Step 299 | Temperature: 4.9536 | Peaceful queens: 2
-Step 300 | Temperature: 4.9041 | Peaceful queens: 0
-Step 301 | Temperature: 4.8550 | Peaceful queens: 1
-Step 302 | Temperature: 4.8065 | Peaceful queens: 2
-Step 303 | Temperature: 4.7584 | Peaceful queens: 1
-Step 304 | Temperature: 4.7108 | Peaceful queens: 2
-Step 305 | Temperature: 4.6637 | Peaceful queens: 4
-Step 306 | Temperature: 4.6171 | Peaceful queens: 4
-Step 307 | Temperature: 4.5709 | Peaceful queens: 2
-Step 308 | Temperature: 4.5252 | Peaceful queens: 1
-Step 309 | Temperature: 4.4800 | Peaceful queens: 1
-Step 310 | Temperature: 4.4352 | Peaceful queens: 3
-Step 311 | Temperature: 4.3908 | Peaceful queens: 3
-Step 312 | Temperature: 4.3469 | Peaceful queens: 2
-Step 313 | Temperature: 4.3034 | Peaceful queens: 0
-Step 314 | Temperature: 4.2604 | Peaceful queens: 0
-Step 315 | Temperature: 4.2178 | Peaceful queens: 0
-Step 316 | Temperature: 4.1756 | Peaceful queens: 0
-Step 317 | Temperature: 4.1339 | Peaceful queens: 3
-Step 318 | Temperature: 4.0925 | Peaceful queens: 2
-Step 319 | Temperature: 4.0516 | Peaceful queens: 2
-Step 320 | Temperature: 4.0111 | Peaceful queens: 3
-Step 321 | Temperature: 3.9710 | Peaceful queens: 3
-Step 322 | Temperature: 3.9313 | Peaceful queens: 1
-Step 323 | Temperature: 3.8920 | Peaceful queens: 1
-Step 324 | Temperature: 3.8530 | Peaceful queens: 1
-Step 325 | Temperature: 3.8145 | Peaceful queens: 2
-Step 326 | Temperature: 3.7764 | Peaceful queens: 2
-Step 327 | Temperature: 3.7386 | Peaceful queens: 1
-Step 328 | Temperature: 3.7012 | Peaceful queens: 1
-Step 329 | Temperature: 3.6642 | Peaceful queens: 1
-Step 330 | Temperature: 3.6276 | Peaceful queens: 1
-Step 331 | Temperature: 3.5913 | Peaceful queens: 0
-Step 332 | Temperature: 3.5554 | Peaceful queens: 1
-Step 333 | Temperature: 3.5198 | Peaceful queens: 1
-Step 334 | Temperature: 3.4846 | Peaceful queens: 1
-Step 335 | Temperature: 3.4498 | Peaceful queens: 2
-Step 336 | Temperature: 3.4153 | Peaceful queens: 1
-Step 337 | Temperature: 3.3811 | Peaceful queens: 1
-Step 338 | Temperature: 3.3473 | Peaceful queens: 2
-Step 339 | Temperature: 3.3138 | Peaceful queens: 1
-Step 340 | Temperature: 3.2807 | Peaceful queens: 1
-Step 341 | Temperature: 3.2479 | Peaceful queens: 1
-Step 342 | Temperature: 3.2154 | Peaceful queens: 1
-Step 343 | Temperature: 3.1833 | Peaceful queens: 1
-Step 344 | Temperature: 3.1514 | Peaceful queens: 2
-Step 345 | Temperature: 3.1199 | Peaceful queens: 2
-Step 346 | Temperature: 3.0887 | Peaceful queens: 2
-Step 347 | Temperature: 3.0578 | Peaceful queens: 1
-Step 348 | Temperature: 3.0272 | Peaceful queens: 1
-Step 349 | Temperature: 2.9970 | Peaceful queens: 1
-Step 350 | Temperature: 2.9670 | Peaceful queens: 1
-Step 351 | Temperature: 2.9373 | Peaceful queens: 1
-Step 352 | Temperature: 2.9080 | Peaceful queens: 1
-Step 353 | Temperature: 2.8789 | Peaceful queens: 1
-Step 354 | Temperature: 2.8501 | Peaceful queens: 2
-Step 355 | Temperature: 2.8216 | Peaceful queens: 2
-Step 356 | Temperature: 2.7934 | Peaceful queens: 2
-Step 357 | Temperature: 2.7654 | Peaceful queens: 3
-Step 358 | Temperature: 2.7378 | Peaceful queens: 3
-Step 359 | Temperature: 2.7104 | Peaceful queens: 3
-Step 360 | Temperature: 2.6833 | Peaceful queens: 3
-Step 361 | Temperature: 2.6565 | Peaceful queens: 3
-Step 362 | Temperature: 2.6299 | Peaceful queens: 3
-Step 363 | Temperature: 2.6036 | Peaceful queens: 3
-Step 364 | Temperature: 2.5776 | Peaceful queens: 2
-Step 365 | Temperature: 2.5518 | Peaceful queens: 1
-Step 366 | Temperature: 2.5263 | Peaceful queens: 1
-Step 367 | Temperature: 2.5010 | Peaceful queens: 1
-Step 368 | Temperature: 2.4760 | Peaceful queens: 1
-Step 369 | Temperature: 2.4512 | Peaceful queens: 1
-Step 370 | Temperature: 2.4267 | Peaceful queens: 1
-Step 371 | Temperature: 2.4025 | Peaceful queens: 1
-Step 372 | Temperature: 2.3784 | Peaceful queens: 1
-Step 373 | Temperature: 2.3547 | Peaceful queens: 2
-Step 374 | Temperature: 2.3311 | Peaceful queens: 2
-Step 375 | Temperature: 2.3078 | Peaceful queens: 2
-Step 376 | Temperature: 2.2847 | Peaceful queens: 2
-Step 377 | Temperature: 2.2619 | Peaceful queens: 1
-Step 378 | Temperature: 2.2393 | Peaceful queens: 0
-Step 379 | Temperature: 2.2169 | Peaceful queens: 1
-Step 380 | Temperature: 2.1947 | Peaceful queens: 1
-Step 381 | Temperature: 2.1727 | Peaceful queens: 1
-Step 382 | Temperature: 2.1510 | Peaceful queens: 1
-Step 383 | Temperature: 2.1295 | Peaceful queens: 1
-Step 384 | Temperature: 2.1082 | Peaceful queens: 0
-Step 385 | Temperature: 2.0871 | Peaceful queens: 0
-Step 386 | Temperature: 2.0663 | Peaceful queens: 0
-Step 387 | Temperature: 2.0456 | Peaceful queens: 0
-Step 388 | Temperature: 2.0251 | Peaceful queens: 0
-Step 389 | Temperature: 2.0049 | Peaceful queens: 0
-Step 390 | Temperature: 1.9848 | Peaceful queens: 0
-Step 391 | Temperature: 1.9650 | Peaceful queens: 0
-Step 392 | Temperature: 1.9453 | Peaceful queens: 0
-Step 393 | Temperature: 1.9259 | Peaceful queens: 1
-Step 394 | Temperature: 1.9066 | Peaceful queens: 1
-Step 395 | Temperature: 1.8876 | Peaceful queens: 1
-Step 396 | Temperature: 1.8687 | Peaceful queens: 1
-Step 397 | Temperature: 1.8500 | Peaceful queens: 1
-Step 398 | Temperature: 1.8315 | Peaceful queens: 1
-Step 399 | Temperature: 1.8132 | Peaceful queens: 2
-Step 400 | Temperature: 1.7951 | Peaceful queens: 1
-Step 401 | Temperature: 1.7771 | Peaceful queens: 1
-Step 402 | Temperature: 1.7593 | Peaceful queens: 1
-Step 403 | Temperature: 1.7417 | Peaceful queens: 1
-Step 404 | Temperature: 1.7243 | Peaceful queens: 1
-Step 405 | Temperature: 1.7071 | Peaceful queens: 0
-Step 406 | Temperature: 1.6900 | Peaceful queens: 0
-Step 407 | Temperature: 1.6731 | Peaceful queens: 0
-Step 408 | Temperature: 1.6564 | Peaceful queens: 0
-Step 409 | Temperature: 1.6398 | Peaceful queens: 0
-Step 410 | Temperature: 1.6234 | Peaceful queens: 0
-Step 411 | Temperature: 1.6072 | Peaceful queens: 0
-Step 412 | Temperature: 1.5911 | Peaceful queens: 0
-Step 413 | Temperature: 1.5752 | Peaceful queens: 0
-Step 414 | Temperature: 1.5594 | Peaceful queens: 1
-Step 415 | Temperature: 1.5439 | Peaceful queens: 1
-Step 416 | Temperature: 1.5284 | Peaceful queens: 2
-Step 417 | Temperature: 1.5131 | Peaceful queens: 1
-Step 418 | Temperature: 1.4980 | Peaceful queens: 1
-Step 419 | Temperature: 1.4830 | Peaceful queens: 1
-Step 420 | Temperature: 1.4682 | Peaceful queens: 0
-Step 421 | Temperature: 1.4535 | Peaceful queens: 0
-Step 422 | Temperature: 1.4390 | Peaceful queens: 1
-Step 423 | Temperature: 1.4246 | Peaceful queens: 1
-Step 424 | Temperature: 1.4103 | Peaceful queens: 1
-Step 425 | Temperature: 1.3962 | Peaceful queens: 1
-Step 426 | Temperature: 1.3823 | Peaceful queens: 2
-Step 427 | Temperature: 1.3684 | Peaceful queens: 2
-Step 428 | Temperature: 1.3548 | Peaceful queens: 2
-Step 429 | Temperature: 1.3412 | Peaceful queens: 2
-Step 430 | Temperature: 1.3278 | Peaceful queens: 3
-Step 431 | Temperature: 1.3145 | Peaceful queens: 3
-Step 432 | Temperature: 1.3014 | Peaceful queens: 3
-Step 433 | Temperature: 1.2884 | Peaceful queens: 3
-Step 434 | Temperature: 1.2755 | Peaceful queens: 3
-Step 435 | Temperature: 1.2627 | Peaceful queens: 3
-Step 436 | Temperature: 1.2501 | Peaceful queens: 2
-Step 437 | Temperature: 1.2376 | Peaceful queens: 2
-Step 438 | Temperature: 1.2252 | Peaceful queens: 2
-Step 439 | Temperature: 1.2130 | Peaceful queens: 1
-Step 440 | Temperature: 1.2008 | Peaceful queens: 2
-Step 441 | Temperature: 1.1888 | Peaceful queens: 1
-Step 442 | Temperature: 1.1769 | Peaceful queens: 1
-Step 443 | Temperature: 1.1652 | Peaceful queens: 1
-Step 444 | Temperature: 1.1535 | Peaceful queens: 2
-Step 445 | Temperature: 1.1420 | Peaceful queens: 2
-Step 446 | Temperature: 1.1306 | Peaceful queens: 2
-Step 447 | Temperature: 1.1193 | Peaceful queens: 2
-Step 448 | Temperature: 1.1081 | Peaceful queens: 3
-Step 449 | Temperature: 1.0970 | Peaceful queens: 3
-Step 450 | Temperature: 1.0860 | Peaceful queens: 3
-Step 451 | Temperature: 1.0752 | Peaceful queens: 3
-Step 452 | Temperature: 1.0644 | Peaceful queens: 3
-Step 453 | Temperature: 1.0538 | Peaceful queens: 3
-Step 454 | Temperature: 1.0432 | Peaceful queens: 4
-Step 455 | Temperature: 1.0328 | Peaceful queens: 4
-Step 456 | Temperature: 1.0225 | Peaceful queens: 5
-Step 457 | Temperature: 1.0122 | Peaceful queens: 5
-Step 458 | Temperature: 1.0021 | Peaceful queens: 5
-Step 459 | Temperature: 0.9921 | Peaceful queens: 5
-Step 460 | Temperature: 0.9822 | Peaceful queens: 4
-Step 461 | Temperature: 0.9724 | Peaceful queens: 4
-Step 462 | Temperature: 0.9626 | Peaceful queens: 4
-Step 463 | Temperature: 0.9530 | Peaceful queens: 3
-Step 464 | Temperature: 0.9435 | Peaceful queens: 3
-Step 465 | Temperature: 0.9340 | Peaceful queens: 3
-Step 466 | Temperature: 0.9247 | Peaceful queens: 3
-Step 467 | Temperature: 0.9155 | Peaceful queens: 3
-Step 468 | Temperature: 0.9063 | Peaceful queens: 3
-Step 469 | Temperature: 0.8972 | Peaceful queens: 3
-Step 470 | Temperature: 0.8883 | Peaceful queens: 2
-Step 471 | Temperature: 0.8794 | Peaceful queens: 1
-Step 472 | Temperature: 0.8706 | Peaceful queens: 1
-Step 473 | Temperature: 0.8619 | Peaceful queens: 3
-Step 474 | Temperature: 0.8533 | Peaceful queens: 3
-Step 475 | Temperature: 0.8447 | Peaceful queens: 3
-Step 476 | Temperature: 0.8363 | Peaceful queens: 3
-Step 477 | Temperature: 0.8279 | Peaceful queens: 3
-Step 478 | Temperature: 0.8196 | Peaceful queens: 3
-Step 479 | Temperature: 0.8114 | Peaceful queens: 4
-Step 480 | Temperature: 0.8033 | Peaceful queens: 4
-Step 481 | Temperature: 0.7953 | Peaceful queens: 4
-Step 482 | Temperature: 0.7873 | Peaceful queens: 4
-Step 483 | Temperature: 0.7795 | Peaceful queens: 4
-Step 484 | Temperature: 0.7717 | Peaceful queens: 4
-Step 485 | Temperature: 0.7640 | Peaceful queens: 4
-Step 486 | Temperature: 0.7563 | Peaceful queens: 4
-Step 487 | Temperature: 0.7488 | Peaceful queens: 4
-Step 488 | Temperature: 0.7413 | Peaceful queens: 5
-Step 489 | Temperature: 0.7339 | Peaceful queens: 5
-Step 490 | Temperature: 0.7265 | Peaceful queens: 5
-Step 491 | Temperature: 0.7193 | Peaceful queens: 5
-Step 492 | Temperature: 0.7121 | Peaceful queens: 5
-Step 493 | Temperature: 0.7049 | Peaceful queens: 5
-Step 494 | Temperature: 0.6979 | Peaceful queens: 5
-Step 495 | Temperature: 0.6909 | Peaceful queens: 5
-Step 496 | Temperature: 0.6840 | Peaceful queens: 5
-Step 497 | Temperature: 0.6772 | Peaceful queens: 5
-Step 498 | Temperature: 0.6704 | Peaceful queens: 5
-Step 499 | Temperature: 0.6637 | Peaceful queens: 5
-Step 500 | Temperature: 0.6570 | Peaceful queens: 4
-Step 501 | Temperature: 0.6505 | Peaceful queens: 4
-Step 502 | Temperature: 0.6440 | Peaceful queens: 5
-Step 503 | Temperature: 0.6375 | Peaceful queens: 5
-Step 504 | Temperature: 0.6312 | Peaceful queens: 5
-Step 505 | Temperature: 0.6248 | Peaceful queens: 5
-Step 506 | Temperature: 0.6186 | Peaceful queens: 5
-Step 507 | Temperature: 0.6124 | Peaceful queens: 5
-Step 508 | Temperature: 0.6063 | Peaceful queens: 5
-Step 509 | Temperature: 0.6002 | Peaceful queens: 5
-Step 510 | Temperature: 0.5942 | Peaceful queens: 5
-Step 511 | Temperature: 0.5883 | Peaceful queens: 5
-Step 512 | Temperature: 0.5824 | Peaceful queens: 5
-Step 513 | Temperature: 0.5766 | Peaceful queens: 5
-Step 514 | Temperature: 0.5708 | Peaceful queens: 5
-Step 515 | Temperature: 0.5651 | Peaceful queens: 5
-Step 516 | Temperature: 0.5594 | Peaceful queens: 5
-Step 517 | Temperature: 0.5539 | Peaceful queens: 5
-Step 518 | Temperature: 0.5483 | Peaceful queens: 5
-Step 519 | Temperature: 0.5428 | Peaceful queens: 5
-Step 520 | Temperature: 0.5374 | Peaceful queens: 5
-Step 521 | Temperature: 0.5320 | Peaceful queens: 5
-Step 522 | Temperature: 0.5267 | Peaceful queens: 5
-Step 523 | Temperature: 0.5214 | Peaceful queens: 4
-Step 524 | Temperature: 0.5162 | Peaceful queens: 4
-Step 525 | Temperature: 0.5111 | Peaceful queens: 4
-Step 526 | Temperature: 0.5060 | Peaceful queens: 4
-Step 527 | Temperature: 0.5009 | Peaceful queens: 4
-Step 528 | Temperature: 0.4959 | Peaceful queens: 4
-Step 529 | Temperature: 0.4909 | Peaceful queens: 4
-Step 530 | Temperature: 0.4860 | Peaceful queens: 4
-Step 531 | Temperature: 0.4812 | Peaceful queens: 4
-Step 532 | Temperature: 0.4763 | Peaceful queens: 4
-Step 533 | Temperature: 0.4716 | Peaceful queens: 4
-Step 534 | Temperature: 0.4669 | Peaceful queens: 4
-Step 535 | Temperature: 0.4622 | Peaceful queens: 4
-Step 536 | Temperature: 0.4576 | Peaceful queens: 4
-Step 537 | Temperature: 0.4530 | Peaceful queens: 4
-Step 538 | Temperature: 0.4485 | Peaceful queens: 4
-Step 539 | Temperature: 0.4440 | Peaceful queens: 4
-Step 540 | Temperature: 0.4395 | Peaceful queens: 4
-Step 541 | Temperature: 0.4352 | Peaceful queens: 4
-Step 542 | Temperature: 0.4308 | Peaceful queens: 4
-Step 543 | Temperature: 0.4265 | Peaceful queens: 4
-Step 544 | Temperature: 0.4222 | Peaceful queens: 4
-Step 545 | Temperature: 0.4180 | Peaceful queens: 4
-Step 546 | Temperature: 0.4138 | Peaceful queens: 4
-Step 547 | Temperature: 0.4097 | Peaceful queens: 4
-Step 548 | Temperature: 0.4056 | Peaceful queens: 4
-Step 549 | Temperature: 0.4015 | Peaceful queens: 4
-Step 550 | Temperature: 0.3975 | Peaceful queens: 4
-Step 551 | Temperature: 0.3935 | Peaceful queens: 4
-Step 552 | Temperature: 0.3896 | Peaceful queens: 4
-Step 553 | Temperature: 0.3857 | Peaceful queens: 3
-Step 554 | Temperature: 0.3819 | Peaceful queens: 3
-Step 555 | Temperature: 0.3780 | Peaceful queens: 3
-Step 556 | Temperature: 0.3743 | Peaceful queens: 4
-Step 557 | Temperature: 0.3705 | Peaceful queens: 4
-Step 558 | Temperature: 0.3668 | Peaceful queens: 4
-Step 559 | Temperature: 0.3631 | Peaceful queens: 4
-Step 560 | Temperature: 0.3595 | Peaceful queens: 4
-Step 561 | Temperature: 0.3559 | Peaceful queens: 4
-Step 562 | Temperature: 0.3524 | Peaceful queens: 4
-Step 563 | Temperature: 0.3488 | Peaceful queens: 4
-Step 564 | Temperature: 0.3453 | Peaceful queens: 4
-Step 565 | Temperature: 0.3419 | Peaceful queens: 4
-Step 566 | Temperature: 0.3385 | Peaceful queens: 4
-Step 567 | Temperature: 0.3351 | Peaceful queens: 4
-Step 568 | Temperature: 0.3317 | Peaceful queens: 4
-Step 569 | Temperature: 0.3284 | Peaceful queens: 4
-Step 570 | Temperature: 0.3251 | Peaceful queens: 4
-Step 571 | Temperature: 0.3219 | Peaceful queens: 4
-Step 572 | Temperature: 0.3187 | Peaceful queens: 4
-Step 573 | Temperature: 0.3155 | Peaceful queens: 4
-Step 574 | Temperature: 0.3123 | Peaceful queens: 4
-Step 575 | Temperature: 0.3092 | Peaceful queens: 4
-Step 576 | Temperature: 0.3061 | Peaceful queens: 4
-Step 577 | Temperature: 0.3030 | Peaceful queens: 4
-Step 578 | Temperature: 0.3000 | Peaceful queens: 4
-Step 579 | Temperature: 0.2970 | Peaceful queens: 4
-Step 580 | Temperature: 0.2940 | Peaceful queens: 4
-Step 581 | Temperature: 0.2911 | Peaceful queens: 4
-Step 582 | Temperature: 0.2882 | Peaceful queens: 4
-Step 583 | Temperature: 0.2853 | Peaceful queens: 4
-Step 584 | Temperature: 0.2825 | Peaceful queens: 4
-Step 585 | Temperature: 0.2796 | Peaceful queens: 4
-Step 586 | Temperature: 0.2768 | Peaceful queens: 4
-Step 587 | Temperature: 0.2741 | Peaceful queens: 4
-Step 588 | Temperature: 0.2713 | Peaceful queens: 4
-Step 589 | Temperature: 0.2686 | Peaceful queens: 4
-Step 590 | Temperature: 0.2659 | Peaceful queens: 4
-Step 591 | Temperature: 0.2633 | Peaceful queens: 4
-Step 592 | Temperature: 0.2606 | Peaceful queens: 4
-Step 593 | Temperature: 0.2580 | Peaceful queens: 4
-Step 594 | Temperature: 0.2554 | Peaceful queens: 4
-Step 595 | Temperature: 0.2529 | Peaceful queens: 4
-Step 596 | Temperature: 0.2504 | Peaceful queens: 4
-Step 597 | Temperature: 0.2479 | Peaceful queens: 4
-Step 598 | Temperature: 0.2454 | Peaceful queens: 4
-Step 599 | Temperature: 0.2429 | Peaceful queens: 4
-Step 600 | Temperature: 0.2405 | Peaceful queens: 4
-Step 601 | Temperature: 0.2381 | Peaceful queens: 4
-Step 602 | Temperature: 0.2357 | Peaceful queens: 4
-Step 603 | Temperature: 0.2334 | Peaceful queens: 4
-Step 604 | Temperature: 0.2310 | Peaceful queens: 4
-Step 605 | Temperature: 0.2287 | Peaceful queens: 4
-Step 606 | Temperature: 0.2264 | Peaceful queens: 5
-Step 607 | Temperature: 0.2242 | Peaceful queens: 5
-Step 608 | Temperature: 0.2219 | Peaceful queens: 5
-Step 609 | Temperature: 0.2197 | Peaceful queens: 5
-Step 610 | Temperature: 0.2175 | Peaceful queens: 5
-Step 611 | Temperature: 0.2153 | Peaceful queens: 5
-Step 612 | Temperature: 0.2132 | Peaceful queens: 5
-Step 613 | Temperature: 0.2110 | Peaceful queens: 5
-Step 614 | Temperature: 0.2089 | Peaceful queens: 5
-Step 615 | Temperature: 0.2068 | Peaceful queens: 5
-Step 616 | Temperature: 0.2048 | Peaceful queens: 5
-Step 617 | Temperature: 0.2027 | Peaceful queens: 5
-Step 618 | Temperature: 0.2007 | Peaceful queens: 5
-Step 619 | Temperature: 0.1987 | Peaceful queens: 5
-Step 620 | Temperature: 0.1967 | Peaceful queens: 5
-Step 621 | Temperature: 0.1947 | Peaceful queens: 5
-Step 622 | Temperature: 0.1928 | Peaceful queens: 5
-Step 623 | Temperature: 0.1909 | Peaceful queens: 5
-Step 624 | Temperature: 0.1890 | Peaceful queens: 5
-Step 625 | Temperature: 0.1871 | Peaceful queens: 5
-Step 626 | Temperature: 0.1852 | Peaceful queens: 5
-Step 627 | Temperature: 0.1833 | Peaceful queens: 5
-Step 628 | Temperature: 0.1815 | Peaceful queens: 5
-Step 629 | Temperature: 0.1797 | Peaceful queens: 5
-Step 630 | Temperature: 0.1779 | Peaceful queens: 5
-Step 631 | Temperature: 0.1761 | Peaceful queens: 5
-Step 632 | Temperature: 0.1744 | Peaceful queens: 5
-Step 633 | Temperature: 0.1726 | Peaceful queens: 5
-Step 634 | Temperature: 0.1709 | Peaceful queens: 5
-Step 635 | Temperature: 0.1692 | Peaceful queens: 5
-Step 636 | Temperature: 0.1675 | Peaceful queens: 5
-Step 637 | Temperature: 0.1658 | Peaceful queens: 5
-Step 638 | Temperature: 0.1642 | Peaceful queens: 5
-Step 639 | Temperature: 0.1625 | Peaceful queens: 5
-Step 640 | Temperature: 0.1609 | Peaceful queens: 5
-Step 641 | Temperature: 0.1593 | Peaceful queens: 5
-Step 642 | Temperature: 0.1577 | Peaceful queens: 5
-Step 643 | Temperature: 0.1561 | Peaceful queens: 5
-Step 644 | Temperature: 0.1545 | Peaceful queens: 5
-Step 645 | Temperature: 0.1530 | Peaceful queens: 5
-Step 646 | Temperature: 0.1515 | Peaceful queens: 5
-Step 647 | Temperature: 0.1500 | Peaceful queens: 5
-Step 648 | Temperature: 0.1485 | Peaceful queens: 5
-Step 649 | Temperature: 0.1470 | Peaceful queens: 5
-Step 650 | Temperature: 0.1455 | Peaceful queens: 5
-Step 651 | Temperature: 0.1440 | Peaceful queens: 5
-Step 652 | Temperature: 0.1426 | Peaceful queens: 5
-Step 653 | Temperature: 0.1412 | Peaceful queens: 5
-Step 654 | Temperature: 0.1398 | Peaceful queens: 5
-Step 655 | Temperature: 0.1384 | Peaceful queens: 5
-Step 656 | Temperature: 0.1370 | Peaceful queens: 5
-Step 657 | Temperature: 0.1356 | Peaceful queens: 5
-Step 658 | Temperature: 0.1343 | Peaceful queens: 5
-Step 659 | Temperature: 0.1329 | Peaceful queens: 5
-Step 660 | Temperature: 0.1316 | Peaceful queens: 5
-Step 661 | Temperature: 0.1303 | Peaceful queens: 5
-Step 662 | Temperature: 0.1290 | Peaceful queens: 5
-Step 663 | Temperature: 0.1277 | Peaceful queens: 5
-Step 664 | Temperature: 0.1264 | Peaceful queens: 5
-Step 665 | Temperature: 0.1251 | Peaceful queens: 5
-Step 666 | Temperature: 0.1239 | Peaceful queens: 5
-Step 667 | Temperature: 0.1227 | Peaceful queens: 5
-Step 668 | Temperature: 0.1214 | Peaceful queens: 6
-Step 669 | Temperature: 0.1202 | Peaceful queens: 6
-Step 670 | Temperature: 0.1190 | Peaceful queens: 6
-Step 671 | Temperature: 0.1178 | Peaceful queens: 6
-Step 672 | Temperature: 0.1166 | Peaceful queens: 6
-Step 673 | Temperature: 0.1155 | Peaceful queens: 6
-Step 674 | Temperature: 0.1143 | Peaceful queens: 6
-Step 675 | Temperature: 0.1132 | Peaceful queens: 6
-Step 676 | Temperature: 0.1120 | Peaceful queens: 6
-Step 677 | Temperature: 0.1109 | Peaceful queens: 6
-Step 678 | Temperature: 0.1098 | Peaceful queens: 6
-Step 679 | Temperature: 0.1087 | Peaceful queens: 6
-Step 680 | Temperature: 0.1076 | Peaceful queens: 6
-Step 681 | Temperature: 0.1066 | Peaceful queens: 6
-Step 682 | Temperature: 0.1055 | Peaceful queens: 6
-Step 683 | Temperature: 0.1044 | Peaceful queens: 6
-Step 684 | Temperature: 0.1034 | Peaceful queens: 6
-Step 685 | Temperature: 0.1024 | Peaceful queens: 6
-Step 686 | Temperature: 0.1013 | Peaceful queens: 6
-Step 687 | Temperature: 0.1003 | Peaceful queens: 6
-Step 688 | Temperature: 0.0993 | Peaceful queens: 6
-Step 689 | Temperature: 0.0983 | Peaceful queens: 6
-Step 690 | Temperature: 0.0973 | Peaceful queens: 6
-Step 691 | Temperature: 0.0964 | Peaceful queens: 6
-Step 692 | Temperature: 0.0954 | Peaceful queens: 6
-Step 693 | Temperature: 0.0944 | Peaceful queens: 6
-Step 694 | Temperature: 0.0935 | Peaceful queens: 6
-Step 695 | Temperature: 0.0926 | Peaceful queens: 6
-Step 696 | Temperature: 0.0916 | Peaceful queens: 6
-Step 697 | Temperature: 0.0907 | Peaceful queens: 6
-Step 698 | Temperature: 0.0898 | Peaceful queens: 6
-Step 699 | Temperature: 0.0889 | Peaceful queens: 6
-Step 700 | Temperature: 0.0880 | Peaceful queens: 6
-Step 701 | Temperature: 0.0872 | Peaceful queens: 6
-Step 702 | Temperature: 0.0863 | Peaceful queens: 6
-Step 703 | Temperature: 0.0854 | Peaceful queens: 6
-Step 704 | Temperature: 0.0846 | Peaceful queens: 6
-Step 705 | Temperature: 0.0837 | Peaceful queens: 6
-Step 706 | Temperature: 0.0829 | Peaceful queens: 6
-Step 707 | Temperature: 0.0821 | Peaceful queens: 6
-Step 708 | Temperature: 0.0812 | Peaceful queens: 6
-Step 709 | Temperature: 0.0804 | Peaceful queens: 6
-Step 710 | Temperature: 0.0796 | Peaceful queens: 6
-Step 711 | Temperature: 0.0788 | Peaceful queens: 6
-Step 712 | Temperature: 0.0780 | Peaceful queens: 6
-Step 713 | Temperature: 0.0772 | Peaceful queens: 6
-Step 714 | Temperature: 0.0765 | Peaceful queens: 6
-Step 715 | Temperature: 0.0757 | Peaceful queens: 6
-Step 716 | Temperature: 0.0750 | Peaceful queens: 6
-Step 717 | Temperature: 0.0742 | Peaceful queens: 6
-Step 718 | Temperature: 0.0735 | Peaceful queens: 6
-Step 719 | Temperature: 0.0727 | Peaceful queens: 6
-Step 720 | Temperature: 0.0720 | Peaceful queens: 6
-Step 721 | Temperature: 0.0713 | Peaceful queens: 6
-Step 722 | Temperature: 0.0706 | Peaceful queens: 6
-Step 723 | Temperature: 0.0699 | Peaceful queens: 6
-Step 724 | Temperature: 0.0692 | Peaceful queens: 6
-Step 725 | Temperature: 0.0685 | Peaceful queens: 6
-Step 726 | Temperature: 0.0678 | Peaceful queens: 6
-Step 727 | Temperature: 0.0671 | Peaceful queens: 6
-Step 728 | Temperature: 0.0664 | Peaceful queens: 6
-Step 729 | Temperature: 0.0658 | Peaceful queens: 6
-Step 730 | Temperature: 0.0651 | Peaceful queens: 6
-Step 731 | Temperature: 0.0645 | Peaceful queens: 6
-Step 732 | Temperature: 0.0638 | Peaceful queens: 6
-Step 733 | Temperature: 0.0632 | Peaceful queens: 6
-Step 734 | Temperature: 0.0626 | Peaceful queens: 6
-Step 735 | Temperature: 0.0619 | Peaceful queens: 6
-Step 736 | Temperature: 0.0613 | Peaceful queens: 6
-Step 737 | Temperature: 0.0607 | Peaceful queens: 6
-Step 738 | Temperature: 0.0601 | Peaceful queens: 6
-Step 739 | Temperature: 0.0595 | Peaceful queens: 6
-Step 740 | Temperature: 0.0589 | Peaceful queens: 6
-Step 741 | Temperature: 0.0583 | Peaceful queens: 6
-Step 742 | Temperature: 0.0577 | Peaceful queens: 6
-Step 743 | Temperature: 0.0571 | Peaceful queens: 6
-Step 744 | Temperature: 0.0566 | Peaceful queens: 6
-Step 745 | Temperature: 0.0560 | Peaceful queens: 6
-Step 746 | Temperature: 0.0554 | Peaceful queens: 6
-Step 747 | Temperature: 0.0549 | Peaceful queens: 6
-Step 748 | Temperature: 0.0543 | Peaceful queens: 6
-Step 749 | Temperature: 0.0538 | Peaceful queens: 6
-Step 750 | Temperature: 0.0533 | Peaceful queens: 6
-Step 751 | Temperature: 0.0527 | Peaceful queens: 6
-Step 752 | Temperature: 0.0522 | Peaceful queens: 6
-Step 753 | Temperature: 0.0517 | Peaceful queens: 6
-Step 754 | Temperature: 0.0512 | Peaceful queens: 6
-Step 755 | Temperature: 0.0506 | Peaceful queens: 6
-Step 756 | Temperature: 0.0501 | Peaceful queens: 6
-Step 757 | Temperature: 0.0496 | Peaceful queens: 6
-Step 758 | Temperature: 0.0491 | Peaceful queens: 6
-Step 759 | Temperature: 0.0487 | Peaceful queens: 6
-Step 760 | Temperature: 0.0482 | Peaceful queens: 6
-Step 761 | Temperature: 0.0477 | Peaceful queens: 6
-Step 762 | Temperature: 0.0472 | Peaceful queens: 6
-Step 763 | Temperature: 0.0467 | Peaceful queens: 6
-Step 764 | Temperature: 0.0463 | Peaceful queens: 6
-Step 765 | Temperature: 0.0458 | Peaceful queens: 6
-Step 766 | Temperature: 0.0453 | Peaceful queens: 6
-Step 767 | Temperature: 0.0449 | Peaceful queens: 6
-Step 768 | Temperature: 0.0444 | Peaceful queens: 6
-Step 769 | Temperature: 0.0440 | Peaceful queens: 6
-Step 770 | Temperature: 0.0436 | Peaceful queens: 6
-Step 771 | Temperature: 0.0431 | Peaceful queens: 6
-Step 772 | Temperature: 0.0427 | Peaceful queens: 6
-Step 773 | Temperature: 0.0423 | Peaceful queens: 6
-Step 774 | Temperature: 0.0418 | Peaceful queens: 6
-Step 775 | Temperature: 0.0414 | Peaceful queens: 6
-Step 776 | Temperature: 0.0410 | Peaceful queens: 6
-Step 777 | Temperature: 0.0406 | Peaceful queens: 6
-Step 778 | Temperature: 0.0402 | Peaceful queens: 6
-Step 779 | Temperature: 0.0398 | Peaceful queens: 6
-Step 780 | Temperature: 0.0394 | Peaceful queens: 6
-Step 781 | Temperature: 0.0390 | Peaceful queens: 6
-Step 782 | Temperature: 0.0386 | Peaceful queens: 6
-Step 783 | Temperature: 0.0382 | Peaceful queens: 6
-Step 784 | Temperature: 0.0378 | Peaceful queens: 6
-Step 785 | Temperature: 0.0375 | Peaceful queens: 6
-Step 786 | Temperature: 0.0371 | Peaceful queens: 6
-Step 787 | Temperature: 0.0367 | Peaceful queens: 6
-Step 788 | Temperature: 0.0364 | Peaceful queens: 6
-Step 789 | Temperature: 0.0360 | Peaceful queens: 6
-Step 790 | Temperature: 0.0356 | Peaceful queens: 6
-Step 791 | Temperature: 0.0353 | Peaceful queens: 6
-Step 792 | Temperature: 0.0349 | Peaceful queens: 6
-Step 793 | Temperature: 0.0346 | Peaceful queens: 6
-Step 794 | Temperature: 0.0342 | Peaceful queens: 6
-Step 795 | Temperature: 0.0339 | Peaceful queens: 6
-Step 796 | Temperature: 0.0335 | Peaceful queens: 6
-Step 797 | Temperature: 0.0332 | Peaceful queens: 6
-Step 798 | Temperature: 0.0329 | Peaceful queens: 6
-Step 799 | Temperature: 0.0325 | Peaceful queens: 6
-Step 800 | Temperature: 0.0322 | Peaceful queens: 6
-Step 801 | Temperature: 0.0319 | Peaceful queens: 6
-Step 802 | Temperature: 0.0316 | Peaceful queens: 6
-Step 803 | Temperature: 0.0313 | Peaceful queens: 6
-Step 804 | Temperature: 0.0310 | Peaceful queens: 6
-Step 805 | Temperature: 0.0306 | Peaceful queens: 6
-Step 806 | Temperature: 0.0303 | Peaceful queens: 6
-Step 807 | Temperature: 0.0300 | Peaceful queens: 6
-Step 808 | Temperature: 0.0297 | Peaceful queens: 6
-Step 809 | Temperature: 0.0294 | Peaceful queens: 6
-Step 810 | Temperature: 0.0291 | Peaceful queens: 6
-Step 811 | Temperature: 0.0288 | Peaceful queens: 6
-Step 812 | Temperature: 0.0286 | Peaceful queens: 6
-Step 813 | Temperature: 0.0283 | Peaceful queens: 6
-Step 814 | Temperature: 0.0280 | Peaceful queens: 6
-Step 815 | Temperature: 0.0277 | Peaceful queens: 6
-Step 816 | Temperature: 0.0274 | Peaceful queens: 6
-Step 817 | Temperature: 0.0272 | Peaceful queens: 6
-Step 818 | Temperature: 0.0269 | Peaceful queens: 6
-Step 819 | Temperature: 0.0266 | Peaceful queens: 6
-Step 820 | Temperature: 0.0264 | Peaceful queens: 6
-Step 821 | Temperature: 0.0261 | Peaceful queens: 6
-Step 822 | Temperature: 0.0258 | Peaceful queens: 6
-Step 823 | Temperature: 0.0256 | Peaceful queens: 6
-Step 824 | Temperature: 0.0253 | Peaceful queens: 6
-Step 825 | Temperature: 0.0251 | Peaceful queens: 6
-Step 826 | Temperature: 0.0248 | Peaceful queens: 6
-Step 827 | Temperature: 0.0246 | Peaceful queens: 6
-Step 828 | Temperature: 0.0243 | Peaceful queens: 6
-Step 829 | Temperature: 0.0241 | Peaceful queens: 6
-Step 830 | Temperature: 0.0238 | Peaceful queens: 6
-Step 831 | Temperature: 0.0236 | Peaceful queens: 6
-Step 832 | Temperature: 0.0234 | Peaceful queens: 6
-Step 833 | Temperature: 0.0231 | Peaceful queens: 6
-Step 834 | Temperature: 0.0229 | Peaceful queens: 6
-Step 835 | Temperature: 0.0227 | Peaceful queens: 6
-Step 836 | Temperature: 0.0224 | Peaceful queens: 6
-Step 837 | Temperature: 0.0222 | Peaceful queens: 6
-Step 838 | Temperature: 0.0220 | Peaceful queens: 6
-Step 839 | Temperature: 0.0218 | Peaceful queens: 6
-Step 840 | Temperature: 0.0216 | Peaceful queens: 6
-Step 841 | Temperature: 0.0213 | Peaceful queens: 6
-Step 842 | Temperature: 0.0211 | Peaceful queens: 6
-Step 843 | Temperature: 0.0209 | Peaceful queens: 6
-Step 844 | Temperature: 0.0207 | Peaceful queens: 6
-Step 845 | Temperature: 0.0205 | Peaceful queens: 6
-Step 846 | Temperature: 0.0203 | Peaceful queens: 6
-Step 847 | Temperature: 0.0201 | Peaceful queens: 6
-Step 848 | Temperature: 0.0199 | Peaceful queens: 6
-Step 849 | Temperature: 0.0197 | Peaceful queens: 6
-Step 850 | Temperature: 0.0195 | Peaceful queens: 6
-Step 851 | Temperature: 0.0193 | Peaceful queens: 6
-Step 852 | Temperature: 0.0191 | Peaceful queens: 6
-Step 853 | Temperature: 0.0189 | Peaceful queens: 6
-Step 854 | Temperature: 0.0187 | Peaceful queens: 6
-Step 855 | Temperature: 0.0185 | Peaceful queens: 6
-Step 856 | Temperature: 0.0184 | Peaceful queens: 6
-Step 857 | Temperature: 0.0182 | Peaceful queens: 6
-Step 858 | Temperature: 0.0180 | Peaceful queens: 6
-Step 859 | Temperature: 0.0178 | Peaceful queens: 6
-Step 860 | Temperature: 0.0176 | Peaceful queens: 6
-Step 861 | Temperature: 0.0175 | Peaceful queens: 6
-Step 862 | Temperature: 0.0173 | Peaceful queens: 6
-Step 863 | Temperature: 0.0171 | Peaceful queens: 6
-Step 864 | Temperature: 0.0169 | Peaceful queens: 6
-Step 865 | Temperature: 0.0168 | Peaceful queens: 6
-Step 866 | Temperature: 0.0166 | Peaceful queens: 6
-Step 867 | Temperature: 0.0164 | Peaceful queens: 6
-Step 868 | Temperature: 0.0163 | Peaceful queens: 6
-Step 869 | Temperature: 0.0161 | Peaceful queens: 6
-Step 870 | Temperature: 0.0159 | Peaceful queens: 6
-Step 871 | Temperature: 0.0158 | Peaceful queens: 6
-Step 872 | Temperature: 0.0156 | Peaceful queens: 6
-Step 873 | Temperature: 0.0155 | Peaceful queens: 6
-Step 874 | Temperature: 0.0153 | Peaceful queens: 6
-Step 875 | Temperature: 0.0152 | Peaceful queens: 6
-Step 876 | Temperature: 0.0150 | Peaceful queens: 6
-Step 877 | Temperature: 0.0149 | Peaceful queens: 6
-Step 878 | Temperature: 0.0147 | Peaceful queens: 6
-Step 879 | Temperature: 0.0146 | Peaceful queens: 6
-Step 880 | Temperature: 0.0144 | Peaceful queens: 6
-Step 881 | Temperature: 0.0143 | Peaceful queens: 6
-Step 882 | Temperature: 0.0141 | Peaceful queens: 6
-Step 883 | Temperature: 0.0140 | Peaceful queens: 6
-Step 884 | Temperature: 0.0139 | Peaceful queens: 6
-Step 885 | Temperature: 0.0137 | Peaceful queens: 6
-Step 886 | Temperature: 0.0136 | Peaceful queens: 6
-Step 887 | Temperature: 0.0134 | Peaceful queens: 6
-Step 888 | Temperature: 0.0133 | Peaceful queens: 6
-Step 889 | Temperature: 0.0132 | Peaceful queens: 6
-Step 890 | Temperature: 0.0130 | Peaceful queens: 6
-Step 891 | Temperature: 0.0129 | Peaceful queens: 6
-Step 892 | Temperature: 0.0128 | Peaceful queens: 6
-Step 893 | Temperature: 0.0127 | Peaceful queens: 6
-Step 894 | Temperature: 0.0125 | Peaceful queens: 6
-Step 895 | Temperature: 0.0124 | Peaceful queens: 6
-Step 896 | Temperature: 0.0123 | Peaceful queens: 6
-Step 897 | Temperature: 0.0122 | Peaceful queens: 6
-Step 898 | Temperature: 0.0120 | Peaceful queens: 6
-Step 899 | Temperature: 0.0119 | Peaceful queens: 6
-Step 900 | Temperature: 0.0118 | Peaceful queens: 6
-Step 901 | Temperature: 0.0117 | Peaceful queens: 6
-Step 902 | Temperature: 0.0116 | Peaceful queens: 6
-Step 903 | Temperature: 0.0114 | Peaceful queens: 6
-Step 904 | Temperature: 0.0113 | Peaceful queens: 6
-Step 905 | Temperature: 0.0112 | Peaceful queens: 6
-Step 906 | Temperature: 0.0111 | Peaceful queens: 6
-Step 907 | Temperature: 0.0110 | Peaceful queens: 6
-Step 908 | Temperature: 0.0109 | Peaceful queens: 6
-Step 909 | Temperature: 0.0108 | Peaceful queens: 6
-Step 910 | Temperature: 0.0107 | Peaceful queens: 6
-Step 911 | Temperature: 0.0106 | Peaceful queens: 6
-Step 912 | Temperature: 0.0105 | Peaceful queens: 6
-Step 913 | Temperature: 0.0103 | Peaceful queens: 6
-Step 914 | Temperature: 0.0102 | Peaceful queens: 6
-Step 915 | Temperature: 0.0101 | Peaceful queens: 6
-Step 916 | Temperature: 0.0100 | Peaceful queens: 6
-Step 917 | Temperature: 0.0099 | Peaceful queens: 6
-Step 918 | Temperature: 0.0098 | Peaceful queens: 6
-Step 919 | Temperature: 0.0097 | Peaceful queens: 6
-Step 920 | Temperature: 0.0096 | Peaceful queens: 6
-Step 921 | Temperature: 0.0096 | Peaceful queens: 6
-Step 922 | Temperature: 0.0095 | Peaceful queens: 6
-Step 923 | Temperature: 0.0094 | Peaceful queens: 6
-Step 924 | Temperature: 0.0093 | Peaceful queens: 6
-Step 925 | Temperature: 0.0092 | Peaceful queens: 6
-Step 926 | Temperature: 0.0091 | Peaceful queens: 6
-Step 927 | Temperature: 0.0090 | Peaceful queens: 6
-Step 928 | Temperature: 0.0089 | Peaceful queens: 6
-Step 929 | Temperature: 0.0088 | Peaceful queens: 6
-Step 930 | Temperature: 0.0087 | Peaceful queens: 6
-Step 931 | Temperature: 0.0086 | Peaceful queens: 6
-Step 932 | Temperature: 0.0086 | Peaceful queens: 6
-Step 933 | Temperature: 0.0085 | Peaceful queens: 6
-Step 934 | Temperature: 0.0084 | Peaceful queens: 6
-Step 935 | Temperature: 0.0083 | Peaceful queens: 6
-Step 936 | Temperature: 0.0082 | Peaceful queens: 6
-Step 937 | Temperature: 0.0081 | Peaceful queens: 6
-Step 938 | Temperature: 0.0081 | Peaceful queens: 6
-Step 939 | Temperature: 0.0080 | Peaceful queens: 6
-Step 940 | Temperature: 0.0079 | Peaceful queens: 6
-Step 941 | Temperature: 0.0078 | Peaceful queens: 6
-Step 942 | Temperature: 0.0077 | Peaceful queens: 6
-Step 943 | Temperature: 0.0077 | Peaceful queens: 6
-Step 944 | Temperature: 0.0076 | Peaceful queens: 6
-Step 945 | Temperature: 0.0075 | Peaceful queens: 6
-Step 946 | Temperature: 0.0074 | Peaceful queens: 6
-Step 947 | Temperature: 0.0074 | Peaceful queens: 6
-Step 948 | Temperature: 0.0073 | Peaceful queens: 6
-Step 949 | Temperature: 0.0072 | Peaceful queens: 6
-Step 950 | Temperature: 0.0071 | Peaceful queens: 6
-Step 951 | Temperature: 0.0071 | Peaceful queens: 6
-Step 952 | Temperature: 0.0070 | Peaceful queens: 6
-Step 953 | Temperature: 0.0069 | Peaceful queens: 6
-Step 954 | Temperature: 0.0069 | Peaceful queens: 6
-Step 955 | Temperature: 0.0068 | Peaceful queens: 6
-Step 956 | Temperature: 0.0067 | Peaceful queens: 6
-Step 957 | Temperature: 0.0067 | Peaceful queens: 6
-Step 958 | Temperature: 0.0066 | Peaceful queens: 6
-Step 959 | Temperature: 0.0065 | Peaceful queens: 6
-Step 960 | Temperature: 0.0065 | Peaceful queens: 6
-Step 961 | Temperature: 0.0064 | Peaceful queens: 6
-Step 962 | Temperature: 0.0063 | Peaceful queens: 6
-Step 963 | Temperature: 0.0063 | Peaceful queens: 6
-Step 964 | Temperature: 0.0062 | Peaceful queens: 6
-Step 965 | Temperature: 0.0061 | Peaceful queens: 6
-Step 966 | Temperature: 0.0061 | Peaceful queens: 6
-Step 967 | Temperature: 0.0060 | Peaceful queens: 6
-Step 968 | Temperature: 0.0060 | Peaceful queens: 6
-Step 969 | Temperature: 0.0059 | Peaceful queens: 6
-Step 970 | Temperature: 0.0058 | Peaceful queens: 6
-Step 971 | Temperature: 0.0058 | Peaceful queens: 6
-Step 972 | Temperature: 0.0057 | Peaceful queens: 6
-Step 973 | Temperature: 0.0057 | Peaceful queens: 6
-Step 974 | Temperature: 0.0056 | Peaceful queens: 6
-Step 975 | Temperature: 0.0056 | Peaceful queens: 6
-Step 976 | Temperature: 0.0055 | Peaceful queens: 6
-Step 977 | Temperature: 0.0054 | Peaceful queens: 6
-Step 978 | Temperature: 0.0054 | Peaceful queens: 6
-Step 979 | Temperature: 0.0053 | Peaceful queens: 6
-Step 980 | Temperature: 0.0053 | Peaceful queens: 6
-Step 981 | Temperature: 0.0052 | Peaceful queens: 6
-Step 982 | Temperature: 0.0052 | Peaceful queens: 6
-Step 983 | Temperature: 0.0051 | Peaceful queens: 6
-Step 984 | Temperature: 0.0051 | Peaceful queens: 6
-Step 985 | Temperature: 0.0050 | Peaceful queens: 6
-Step 986 | Temperature: 0.0050 | Peaceful queens: 6
-Step 987 | Temperature: 0.0049 | Peaceful queens: 6
-Step 988 | Temperature: 0.0049 | Peaceful queens: 6
-Step 989 | Temperature: 0.0048 | Peaceful queens: 6
-Step 990 | Temperature: 0.0048 | Peaceful queens: 6
-Step 991 | Temperature: 0.0047 | Peaceful queens: 6
-Step 992 | Temperature: 0.0047 | Peaceful queens: 6
-Step 993 | Temperature: 0.0046 | Peaceful queens: 6
-Step 994 | Temperature: 0.0046 | Peaceful queens: 6
-Step 995 | Temperature: 0.0045 | Peaceful queens: 6
-Step 996 | Temperature: 0.0045 | Peaceful queens: 6
-Step 997 | Temperature: 0.0044 | Peaceful queens: 6
-Step 998 | Temperature: 0.0044 | Peaceful queens: 6
-Step 999 | Temperature: 0.0044 | Peaceful queens: 6
-Step 1000 | Temperature: 0.0043 | Peaceful queens: 6
-Step 1001 | Temperature: 0.0043 | Peaceful queens: 6
-Step 1002 | Temperature: 0.0042 | Peaceful queens: 6
-Step 1003 | Temperature: 0.0042 | Peaceful queens: 6
-Step 1004 | Temperature: 0.0041 | Peaceful queens: 6
-Step 1005 | Temperature: 0.0041 | Peaceful queens: 6
-Step 1006 | Temperature: 0.0041 | Peaceful queens: 6
-Step 1007 | Temperature: 0.0040 | Peaceful queens: 6
-Step 1008 | Temperature: 0.0040 | Peaceful queens: 6
-Step 1009 | Temperature: 0.0039 | Peaceful queens: 6
-Step 1010 | Temperature: 0.0039 | Peaceful queens: 6
-Step 1011 | Temperature: 0.0039 | Peaceful queens: 6
-Step 1012 | Temperature: 0.0038 | Peaceful queens: 6
-Step 1013 | Temperature: 0.0038 | Peaceful queens: 6
-Step 1014 | Temperature: 0.0038 | Peaceful queens: 6
-Step 1015 | Temperature: 0.0037 | Peaceful queens: 6
-Step 1016 | Temperature: 0.0037 | Peaceful queens: 6
-Step 1017 | Temperature: 0.0036 | Peaceful queens: 6
-Step 1018 | Temperature: 0.0036 | Peaceful queens: 6
-Step 1019 | Temperature: 0.0036 | Peaceful queens: 6
-Step 1020 | Temperature: 0.0035 | Peaceful queens: 6
-Step 1021 | Temperature: 0.0035 | Peaceful queens: 6
-Step 1022 | Temperature: 0.0035 | Peaceful queens: 6
-Step 1023 | Temperature: 0.0034 | Peaceful queens: 6
-Step 1024 | Temperature: 0.0034 | Peaceful queens: 6
-Step 1025 | Temperature: 0.0034 | Peaceful queens: 6
-Step 1026 | Temperature: 0.0033 | Peaceful queens: 6
-Step 1027 | Temperature: 0.0033 | Peaceful queens: 6
-Step 1028 | Temperature: 0.0033 | Peaceful queens: 6
-Step 1029 | Temperature: 0.0032 | Peaceful queens: 6
-Step 1030 | Temperature: 0.0032 | Peaceful queens: 6
-Step 1031 | Temperature: 0.0032 | Peaceful queens: 6
-Step 1032 | Temperature: 0.0031 | Peaceful queens: 6
-Step 1033 | Temperature: 0.0031 | Peaceful queens: 6
-Step 1034 | Temperature: 0.0031 | Peaceful queens: 6
-Step 1035 | Temperature: 0.0030 | Peaceful queens: 6
-Step 1036 | Temperature: 0.0030 | Peaceful queens: 6
-Step 1037 | Temperature: 0.0030 | Peaceful queens: 6
-Step 1038 | Temperature: 0.0029 | Peaceful queens: 6
-Step 1039 | Temperature: 0.0029 | Peaceful queens: 6
-Step 1040 | Temperature: 0.0029 | Peaceful queens: 6
-Step 1041 | Temperature: 0.0029 | Peaceful queens: 6
-Step 1042 | Temperature: 0.0028 | Peaceful queens: 6
-Step 1043 | Temperature: 0.0028 | Peaceful queens: 6
-Step 1044 | Temperature: 0.0028 | Peaceful queens: 6
-Step 1045 | Temperature: 0.0027 | Peaceful queens: 6
-Step 1046 | Temperature: 0.0027 | Peaceful queens: 6
-Step 1047 | Temperature: 0.0027 | Peaceful queens: 6
-Step 1048 | Temperature: 0.0027 | Peaceful queens: 6
-Step 1049 | Temperature: 0.0026 | Peaceful queens: 6
-Step 1050 | Temperature: 0.0026 | Peaceful queens: 6
-Step 1051 | Temperature: 0.0026 | Peaceful queens: 6
-Step 1052 | Temperature: 0.0026 | Peaceful queens: 6
-Step 1053 | Temperature: 0.0025 | Peaceful queens: 6
-Step 1054 | Temperature: 0.0025 | Peaceful queens: 6
-Step 1055 | Temperature: 0.0025 | Peaceful queens: 6
-Step 1056 | Temperature: 0.0025 | Peaceful queens: 6
-Step 1057 | Temperature: 0.0024 | Peaceful queens: 6
-Step 1058 | Temperature: 0.0024 | Peaceful queens: 6
-Step 1059 | Temperature: 0.0024 | Peaceful queens: 6
-Step 1060 | Temperature: 0.0024 | Peaceful queens: 6
-Step 1061 | Temperature: 0.0023 | Peaceful queens: 6
-Step 1062 | Temperature: 0.0023 | Peaceful queens: 6
-Step 1063 | Temperature: 0.0023 | Peaceful queens: 6
-Step 1064 | Temperature: 0.0023 | Peaceful queens: 6
-Step 1065 | Temperature: 0.0022 | Peaceful queens: 6
-Step 1066 | Temperature: 0.0022 | Peaceful queens: 6
-Step 1067 | Temperature: 0.0022 | Peaceful queens: 6
-Step 1068 | Temperature: 0.0022 | Peaceful queens: 6
-Step 1069 | Temperature: 0.0022 | Peaceful queens: 6
-Step 1070 | Temperature: 0.0021 | Peaceful queens: 6
-Step 1071 | Temperature: 0.0021 | Peaceful queens: 6
-Step 1072 | Temperature: 0.0021 | Peaceful queens: 6
-Step 1073 | Temperature: 0.0021 | Peaceful queens: 6
-Step 1074 | Temperature: 0.0021 | Peaceful queens: 6
-Step 1075 | Temperature: 0.0020 | Peaceful queens: 6
-Step 1076 | Temperature: 0.0020 | Peaceful queens: 6
-Step 1077 | Temperature: 0.0020 | Peaceful queens: 6
-Step 1078 | Temperature: 0.0020 | Peaceful queens: 6
-Step 1079 | Temperature: 0.0020 | Peaceful queens: 6
-Step 1080 | Temperature: 0.0019 | Peaceful queens: 6
-Step 1081 | Temperature: 0.0019 | Peaceful queens: 6
-Step 1082 | Temperature: 0.0019 | Peaceful queens: 6
-Step 1083 | Temperature: 0.0019 | Peaceful queens: 6
-Step 1084 | Temperature: 0.0019 | Peaceful queens: 6
-Step 1085 | Temperature: 0.0018 | Peaceful queens: 6
-Step 1086 | Temperature: 0.0018 | Peaceful queens: 6
-Step 1087 | Temperature: 0.0018 | Peaceful queens: 6
-Step 1088 | Temperature: 0.0018 | Peaceful queens: 6
-Step 1089 | Temperature: 0.0018 | Peaceful queens: 6
-Step 1090 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1091 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1092 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1093 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1094 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1095 | Temperature: 0.0017 | Peaceful queens: 6
-Step 1096 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1097 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1098 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1099 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1100 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1101 | Temperature: 0.0016 | Peaceful queens: 6
-Step 1102 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1103 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1104 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1105 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1106 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1107 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1108 | Temperature: 0.0015 | Peaceful queens: 6
-Step 1109 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1110 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1111 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1112 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1113 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1114 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1115 | Temperature: 0.0014 | Peaceful queens: 6
-Step 1116 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1117 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1118 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1119 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1120 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1121 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1122 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1123 | Temperature: 0.0013 | Peaceful queens: 6
-Step 1124 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1125 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1126 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1127 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1128 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1129 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1130 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1131 | Temperature: 0.0012 | Peaceful queens: 6
-Step 1132 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1133 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1134 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1135 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1136 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1137 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1138 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1139 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1140 | Temperature: 0.0011 | Peaceful queens: 6
-Step 1141 | Temperature: 0.0010 | Peaceful queens: 6
-Step 1142 | Temperature: 0.0010 | Peaceful queens: 6
-Step 1143 | Temperature: 0.0010 | Peaceful queens: 6
-Step 1144 | Temperature: 0.0010 | Peaceful queens: 6
-Step 1145 | Temperature: 0.0010 | Peaceful queens: 6
-
-The algorithm has stopped. The final state can be a local or global maximum.
-
-Final Solution:
-Board configuration: [3, 0, 7, 5, 2, 0, 6, 4]
-Peaceful queens: 6</code></pre>
+<div id="afaca7a6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521871940,&quot;user_tz&quot;:180,&quot;elapsed&quot;:47,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>verbose_solution, verbose_score <span class="op">=</span> simulated_annealing(<span class="dv">8</span>, verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Final Solution:"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Board configuration: </span><span class="sc">{</span>verbose_solution<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Peaceful queens: </span><span class="sc">{</span>verbose_score<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div id="82f95051" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:129,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521952715,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>print_board(verbose_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="03-ambientes-complexos-i_files/figure-html/cell-21-output-1.png" width="407" height="432" class="figure-img"></p>
-</figure>
-</div>
-</div>
+<div id="ff37105c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1775521952715,&quot;user_tz&quot;:180,&quot;elapsed&quot;:129,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;}}}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>print_board(verbose_solution)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
