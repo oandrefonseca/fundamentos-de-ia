@@ -1,5 +1,5 @@
 ---
-title: 'Laboratório: Agentes baseados em objetivos e Métodos de Busca I'
+title: 'Laboratório - Agentes baseados em objetivos e Métodos de Busca I'
 date: last-modified
 toc: true
 format:
