@@ -496,7 +496,15 @@ window.Quarto = {
   </ul></li>
   <li><a href="#exemplo-prático" id="toc-exemplo-prático" class="nav-link" data-scroll-target="#exemplo-prático">Exemplo prático</a></li>
   <li><a href="#avaliação-de-desempenho" id="toc-avaliação-de-desempenho" class="nav-link" data-scroll-target="#avaliação-de-desempenho">Avaliação de desempenho</a></li>
-  <li><a href="#avaliação-de-completude" id="toc-avaliação-de-completude" class="nav-link" data-scroll-target="#avaliação-de-completude">Avaliação de completude</a></li>
+  <li><a href="#avaliação-de-completude" id="toc-avaliação-de-completude" class="nav-link" data-scroll-target="#avaliação-de-completude">Avaliação de completude</a>
+  <ul class="collapse">
+  <li><a href="#cenário-a-objetivo-inalcançável" id="toc-cenário-a-objetivo-inalcançável" class="nav-link" data-scroll-target="#cenário-a-objetivo-inalcançável">Cenário A — objetivo inalcançável</a></li>
+  <li><a href="#cenário-b-ciclos-sem-controle-de-estados-visitados" id="toc-cenário-b-ciclos-sem-controle-de-estados-visitados" class="nav-link" data-scroll-target="#cenário-b-ciclos-sem-controle-de-estados-visitados">Cenário B — Ciclos sem controle de estados visitados</a></li>
+  <li><a href="#cenário-c-ramos-muito-profundos" id="toc-cenário-c-ramos-muito-profundos" class="nav-link" data-scroll-target="#cenário-c-ramos-muito-profundos">Cenário C — Ramos muito profundos</a></li>
+  <li><a href="#cenário-d-fator-de-ramificação-infinito" id="toc-cenário-d-fator-de-ramificação-infinito" class="nav-link" data-scroll-target="#cenário-d-fator-de-ramificação-infinito">Cenário D — Fator de ramificação infinito</a></li>
+  <li><a href="#cenário-e-custos-de-aresta-nulos-ou-negativos" id="toc-cenário-e-custos-de-aresta-nulos-ou-negativos" class="nav-link" data-scroll-target="#cenário-e-custos-de-aresta-nulos-ou-negativos">Cenário E — Custos de aresta nulos ou negativos</a></li>
+  <li><a href="#a-heurística-do-a-e-da-gbfs-completude-vs.-otimalidade" id="toc-a-heurística-do-a-e-da-gbfs-completude-vs.-otimalidade" class="nav-link" data-scroll-target="#a-heurística-do-a-e-da-gbfs-completude-vs.-otimalidade">A heurística do A* e da GBFS: completude vs.&nbsp;otimalidade</a></li>
+  </ul></li>
   <li><a href="#perguntas-para-reflexão" id="toc-perguntas-para-reflexão" class="nav-link" data-scroll-target="#perguntas-para-reflexão">Perguntas para reflexão</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
   <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
@@ -528,7 +536,7 @@ window.Quarto = {
 
 <section id="ajustando-ambiente" class="level2">
 <h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
-<div id="50b9ac6a" class="cell" data-execution_count="1">
+<div id="f63b10eb" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
@@ -556,7 +564,7 @@ window.Quarto = {
 <section id="geração-do-grafo-aleatório" class="level3">
 <h3 class="anchored" data-anchor-id="geração-do-grafo-aleatório">Geração do grafo aleatório</h3>
 <p>Cada nó recebe uma posição aleatória num plano 2D; dois nós são conectados se a distância entre eles for menor que um raio (grafo geométrico aleatório). O peso de cada aresta é a própria distância euclidiana entre os pontos — é isso que garante que a distância em linha reta até o objetivo nunca superestima o custo real do caminho (desigualdade triangular), tornando-a uma heurística admissível para qualquer par (estado, objetivo), sem precisar de um dicionário de heurística fixo como no capítulo 2.</p>
-<div id="b749e6fa" class="cell" data-execution_count="2">
+<div id="fe157207" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_random_graph(n_nodes<span class="op">=</span><span class="dv">40</span>, seed<span class="op">=</span><span class="dv">42</span>):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gera um grafo geométrico aleatório conexo, com nós posicionados em um plano 2D."""</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    radius <span class="op">=</span> <span class="fl">0.2</span></span>
@@ -575,7 +583,7 @@ window.Quarto = {
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> graph, coords</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="fb795f18" class="cell" data-execution_count="3">
+<div id="67fcd555" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>graph, coords <span class="op">=</span> generate_random_graph()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
@@ -594,7 +602,7 @@ window.Quarto = {
 <section id="funções-de-busca" class="level3">
 <h3 class="anchored" data-anchor-id="funções-de-busca">Funções de busca</h3>
 <p>BFS, UCS (Dijkstra) e A* já têm implementação pronta no NetworkX — reaproveitamos essas funções em vez de reescrevê-las. A Busca Gulosa não tem uma função própria: obtemos o mesmo comportamento a partir do A*, anulando o peso das arestas (<code>weight=0</code>) para que a ordenação da fronteira dependa só da heurística <span class="math inline">\(h(n)\)</span>, exatamente como a GBFS do capítulo 2.</p>
-<div id="cff38c9b" class="cell" data-execution_count="4">
+<div id="1ebf2a08" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bfs_path(graph, start, goal):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em largura: caminho com o menor número de arestas, via NetworkX."""</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
@@ -602,52 +610,88 @@ window.Quarto = {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dfs_path(graph, start, goal):</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Um caminho encontrado por busca em profundidade, via NetworkX (não é garantidamente o mais curto)."""</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    tree <span class="op">=</span> nx.dfs_tree(graph, start)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> goal <span class="kw">not</span> <span class="kw">in</span> tree:</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nx.shortest_path(tree, start, goal)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ucs_path(graph, start, goal):</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca de custo uniforme: caminho de menor custo, via Dijkstra do NetworkX."""</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.dijkstra_path(graph, start, goal, weight<span class="op">=</span><span class="st">'weight'</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> astar_path_search(graph, start, goal, coords):</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A*: caminho de menor custo total estimado, via NetworkX."""</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    heuristic <span class="op">=</span> <span class="kw">lambda</span> a, b: math.dist(coords[a], coords[b])</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.astar_path(graph, start, goal, heuristic<span class="op">=</span>heuristic, weight<span class="op">=</span><span class="st">'weight'</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gbfs_path(graph, start, goal, coords):</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca gulosa: A* do NetworkX com o custo acumulado g(n) anulado, restando só h(n)."""</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    heuristic <span class="op">=</span> <span class="kw">lambda</span> a, b: math.dist(coords[a], coords[b])</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.astar_path(graph, start, goal, heuristic<span class="op">=</span>heuristic, weight<span class="op">=</span><span class="kw">lambda</span> u, v, d: <span class="dv">0</span>)</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(graph, path):</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Soma o peso das arestas de um caminho encontrado no grafo."""</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> path:</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nx.path_weight(graph, path, weight<span class="op">=</span><span class="st">'weight'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dfs_path(graph, start, goal):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Um caminho encontrado por busca em profundidade, via NetworkX (não é garantidamente o mais curto)."""</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    tree <span class="op">=</span> nx.dfs_tree(graph, start)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> goal <span class="kw">not</span> <span class="kw">in</span> tree:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nx.shortest_path(tree, start, goal)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ucs_path(graph, start, goal):</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca de custo uniforme: caminho de menor custo, via Dijkstra do NetworkX."""</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.dijkstra_path(graph, start, goal, weight<span class="op">=</span><span class="st">'weight'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> astar_path_search(graph, start, goal, coords):</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca A*: caminho de menor custo total estimado, via NetworkX."""</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    heuristic <span class="op">=</span> <span class="kw">lambda</span> a, b: math.dist(coords[a], coords[b])</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.astar_path(graph, start, goal, heuristic<span class="op">=</span>heuristic, weight<span class="op">=</span><span class="st">'weight'</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gbfs_path(graph, start, goal, coords):</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca gulosa: A* do NetworkX com o custo acumulado g(n) anulado, restando só h(n)."""</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    heuristic <span class="op">=</span> <span class="kw">lambda</span> a, b: math.dist(coords[a], coords[b])</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.astar_path(graph, start, goal, heuristic<span class="op">=</span>heuristic, weight<span class="op">=</span><span class="kw">lambda</span> u, v, d: <span class="dv">0</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> nx.NetworkXNoPath:</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(graph, path):</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Soma o peso das arestas de um caminho encontrado no grafo."""</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> path:</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> nx.path_weight(graph, path, weight<span class="op">=</span><span class="st">'weight'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="complexidade-assintótica" class="level4">
+<h4 class="anchored" data-anchor-id="complexidade-assintótica">Complexidade assintótica</h4>
+<p>Como aqui a busca roda sobre um <strong>grafo</strong> (via NetworkX), a notação natural é em função de <span class="math inline">\(V\)</span> (número de nós) e <span class="math inline">\(E\)</span> (número de arestas) — diferente da notação <span class="math inline">\(b\)</span> (fator de ramificação) e <span class="math inline">\(d\)</span> (profundidade) usada nos capítulos 1 e 2 para busca em árvore. As duas descrevem a mesma ideia sob premissas diferentes; a tabela abaixo usa a notação de grafo, que é a que se aplica ao código deste capítulo.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Algoritmo</th>
+<th>Tempo (pior caso)</th>
+<th>Espaço</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>BFS</td>
+<td><span class="math inline">\(O(V + E)\)</span></td>
+<td><span class="math inline">\(O(V)\)</span></td>
+</tr>
+<tr class="even">
+<td>DFS</td>
+<td><span class="math inline">\(O(V + E)\)</span></td>
+<td><span class="math inline">\(O(V)\)</span></td>
+</tr>
+<tr class="odd">
+<td>UCS (Dijkstra)</td>
+<td><span class="math inline">\(O((V + E) \log V)\)</span></td>
+<td><span class="math inline">\(O(V)\)</span></td>
+</tr>
+<tr class="even">
+<td>A*</td>
+<td><span class="math inline">\(O((V + E) \log V)\)</span></td>
+<td><span class="math inline">\(O(V)\)</span></td>
+</tr>
+<tr class="odd">
+<td>GBFS</td>
+<td><span class="math inline">\(O((V + E) \log V)\)</span></td>
+<td><span class="math inline">\(O(V)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>BFS e DFS visitam cada nó e cada aresta no máximo uma vez, daí <span class="math inline">\(O(V+E)\)</span>. UCS, A* e GBFS usam uma fila de prioridade (heap binário, a implementação do NetworkX) para decidir o próximo nó a expandir, o que custa <span class="math inline">\(O(\log V)\)</span> por operação — daí o fator extra. GBFS tem exatamente a mesma forma do A* (é literalmente a mesma função, com o peso zerado): trocar o critério de ordenação não muda a classe de complexidade no pior caso, só o comportamento típico.</p>
+</section>
 </section>
 </section>
 <section id="exemplo-prático" class="level2">
 <h2 class="anchored" data-anchor-id="exemplo-prático">Exemplo prático</h2>
-<div id="48611a32" class="cell" data-execution_count="5">
+<div id="4f0957e9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>start_node, goal_node <span class="op">=</span> <span class="dv">0</span>, <span class="bu">len</span>(graph) <span class="op">-</span> <span class="dv">1</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>algorithms <span class="op">=</span> {</span>
@@ -665,18 +709,18 @@ window.Quarto = {
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:5}</span><span class="ss"> | encontrou=</span><span class="sc">{</span>path <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span><span class="sc">!s:5}</span><span class="ss"> | custo=</span><span class="sc">{</span>path_cost(graph, path)<span class="sc">}</span><span class="ss"> | "</span></span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f"arestas=</span><span class="sc">{</span><span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span> <span class="cf">if</span> path <span class="cf">else</span> <span class="va">None</span><span class="sc">}</span><span class="ss"> | tempo=</span><span class="sc">{</span>elapsed <span class="op">*</span> <span class="dv">1000</span><span class="sc">:.3f}</span><span class="ss"> ms"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>BFS   | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.211 ms
-DFS   | encontrou=True  | custo=3.6196780590759605 | arestas=19 | tempo=0.299 ms
-UCS   | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.237 ms
-GBFS  | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.091 ms
-A*    | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.012 ms</code></pre>
+<pre><code>BFS   | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.368 ms
+DFS   | encontrou=True  | custo=3.6196780590759605 | arestas=19 | tempo=0.563 ms
+UCS   | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.489 ms
+GBFS  | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.178 ms
+A*    | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.021 ms</code></pre>
 </div>
 </div>
 </section>
 <section id="avaliação-de-desempenho" class="level2">
 <h2 class="anchored" data-anchor-id="avaliação-de-desempenho">Avaliação de desempenho</h2>
 <p>Sorteamos vários pares (estado inicial, objetivo) diferentes e rodamos os cinco algoritmos em cada um, registrando tempo, custo e comprimento do caminho encontrado.</p>
-<div id="4bfc3c0f" class="cell" data-execution_count="6">
+<div id="472fe427" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">42</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>NUM_TRIALS <span class="op">=</span> <span class="dv">20</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -701,16 +745,18 @@ A*    | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.012 ms<
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">'custo'</span>: path_cost(graph, path),</span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="st">'arestas'</span>: <span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span> <span class="cf">if</span> path <span class="cf">else</span> <span class="va">None</span>,</span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">'tempo_ms'</span>: elapsed <span class="op">*</span> <span class="dv">1000</span>,</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        })</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> results_df.groupby(<span class="st">'algoritmo'</span>).agg(</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    taxa_sucesso<span class="op">=</span>(<span class="st">'encontrou'</span>, <span class="st">'mean'</span>),</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    custo_medio<span class="op">=</span>(<span class="st">'custo'</span>, <span class="st">'mean'</span>),</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    arestas_media<span class="op">=</span>(<span class="st">'arestas'</span>, <span class="st">'mean'</span>),</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    tempo_medio_ms<span class="op">=</span>(<span class="st">'tempo_ms'</span>, <span class="st">'mean'</span>),</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>display(summary)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        })</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="e576653f" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> results_df.groupby(<span class="st">'algoritmo'</span>).agg(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    taxa_sucesso<span class="op">=</span>(<span class="st">'encontrou'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    custo_medio<span class="op">=</span>(<span class="st">'custo'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    arestas_media<span class="op">=</span>(<span class="st">'arestas'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    tempo_medio_ms<span class="op">=</span>(<span class="st">'tempo_ms'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>display(summary)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 
@@ -738,35 +784,35 @@ A*    | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.012 ms<
 <td>1.0</td>
 <td>0.531</td>
 <td>2.45</td>
-<td>0.012</td>
+<td>0.025</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">BFS</th>
 <td>1.0</td>
 <td>0.551</td>
 <td>2.45</td>
-<td>0.006</td>
+<td>0.011</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">DFS</th>
 <td>1.0</td>
 <td>2.601</td>
 <td>13.40</td>
-<td>0.053</td>
+<td>0.118</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">GBFS</th>
 <td>1.0</td>
 <td>0.540</td>
 <td>2.50</td>
-<td>0.011</td>
+<td>0.020</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">UCS</th>
 <td>1.0</td>
 <td>0.531</td>
 <td>2.45</td>
-<td>0.032</td>
+<td>0.065</td>
 </tr>
 </tbody>
 </table>
@@ -774,23 +820,28 @@ A*    | encontrou=True  | custo=0.4852840934736458 | arestas=2 | tempo=0.012 ms<
 </div>
 </div>
 </div>
+<p>Como o grafo gerado é conexo, <code>taxa_sucesso</code> deve ficar em <code>1.0</code> para os cinco algoritmos — todos encontram <em>algum</em> caminho em todo par testado. É nas outras colunas que as diferenças aparecem: <code>custo_medio</code> deve ser o mesmo (e o mais baixo) para UCS e A<em>, já que ambos garantem o caminho de menor custo; BFS e GBFS tendem a um <code>custo_medio</code> mais alto, porque otimizam outra coisa (menor número de arestas e heurística, respectivamente), não o custo acumulado. <code>arestas_media</code> costuma ser menor para a BFS, que por definição encontra o caminho com menos passos, mesmo que mais caro. Em <code>tempo_medio_ms</code>, espere a DFS ser a mais rápida (explora sem se preocupar em comparar alternativas) e o A</em> ser competitivo com a UCS ou mais rápido — a heurística evita expandir ramos que se afastam do objetivo, mesmo mantendo a garantia de custo mínimo.</p>
+<p>Vale conectar isso com a complexidade assintótica da seção anterior: BFS e DFS são <span class="math inline">\(O(V+E)\)</span>, enquanto UCS, A* e GBFS são <span class="math inline">\(O((V+E)\log V)\)</span> por causa da fila de prioridade — por isso não é surpresa se <code>tempo_medio_ms</code> for um pouco maior para os três, mesmo num grafo pequeno como este. O ponto mais interessante é que A* e UCS têm a <strong>mesma</strong> complexidade de pior caso, mas na prática A* tende a ser mais rápido: a heurística poda ramos que se afastam do objetivo, então A* efetivamente processa uma fração de <span class="math inline">\(V\)</span>, enquanto UCS, sem heurística nenhuma, se aproxima mais do pior caso teórico. O limite assintótico é o mesmo; o comportamento típico não.</p>
 </section>
 <section id="avaliação-de-completude" class="level2">
 <h2 class="anchored" data-anchor-id="avaliação-de-completude">Avaliação de completude</h2>
+<p>Completude não é uma propriedade “tudo ou nada” de um algoritmo isoladamente — ela depende de como o espaço de busca está estruturado. Esta seção testa os cinco algoritmos contra um caso-base (objetivo inalcançável num grafo bem-comportado) e quatro “armadilhas” estruturais clássicas que a literatura usa para separar algoritmos completos de incompletos: ciclos sem controle de visitados, ramos muito profundos, fator de ramificação infinito e custos de aresta nulos ou negativos.</p>
+<section id="cenário-a-objetivo-inalcançável" class="level3">
+<h3 class="anchored" data-anchor-id="cenário-a-objetivo-inalcançável">Cenário A — objetivo inalcançável</h3>
 <p>Adicionamos um nó propositalmente isolado (sem nenhuma aresta) e tentamos alcançá-lo a partir de um estado conectado. Um algoritmo completo deve relatar corretamente que não há solução, em vez de travar ou lançar um erro inesperado.</p>
-<div id="53ba6f1a" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>graph_with_isolated_node <span class="op">=</span> graph.copy()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>graph_with_isolated_node.add_node(<span class="st">'isolated'</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>coords_with_isolated_node <span class="op">=</span> <span class="bu">dict</span>(coords)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, search <span class="kw">in</span> {</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'BFS'</span>: <span class="kw">lambda</span>: bfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'DFS'</span>: <span class="kw">lambda</span>: dfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'UCS'</span>: <span class="kw">lambda</span>: ucs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GBFS'</span>: <span class="kw">lambda</span>: gbfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>, coords_with_isolated_node) <span class="cf">if</span> <span class="st">'isolated'</span> <span class="kw">in</span> coords_with_isolated_node <span class="cf">else</span> <span class="st">'N/A (sem coordenada)'</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A*'</span>: <span class="kw">lambda</span>: astar_path_search(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>, coords_with_isolated_node) <span class="cf">if</span> <span class="st">'isolated'</span> <span class="kw">in</span> coords_with_isolated_node <span class="cf">else</span> <span class="st">'N/A (sem coordenada)'</span>,</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>}.items():</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">'-&gt;'</span>, search())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="bbff9f2c" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>graph_with_isolated_node <span class="op">=</span> graph.copy()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>graph_with_isolated_node.add_node(<span class="st">'isolated'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>coords_with_isolated_node <span class="op">=</span> <span class="bu">dict</span>(coords)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, search <span class="kw">in</span> {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'BFS'</span>: <span class="kw">lambda</span>: bfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'DFS'</span>: <span class="kw">lambda</span>: dfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'UCS'</span>: <span class="kw">lambda</span>: ucs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>),</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GBFS'</span>: <span class="kw">lambda</span>: gbfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>, coords_with_isolated_node) <span class="cf">if</span> <span class="st">'isolated'</span> <span class="kw">in</span> coords_with_isolated_node <span class="cf">else</span> <span class="st">'N/A (sem coordenada)'</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'A*'</span>: <span class="kw">lambda</span>: astar_path_search(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>, coords_with_isolated_node) <span class="cf">if</span> <span class="st">'isolated'</span> <span class="kw">in</span> coords_with_isolated_node <span class="cf">else</span> <span class="st">'N/A (sem coordenada)'</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>}.items():</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">'-&gt;'</span>, search())</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>BFS -&gt; None
 DFS -&gt; None
@@ -799,14 +850,220 @@ GBFS -&gt; N/A (sem coordenada)
 A* -&gt; N/A (sem coordenada)</code></pre>
 </div>
 </div>
+<p>Espera-se que as cinco linhas impressas terminem em <code>None</code> (ou equivalente): nenhum algoritmo encontra caminho até <code>'isolated'</code>, porque não existe nenhuma aresta ligando esse nó ao resto do grafo. O ponto do teste não é o valor em si — é que nenhum algoritmo trava, entra em loop infinito ou lança um erro inesperado ao lidar com um objetivo inalcançável; cada um percorre todo o espaço de busca acessível a partir do estado inicial e conclui corretamente que não há solução.</p>
+</section>
+<section id="cenário-b-ciclos-sem-controle-de-estados-visitados" class="level3">
+<h3 class="anchored" data-anchor-id="cenário-b-ciclos-sem-controle-de-estados-visitados">Cenário B — Ciclos sem controle de estados visitados</h3>
+<p>O resultado acima só vale porque <code>dfs_path</code> evita repetir estados (é o que <code>nx.dfs_tree</code> garante internamente) — isso a torna completa em qualquer grafo finito. Uma DFS “ingênua”, sem esse controle, não tem essa garantia: num grafo com ciclos, ela pode ficar alternando entre os mesmos poucos nós indefinidamente, sem nunca esgotar as alternativas e sem nunca concluir que não há solução. Como não dá para deixar uma célula rodando para sempre, colocamos um limite de passos de segurança — se ele for atingido, é sinal de que a busca não terminaria sozinha. (O mesmo raciocínio vale para BFS, UCS e A*: qualquer um deles, sem controle de visitados, cairia na mesma armadilha num grafo cíclico. <code>nx.shortest_path</code>, <code>nx.dijkstra_path</code> e <code>nx.astar_path</code> já fazem esse controle internamente, por isso não repetimos a demonstração para cada um.)</p>
+<div id="d9265616" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> naive_dfs_path(graph, start, goal, max_steps<span class="op">=</span><span class="dv">2000</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DFS sem controle de estados visitados: pode ciclar indefinidamente em grafos com ciclos."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        steps <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> steps <span class="op">&gt;</span> max_steps:</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f'não terminou em </span><span class="sc">{</span>max_steps<span class="sc">}</span><span class="ss"> passos'</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.neighbors(current):</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="9915c849" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS (com controle de visitados):   '</span>, dfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS ingênua (sem controle de visitados):'</span>, naive_dfs_path(graph_with_isolated_node, <span class="dv">0</span>, <span class="st">'isolated'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DFS (com controle de visitados):    None
+DFS ingênua (sem controle de visitados): não terminou em 2000 passos</code></pre>
+</div>
+</div>
+<p>O esperado é uma diferença nítida entre as duas linhas: <code>dfs_path</code> retorna <code>None</code> quase instantaneamente, porque esgota o componente alcançável e conclui corretamente que <code>'isolated'</code> não está nele. Já <code>naive_dfs_path</code>, na maioria dos grafos gerados (que costumam ter mais arestas do que uma árvore, logo têm ciclos), deve atingir <code>max_steps</code> sem terminar — sem controle de visitados, ela fica reexplorando repetidamente as mesmas arestas dentro de um ciclo, nunca “esgotando” as alternativas. É exatamente essa a incompletude teórica da DFS em árvore que o capítulo 1 menciona. (Se o grafo gerado nesta execução for uma árvore, sem ciclos, <code>naive_dfs_path</code> também terminaria corretamente — nesse caso, aumente <code>n_nodes</code> ou o raio em <code>generate_random_graph</code> para garantir arestas extras além da árvore geradora.)</p>
+</section>
+<section id="cenário-c-ramos-muito-profundos" class="level3">
+<h3 class="anchored" data-anchor-id="cenário-c-ramos-muito-profundos">Cenário C — Ramos muito profundos</h3>
+<p>Controlar visitados resolve o problema dos ciclos, mas não resolve um segundo problema, mais fundamental: mesmo sem repetir nenhum estado, a DFS pode se comprometer com um ramo muito profundo (ou, no limite teórico, infinito) e nunca voltar para tentar um ramo raso onde o objetivo estaria a um passo de distância. Isso não depende de ciclo nenhum — depende só da ordem de exploração (profundidade primeiro).</p>
+<p>Construímos um grafo em forma de “Y”: um objetivo (<code>'shallow_goal'</code>) a um único passo do início, e uma cadeia longa (sem o objetivo) partindo do mesmo nó. Adicionamos a aresta do objetivo raso <em>antes</em> da cadeia longa, para que a DFS (que empilha e desempilha pelo final da lista) escolha mergulhar na cadeia longa primeiro — exatamente o comportamento que uma DFS real teria ao encontrar esse ramo primeiro.</p>
+<div id="6e9f602f" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> capped_dfs_path(graph, start, goal, max_steps<span class="op">=</span><span class="dv">2000</span>):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DFS com controle de visitados, mas com limite de passos — simula um ramo profundo demais para terminar em tempo hábil."""</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [[start]]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        steps <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> steps <span class="op">&gt;</span> max_steps:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="ss">f'não terminou em </span><span class="sc">{</span>max_steps<span class="sc">}</span><span class="ss"> passos'</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> frontier.pop()</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> path[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph.neighbors(current):</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                frontier.append(path <span class="op">+</span> [neighbor])</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>DEEP_CHAIN_LENGTH <span class="op">=</span> <span class="dv">5000</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>deep_branch_graph <span class="op">=</span> nx.Graph()</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>deep_branch_graph.add_edge(<span class="dv">0</span>, <span class="st">'shallow_goal'</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>nx.add_path(deep_branch_graph, <span class="bu">range</span>(DEEP_CHAIN_LENGTH))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="d18705d0" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS com limite de passos:'</span>, capped_dfs_path(deep_branch_graph, <span class="dv">0</span>, <span class="st">'shallow_goal'</span>, max_steps<span class="op">=</span><span class="dv">50</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'BFS:                     '</span>, bfs_path(deep_branch_graph, <span class="dv">0</span>, <span class="st">'shallow_goal'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DFS com limite de passos: não terminou em 50 passos
+BFS:                      [0, 'shallow_goal']</code></pre>
+</div>
+</div>
+<p>O objetivo está a <strong>um</strong> passo do início, mas a DFS com <code>max_steps=50</code> deve retornar “não terminou”: ela mergulha pela cadeia longa (nós <code>0, 1, 2, 3, ...</code>) e só voltaria para tentar <code>'shallow_goal'</code> depois de esgotar toda a cadeia — o que, com uma cadeia de 5.000 nós e um limite de 50 passos, nunca acontece dentro do orçamento. A BFS, por explorar em camadas, encontra <code>'shallow_goal'</code> na primeira camada, independentemente de quão longa seja a cadeia ignorada. Isso ilustra por que a completude da DFS depende do tamanho/profundidade do espaço de busca, mesmo com controle de visitados — enquanto a completude da BFS (com fator de ramificação finito) não depende disso.</p>
+<p>Vale uma nota sobre notação: a distinção clássica “DFS gasta <span class="math inline">\(O(b \cdot d)\)</span> de memória, BFS gasta <span class="math inline">\(O(b^d)\)</span>” (capítulos 1/2, <span class="math inline">\(b\)</span> = fator de ramificação, <span class="math inline">\(d\)</span> = profundidade) é sobre busca em <strong>árvore</strong>, sem grafo finito e sem conjunto de visitados — é o cenário em que a economia de memória da DFS realmente compensa. Nas nossas funções, que rodam sobre um grafo finito com controle de visitados, ambas são <span class="math inline">\(O(V)\)</span> de espaço no pior caso (tabela na seção “Funções de busca”) — a vantagem de memória da DFS desaparece nesse contexto. O que sobra, como este cenário mostra, é só a fragilidade de tempo: comprometer-se com o ramo errado primeiro.</p>
+</section>
+<section id="cenário-d-fator-de-ramificação-infinito" class="level3">
+<h3 class="anchored" data-anchor-id="cenário-d-fator-de-ramificação-infinito">Cenário D — Fator de ramificação infinito</h3>
+<p>Nem toda estrutura cabe num <code>networkx.Graph</code> (que exige uma lista finita de vizinhos por nó) — um nó com infinitos filhos só pode ser representado por uma função geradora. Simulamos isso com um gerador que nunca para de produzir “filhos” para um nó específico, e uma BFS escrita à mão que consome essa função em vez de um grafo do NetworkX.</p>
+<div id="d4d6c019" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> infinite_children(node):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gerador de filhos 'infinitos' para simular um nó com fator de ramificação infinito."""</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> <span class="ss">f'</span><span class="sc">{</span>node<span class="sc">}</span><span class="ss">_child_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bfs_with_generator(root, goal, get_children, max_expansions<span class="op">=</span><span class="dv">2000</span>):</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""BFS sobre uma função geradora de filhos (não um grafo do NetworkX), para simular ramificação infinita."""</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [root]</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    expansions <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="op">==</span> goal:</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> current</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> get_children(current):</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>            expansions <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> expansions <span class="op">&gt;</span> max_expansions:</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="ss">f'não terminou em </span><span class="sc">{</span>max_expansions<span class="sc">}</span><span class="ss"> expansões (ainda na 1ª camada)'</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>            frontier.append(child)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> root_children(node):</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> infinite_children(node) <span class="cf">if</span> node <span class="op">==</span> <span class="st">'root'</span> <span class="cf">else</span> []</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="11be76cf" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'BFS com nó de ramificação infinita:'</span>, bfs_with_generator(<span class="st">'root'</span>, <span class="st">'goal_no_nivel_2'</span>, root_children, max_expansions<span class="op">=</span><span class="dv">2000</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BFS com nó de ramificação infinita: não terminou em 2000 expansões (ainda na 1ª camada)</code></pre>
+</div>
+</div>
+<p>O objetivo (<code>'goal_no_nivel_2'</code>) nem existe de fato neste grafo — o ponto é que a BFS jamais chegaria a verificar isso: como <code>'root'</code> tem infinitos filhos, o laço que enumera os vizinhos de <code>'root'</code> nunca termina naturalmente, e a BFS fica presa expandindo a primeira camada para sempre. Diferente do Cenário C, aqui é a própria <strong>BFS</strong> que falha — o fator de ramificação infinito ataca justamente a estratégia “explorar uma camada inteira antes de avançar”, que era a vantagem da BFS nos cenários anteriores.</p>
+</section>
+<section id="cenário-e-custos-de-aresta-nulos-ou-negativos" class="level3">
+<h3 class="anchored" data-anchor-id="cenário-e-custos-de-aresta-nulos-ou-negativos">Cenário E — Custos de aresta nulos ou negativos</h3>
+<p>O UCS/Dijkstra garante o caminho de menor custo sob a premissa de que nenhuma aresta tem peso negativo.</p>
+<p>Arestas de custo <strong>zero</strong> não quebram essa premissa. Uma implementação correta, como a nossa, marca um estado como resolvido assim que ele é retirado da fronteira e não o reconsidera depois — um ciclo de custo zero não faz o algoritmo repetir esse estado.</p>
+<p>O problema real aparece com pesos <strong>negativos</strong>. Um ciclo cujo custo total é negativo torna o próprio conceito de “caminho mais barato” mal definido: percorrer o ciclo mais vezes sempre reduz o custo, então o mínimo verdadeiro seria <span class="math inline">\(-\infty\)</span>.</p>
+<div id="945aa96b" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="annotated-cell-15"><pre class="sourceCode python code-annotation-code code-with-copy code-annotated"><code class="sourceCode python"><span id="annotated-cell-15-1"><a href="#annotated-cell-15-1" aria-hidden="true" tabindex="-1"></a>negative_cycle_graph <span class="op">=</span> nx.DiGraph()</span>
+<span id="annotated-cell-15-2"><a href="#annotated-cell-15-2" aria-hidden="true" tabindex="-1"></a>negative_cycle_graph.add_weighted_edges_from([</span>
+<span id="annotated-cell-15-3"><a href="#annotated-cell-15-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="dv">1</span>),</span>
+<span id="annotated-cell-15-4"><a href="#annotated-cell-15-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'B'</span>, <span class="st">'C'</span>, <span class="op">-</span><span class="dv">3</span>),</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-15-5" class="code-annotation-target"><a href="#annotated-cell-15-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'C'</span>, <span class="st">'A'</span>, <span class="dv">1</span>),</span>
+<span id="annotated-cell-15-6"><a href="#annotated-cell-15-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'A'</span>, <span class="st">'goal'</span>, <span class="dv">10</span>),</span>
+<span id="annotated-cell-15-7"><a href="#annotated-cell-15-7" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="annotated-cell-15-8"><a href="#annotated-cell-15-8" aria-hidden="true" tabindex="-1"></a></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="2" onclick="event.preventDefault();">2</a><span id="annotated-cell-15-9" class="code-annotation-target"><a href="#annotated-cell-15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Existe ciclo de custo negativo alcançável a partir de A?'</span>, nx.negative_edge_cycle(negative_cycle_graph, weight<span class="op">=</span><span class="st">'weight'</span>))</span>
+<span id="annotated-cell-15-10"><a href="#annotated-cell-15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-11"><a href="#annotated-cell-15-11" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="3" onclick="event.preventDefault();">3</a><span id="annotated-cell-15-12" class="code-annotation-target"><a href="#annotated-cell-15-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'UCS (Dijkstra):'</span>, ucs_path(negative_cycle_graph, <span class="st">'A'</span>, <span class="st">'goal'</span>))</span>
+<span id="annotated-cell-15-13"><a href="#annotated-cell-15-13" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> erro:</span>
+<span id="annotated-cell-15-14"><a href="#annotated-cell-15-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'UCS (Dijkstra) se recusa a responder:'</span>, erro)</span>
+<span id="annotated-cell-15-15"><a href="#annotated-cell-15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="annotated-cell-15-16"><a href="#annotated-cell-15-16" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-15" data-target-annotation="4" onclick="event.preventDefault();">4</a><span id="annotated-cell-15-17" class="code-annotation-target"><a href="#annotated-cell-15-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Bellman-Ford:'</span>, nx.bellman_ford_path(negative_cycle_graph, <span class="st">'A'</span>, <span class="st">'goal'</span>, weight<span class="op">=</span><span class="st">'weight'</span>))</span>
+<span id="annotated-cell-15-18"><a href="#annotated-cell-15-18" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> nx.NetworkXUnbounded <span class="im">as</span> erro:</span>
+<span id="annotated-cell-15-19"><a href="#annotated-cell-15-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Bellman-Ford se recusa a responder:'</span>, erro)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-15" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="5" data-code-annotation="1">Esta aresta fecha o ciclo <code>A -&gt; B -&gt; C -&gt; A</code>, com custo total <code>1 + (-3) + 1 = -1</code> — um ciclo de custo negativo.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="9" data-code-annotation="2"><code>nx.negative_edge_cycle</code> verifica, de forma nativa, se existe algum ciclo de custo negativo alcançável a partir de <code>A</code> — sem precisar rodar nenhuma busca para descobrir isso.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="12" data-code-annotation="3">UCS/Dijkstra não faz essa verificação sozinho: só percebe que algo está errado ao tentar recalcular a distância de um nó que já havia sido finalizado.</span>
+</dd>
+<dt data-target-cell="annotated-cell-15" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="annotated-cell-15" data-code-lines="17" data-code-annotation="4">O Bellman-Ford foi desenhado para tolerar pesos negativos, então ele detecta e nomeia o problema (ciclo negativo), em vez de só levantar um erro genérico.</span>
+</dd>
+</dl>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Existe ciclo de custo negativo alcançável a partir de A? True
+UCS (Dijkstra) se recusa a responder: ('Contradictory paths found:', 'negative weights?')
+Bellman-Ford se recusa a responder: Negative cycle detected.</code></pre>
+</div>
+</div>
+<p>Perceba que o <code>nx.negative_edge_cycle</code> confirma que há um ciclo de custo negativo alcançável a partir de <code>'A'</code>.</p>
+<p>Rastreando o Dijkstra à mão: ele finaliza <code>A</code> com distância 0, depois <code>B</code> (1), depois <code>C</code> (1 + (-3) = -2). Ao expandir <code>C</code>, encontra <code>A</code> de novo com distância <code>-2 + 1 = -1</code> — <strong>menor que a distância já finalizada para <code>A</code></strong>. O NetworkX percebe essa inconsistência e levanta <code>ValueError</code> em vez de devolver um caminho errado silenciosamente — só que sem dizer <em>por quê</em> (a mensagem é genérica: “contradictory paths found”). O Bellman-Ford vai além: identifica explicitamente a causa (o ciclo negativo) e se recusa a responder de forma direcionada (<code>NetworkXUnbounded</code>).</p>
+<p>Nos dois casos o algoritmo não trava nem retorna um resultado incorreto silenciosamente — mas nenhum dos dois calcula “o caminho mais barato”, porque essa noção deixa de fazer sentido na presença de um ciclo de custo negativo. A* e a GBFS herdam a mesma dependência de custos não negativos, já que também usam <code>weight</code> para calcular <span class="math inline">\(g(n)\)</span>.</p>
+</section>
+<section id="a-heurística-do-a-e-da-gbfs-completude-vs.-otimalidade" class="level3">
+<h3 class="anchored" data-anchor-id="a-heurística-do-a-e-da-gbfs-completude-vs.-otimalidade">A heurística do A* e da GBFS: completude vs.&nbsp;otimalidade</h3>
+<p>Vale corrigir uma confusão comum: uma heurística inadmissível (que superestima o custo restante) <strong>não tira a completude</strong> do A* num grafo finito com pesos não negativos — ele ainda vai, no pior caso, considerar todos os nós alcançáveis. O que a inadmissibilidade compromete é a <strong>otimalidade</strong>: o A* pode devolver um caminho mais caro do que o necessário, e a GBFS (que ignora completamente <span class="math inline">\(g(n)\)</span>) é ainda mais vulnerável a isso, podendo ser desviada para um caminho bem pior.</p>
+<div id="94d17ab3" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>misleading_graph <span class="op">=</span> nx.DiGraph()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>misleading_graph.add_weighted_edges_from([</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'A'</span>, <span class="st">'B'</span>, <span class="dv">1</span>), (<span class="st">'B'</span>, <span class="st">'C'</span>, <span class="dv">1</span>), (<span class="st">'C'</span>, <span class="st">'goal'</span>, <span class="dv">1</span>),  <span class="co"># caminho real mais barato: custo 3</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'A'</span>, <span class="st">'D'</span>, <span class="dv">10</span>), (<span class="st">'D'</span>, <span class="st">'goal'</span>, <span class="dv">1</span>),                 <span class="co"># caminho mais caro: custo 11</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>misleading_heuristic <span class="op">=</span> {<span class="st">'A'</span>: <span class="dv">0</span>, <span class="st">'B'</span>: <span class="dv">8</span>, <span class="st">'C'</span>: <span class="dv">1</span>, <span class="st">'D'</span>: <span class="dv">1</span>, <span class="st">'goal'</span>: <span class="dv">0</span>}  <span class="co"># h(B)=8 superestima muito o custo restante (real: 2)</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>greedy_result <span class="op">=</span> nx.astar_path(misleading_graph, <span class="st">'A'</span>, <span class="st">'goal'</span>, heuristic<span class="op">=</span><span class="kw">lambda</span> a, b: misleading_heuristic[a], weight<span class="op">=</span><span class="kw">lambda</span> u, v, d: <span class="dv">0</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>astar_result <span class="op">=</span> nx.astar_path(misleading_graph, <span class="st">'A'</span>, <span class="st">'goal'</span>, heuristic<span class="op">=</span><span class="kw">lambda</span> a, b: misleading_heuristic[a], weight<span class="op">=</span><span class="st">'weight'</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'GBFS (só heurística):'</span>, greedy_result, <span class="st">'- custo real:'</span>, path_cost(misleading_graph, greedy_result))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'A* (custo + heurística):'</span>, astar_result, <span class="st">'- custo real:'</span>, path_cost(misleading_graph, astar_result))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>GBFS (só heurística): ['A', 'D', 'goal'] - custo real: 11
+A* (custo + heurística): ['A', 'B', 'C', 'goal'] - custo real: 3</code></pre>
+</div>
+</div>
+<p>Com essa heurística propositalmente enganosa, a GBFS deve escolher <code>A -&gt; D -&gt; goal</code> (custo real 11): como só olha <span class="math inline">\(h(n)\)</span>, e <span class="math inline">\(h(D)=1\)</span> parece mais promissor que <span class="math inline">\(h(B)=8\)</span>, ela nunca chega a considerar o caminho por B.</p>
+<p>Por outro lado, o A*, por somar <span class="math inline">\(g(n)+h(n)\)</span>, ainda prefere <code>B</code> no primeiro passo (<span class="math inline">\(f(B)=1+8=9\)</span> contra <span class="math inline">\(f(D)=10+1=11\)</span>) e termina encontrando o caminho ótimo <code>A -&gt; B -&gt; C -&gt; goal</code> (custo 3) — mesmo recebendo exatamente a mesma heurística ruim. Isso mostra, lado a lado, por que a GBFS é mais frágil a heurísticas de má qualidade do que o A<em>: o custo acumulado que o A</em> carrega funciona como um contrapeso que a GBFS não tem.</p>
+</section>
 </section>
 <section id="perguntas-para-reflexão" class="level2">
 <h2 class="anchored" data-anchor-id="perguntas-para-reflexão">Perguntas para reflexão</h2>
 <ol type="1">
-<li>No grafo gerado, por que o caminho da BFS (menor número de arestas) frequentemente não é o de menor custo total, enquanto o de UCS e A* sempre é?</li>
-<li>Por que passar <code>weight=lambda u, v, d: 0</code> para <code>nx.astar_path</code> transforma o A* em uma busca gulosa pura? O que isso revela sobre a GBFS ser um caso particular do A* em que o custo acumulado deixa de importar?</li>
-<li>Por que <code>dfs_path</code> usa <code>nx.dfs_tree</code> seguido de <code>nx.shortest_path</code> dentro da árvore, em vez de chamar <code>nx.shortest_path</code> diretamente no grafo original? O que aconteceria se chamássemos diretamente no grafo original?</li>
-<li>O teste de completude mostrou que todos os algoritmos retornam <code>None</code>/sem caminho para o nó isolado. Isso comprova que são completos? O que a completude garante — e o que ela não garante?</li>
+<li>A tabela de desempenho mostra que UCS e A* sempre encontram o caminho de menor custo, mas com tempos e comprimentos de caminho diferentes dos demais algoritmos. O que isso revela sobre o papel de uma heurística admissível: ela muda <em>o que</em> é encontrado, ou só <em>quão rápido</em> se chega lá?</li>
+<li>BFS e GBFS raramente coincidem com o caminho de custo mínimo encontrado por UCS/A*. Em que tipo de aplicação essa perda de otimalidade seria aceitável em troca de velocidade ou simplicidade, e em que tipo ela seria inaceitável?</li>
+<li>Todos os algoritmos reportaram corretamente a ausência de caminho até o nó isolado. Isso significa que, na prática, qualquer um deles poderia substituir os outros? O que a completude garante sobre um algoritmo de busca — e o que ela deixa completamente em aberto sobre a qualidade da solução encontrada?</li>
+<li>Se este grafo fosse muito maior (milhões de nós, como uma malha viária real), qual desses algoritmos você escolheria para uma aplicação que precisa de resposta em tempo real, e qual para uma que exige a rota mais barata garantida? Justifique com base no que os resultados deste capítulo mostraram sobre cada um.</li>
 </ol>
 </section>
 <section id="key-takeaways" class="level2">
@@ -815,7 +1072,10 @@ A* -&gt; N/A (sem coordenada)</code></pre>
 <li>Nem todo algoritmo de busca é ótimo em custo: BFS garante o menor número de arestas, não o menor custo — só UCS e A* garantem isso num grafo com pesos variados.</li>
 <li>A Busca Gulosa não precisa de uma implementação própria: é o A* com o custo acumulado <code>g(n)</code> anulado, restando só a heurística.</li>
 <li>Reaproveitar implementações testadas (NetworkX) permite focar a avaliação no comportamento dos algoritmos, não na correção do próprio código.</li>
-<li>Completude (sempre reportar corretamente quando não há solução) é uma propriedade distinta de otimalidade (encontrar o melhor caminho) — os dois testes deste capítulo avaliam coisas diferentes.</li>
+<li>Completude (sempre reportar corretamente quando não há solução) é uma propriedade distinta de otimalidade (encontrar o melhor caminho) — os testes deste capítulo avaliam coisas diferentes.</li>
+<li>A completude não é uma propriedade fixa de um algoritmo: depende da estrutura do espaço de busca. Controle de visitados resolve ciclos, mas não resolve ramos muito profundos (onde só a BFS sobrevive) nem fator de ramificação infinito (onde nem a BFS sobrevive).</li>
+<li>Heurística inadmissível compromete a otimalidade, não a completude do A* — mas compromete as duas coisas na GBFS, que não tem o custo acumulado como contrapeso.</li>
+<li>UCS/A* garantem o caminho de menor custo assumindo pesos não negativos; um ciclo de custo negativo torna “o caminho mais barato” indefinido. O Dijkstra do NetworkX percebe que algo está errado (levanta <code>ValueError</code>) mas não diz por quê; só o Bellman-Ford identifica a causa explicitamente.</li>
 </ul>
 </section>
 <section id="referencias" class="level2">
