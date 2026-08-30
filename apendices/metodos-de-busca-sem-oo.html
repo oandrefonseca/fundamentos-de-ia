@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Laboratório: Agentes baseados em objetivos e Métodos de Busca I – Introdução à Inteligência Artificial</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b3a135ffe9b176eb70b8e8d1e767332b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-7937f9141d16c7f9fe7ae0f030368621.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-b3a135ffe9b176eb70b8e8d1e767332b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../apendices/metodos-de-busca-sem-oo.html">Apêndices</a></li><li class="breadcrumb-item"><a href="../apendices/metodos-de-busca-sem-oo.html">Métodos de Busca I sem OO</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Introdução à Inteligência Artificial</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introdução à Inteligência Artificial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../apresentacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Apresentação</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">Agentes e métodos de busca</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/01-metodos-de-busca-i.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">1. Métodos de Busca I</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/02-metodos-de-busca-ii.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">2. Métodos de Busca II</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Busca em ambientes complexos</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/03-ambientes-complexos-i.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">3. Ambientes Complexos I</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/04-ambientes-complexos-ii.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">4. Ambientes Complexos II</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Busca competitiva</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/05-busca-competitiva-i.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">5. Minimax e Alpha-Beta</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/06-busca-competitiva-ii.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">6. Monte Carlo Tree Search</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Conhecimento e incerteza</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/07-agentes-logicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">7. Agentes Lógicos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/08-agentes-probabilisticos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">8. Agentes Probabilísticos</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/09-naive-bayes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">9. Naive Bayes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/10-redes-bayesianas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10. Redes Bayesianas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/11-cadeias-de-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11. Cadeias de Markov</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Apêndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../apendices/metodos-de-busca-sem-oo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Métodos de Busca I sem OO</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#ajustando-ambiente" id="toc-ajustando-ambiente" class="nav-link active" data-scroll-target="#ajustando-ambiente">Ajustando ambiente</a></li>
+  <li><a href="#motivação" id="toc-motivação" class="nav-link" data-scroll-target="#motivação">Motivação</a></li>
+  <li><a href="#objetivos-de-aprendizagem" id="toc-objetivos-de-aprendizagem" class="nav-link" data-scroll-target="#objetivos-de-aprendizagem">Objetivos de Aprendizagem</a></li>
+  <li><a href="#implementação" id="toc-implementação" class="nav-link" data-scroll-target="#implementação">Implementação</a>
+  <ul class="collapse">
+  <li><a href="#o-ambiente-um-grafo-como-dicionário" id="toc-o-ambiente-um-grafo-como-dicionário" class="nav-link" data-scroll-target="#o-ambiente-um-grafo-como-dicionário">O ambiente: um grafo como dicionário</a></li>
+  <li><a href="#o-problema-estado-inicial-objetivo-ações-transições-e-custo" id="toc-o-problema-estado-inicial-objetivo-ações-transições-e-custo" class="nav-link" data-scroll-target="#o-problema-estado-inicial-objetivo-ações-transições-e-custo">O problema: estado inicial, objetivo, ações, transições e custo</a></li>
+  <li><a href="#o-nó-da-árvore-de-busca" id="toc-o-nó-da-árvore-de-busca" class="nav-link" data-scroll-target="#o-nó-da-árvore-de-busca">O nó da árvore de busca</a></li>
+  <li><a href="#o-agente" id="toc-o-agente" class="nav-link" data-scroll-target="#o-agente">O agente</a></li>
+  <li><a href="#funções-auxiliares" id="toc-funções-auxiliares" class="nav-link" data-scroll-target="#funções-auxiliares">Funções Auxiliares</a></li>
+  </ul></li>
+  <li><a href="#exemplo-prático" id="toc-exemplo-prático" class="nav-link" data-scroll-target="#exemplo-prático">Exemplo prático</a>
+  <ul class="collapse">
+  <li><a href="#construção-do-ambiente" id="toc-construção-do-ambiente" class="nav-link" data-scroll-target="#construção-do-ambiente">Construção do Ambiente</a></li>
+  <li><a href="#explorando-a-árvore-de-busca-manualmente" id="toc-explorando-a-árvore-de-busca-manualmente" class="nav-link" data-scroll-target="#explorando-a-árvore-de-busca-manualmente">Explorando a árvore de busca manualmente</a></li>
+  <li><a href="#busca-em-largura" id="toc-busca-em-largura" class="nav-link" data-scroll-target="#busca-em-largura">Busca em largura</a></li>
+  <li><a href="#busca-em-profundidade" id="toc-busca-em-profundidade" class="nav-link" data-scroll-target="#busca-em-profundidade">Busca em profundidade</a></li>
+  </ul></li>
+  <li><a href="#perguntas" id="toc-perguntas" class="nav-link" data-scroll-target="#perguntas">Perguntas</a></li>
+  <li><a href="#desafio" id="toc-desafio" class="nav-link" data-scroll-target="#desafio">Desafio</a></li>
+  <li><a href="#key-takeways" id="toc-key-takeways" class="nav-link" data-scroll-target="#key-takeways">Key takeways</a></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/blob/main/apendices/metodos-de-busca-sem-oo.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="metodos-de-busca-sem-oo.ipynb" download="metodos-de-busca-sem-oo.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../apendices/metodos-de-busca-sem-oo.html">Apêndices</a></li><li class="breadcrumb-item"><a href="../apendices/metodos-de-busca-sem-oo.html">Métodos de Busca I sem OO</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Laboratório: Agentes baseados em objetivos e Métodos de Busca I</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="ajustando-ambiente" class="level2">
+<h2 class="anchored" data-anchor-id="ajustando-ambiente">Ajustando ambiente</h2>
+<div id="725b953f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:11,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038451,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="motivação" class="level2">
+<h2 class="anchored" data-anchor-id="motivação">Motivação</h2>
+<p>O estudo de agentes baseados em objetivos e métodos de busca é fundamental na Inteligência Artificial, pois capacita os sistemas a planejarem com antecedência e a simularem sequências de ações que formam um caminho até um estado objetivo quando a atitude correta a ser tomada não é imediatamente óbvia. Nesse cenário, compreender a <strong>busca não informada</strong> é de extrema importância e forma o alicerce da resolução de problemas, já que essas estratégias operam sem qualquer conhecimento ou pista do domínio sobre a proximidade de um estado em relação ao objetivo. Ao estudar métodos não informados como a busca em largura, de custo uniforme e em profundidade, compreendemos como é possível explorar sistematicamente espaços de estados imensos ou infinitos de forma a garantir propriedades críticas, como a completude (encontrar uma solução se ela existir) e a otimização de custos. Além disso, a busca não informada nos força a lidar diretamente com o maior desafio da exploração de caminhos: a explosão combinatória e a complexidade de tempo e espaço. Estratégias não informadas, como a busca em profundidade e o aprofundamento iterativo, são consideradas as ferramentas de trabalho básicas em muitas áreas da IA justamente devido ao seu uso parcimonioso e inteligente da memória, ensinando-nos princípios essenciais de estruturas de dados e limites computacionais que preparam o terreno para atuar em ambientes desconhecidos e para o desenvolvimento de buscas heurísticas mais avançadas.</p>
+</section>
+<section id="objetivos-de-aprendizagem" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-de-aprendizagem">Objetivos de Aprendizagem</h2>
+<p>Ao final deste notebook, espera-se que você seja capaz de:</p>
+<ul>
+<li><strong>Revisar a estrutura de dicionários em Python:</strong> Criar, consultar, alterar e percorrer dicionários simples e aninhados, reconhecendo como essas estruturas podem representar informações de um ambiente.</li>
+<li><strong>Representar um ambiente como grafo:</strong> Modelar cidades, conexões e custos usando um dicionário de dicionários, além de consultar vizinhos e custos de arestas com funções auxiliares.</li>
+<li><strong>Modelar um problema de busca:</strong> Definir o estado inicial, o objetivo, as ações possíveis, o modelo de transição e o custo acumulado de cada caminho.</li>
+<li><strong>Construir e interpretar nós de busca:</strong> Usar dicionários para armazenar estado, pai, ação, custo e profundidade, reconstruindo o caminho e a sequência de ações encontrada.</li>
+<li><strong>Compreender a busca em largura (BFS):</strong> Acompanhar a exploração nível por nível, identificar o uso de uma fila FIFO e analisar por que essa estratégia encontra caminhos com o menor número de ações em grafos não ponderados.</li>
+<li><strong>Compreender a busca em profundidade (DFS):</strong> Observar a exploração de um ramo em profundidade, identificar o uso de uma pilha LIFO e reconhecer suas vantagens de memória e suas limitações quanto à completude e à otimalidade.</li>
+<li><strong>Comparar BFS e DFS na prática:</strong> Examinar a ordem de expansão, o caminho obtido e os custos, relacionando o comportamento de cada algoritmo com a estrutura do grafo.</li>
+<li><strong>Implementar um agente baseado em objetivos:</strong> Integrar percepção, formulação de objetivo, formulação de problema, planejamento e execução de ações em uma simulação do ambiente.</li>
+<li><strong>Desenvolver uma busca em profundidade limitada:</strong> Controlar a expansão por meio do campo <code>depth</code>, respeitar um limite máximo e verificar se uma solução pode ser encontrada dentro da profundidade permitida.</li>
+<li><strong>Relacionar representação e comportamento:</strong> Perceber como a separação entre ambiente, problema, nó, agente e algoritmos torna a implementação modular e reutilizável, mesmo sem o uso de classes.</li>
+</ul>
+</section>
+<section id="implementação" class="level2">
+<h2 class="anchored" data-anchor-id="implementação">Implementação</h2>
+<p>Neste roteiro, todo o código usa apenas <strong>dicionários</strong>, <strong>listas</strong> e <strong>funções</strong>. Cada “coisa” do mundo do agente (o grafo, o problema, o nó da árvore de busca, o agente) é um dicionário com alguns campos, e o que se pode fazer com ela é descrito por funções que recebem esse dicionário como primeiro argumento.</p>
+<p>A ideia geral é sempre a mesma:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Coisa</th>
+<th>Como é representada</th>
+<th>O que se pode fazer com ela</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ambiente (grafo)</td>
+<td><code>dict</code> de <code>dict</code> (<code>{cidade: {vizinha: custo}}</code>)</td>
+<td><code>neighbors</code>, <code>edge_cost</code></td>
+</tr>
+<tr class="even">
+<td>Problema</td>
+<td><code>dict</code> com <code>initial</code>, <code>goal</code>, <code>graph</code></td>
+<td><code>actions</code>, <code>result</code>, <code>goal_test</code>, <code>path_cost</code></td>
+</tr>
+<tr class="odd">
+<td>Nó da árvore de busca</td>
+<td><code>dict</code> com <code>state</code>, <code>parent</code>, <code>action</code>, <code>path_cost</code>, <code>depth</code></td>
+<td><code>make_node</code>, <code>child_node</code>, <code>expand</code>, <code>path</code>, <code>solution</code></td>
+</tr>
+<tr class="even">
+<td>Agente</td>
+<td><code>dict</code> com <code>goal</code>, <code>search_algorithm</code>, <code>graph</code>, <code>state</code>, <code>seq</code></td>
+<td><code>agent_program</code> (e as funções que ele chama)</td>
+</tr>
+</tbody>
+</table>
+<p>Uma regra simples para ler o código: <strong>quando o primeiro parâmetro de uma função se chama <code>problem</code>, <code>node</code> ou <code>agent</code>, é porque a função “pertence” àquela coisa.</strong></p>
+<div id="057aa8a7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:20,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038482,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estrutura de um dicionário simples</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>exemplo_simples <span class="op">=</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'chave'</span>: <span class="st">'valor'</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'numero'</span>: <span class="dv">10</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ativo'</span>: <span class="va">True</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exemplo_simples)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'chave': 'valor', 'numero': 10, 'ativo': True}</code></pre>
+</div>
+</div>
+<div id="2558f961" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;vscode&quot;,&quot;value&quot;:{&quot;languageId&quot;:&quot;javascript&quot;}}" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>exemplo_complexo <span class="op">=</span> {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'chave_texto'</span>: <span class="st">'valor'</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'numero'</span>: <span class="dv">10</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lista'</span>: [<span class="st">'item 1'</span>, <span class="st">'item 2'</span>],</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subdicionario'</span>: {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'propriedade'</span>: <span class="va">True</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="7bbd9436" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038501,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Dicionário completo:'</span>, exemplo_complexo)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Valor de uma chave:'</span>, exemplo_complexo[<span class="st">'chave_texto'</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Valor padrão:'</span>, exemplo_complexo.get(<span class="st">'chave_inexistente'</span>, <span class="st">'não encontrado'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dicionário completo: {'chave_texto': 'valor', 'numero': 10, 'lista': ['item 1', 'item 2'], 'subdicionario': {'propriedade': True}}
+Valor de uma chave: valor
+Valor padrão: não encontrado</code></pre>
+</div>
+</div>
+<div id="d0c67828" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:8,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038510,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando e alterando valores</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>exemplo_complexo[<span class="st">'novo_campo'</span>] <span class="op">=</span> <span class="st">'novo valor'</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>exemplo_complexo[<span class="st">'numero'</span>] <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Após alterações:'</span>, exemplo_complexo)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Percorrendo chaves e valores</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chave, valor <span class="kw">in</span> exemplo_complexo.items():</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>chave<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>valor<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Após alterações: {'chave_texto': 'valor', 'numero': 20, 'lista': ['item 1', 'item 2'], 'subdicionario': {'propriedade': True}, 'novo_campo': 'novo valor'}
+chave_texto: valor
+numero: 20
+lista: ['item 1', 'item 2']
+subdicionario: {'propriedade': True}
+novo_campo: novo valor</code></pre>
+</div>
+</div>
+<section id="o-ambiente-um-grafo-como-dicionário" class="level3">
+<h3 class="anchored" data-anchor-id="o-ambiente-um-grafo-como-dicionário">O ambiente: um grafo como dicionário</h3>
+<p>O ambiente é um <strong>grafo</strong> representado como um dicionário de dicionários: cada chave é uma cidade, e o valor é outro dicionário com as cidades vizinhas e o custo para chegar em cada uma delas. Duas funções pequenas facilitam a consulta.</p>
+<div id="f888949e" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:18,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038530,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neighbors(graph, state):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Retorna o dicionario {vizinho: custo} de um estado do grafo."""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> graph.get(state, {})</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> edge_cost(graph, origin, destination):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Retorna o custo da aresta origin -&gt; destination (ou None se nao existir)."""</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> neighbors(graph, origin).get(destination)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def neighbors(graph, state):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Devolve o dicionário <code>{vizinha: custo}</code> de uma cidade. Se a cidade não estiver no grafo, devolve um dicionário vazio (<code>graph.get(state, {})</code>), o que evita erros ao consultar cidades sem saídas.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>def edge_cost(graph, origin, destination):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Devolve o custo da aresta <code>origin -&gt; destination</code>. Se a aresta não existir, o <code>.get</code> do dicionário devolve <code>None</code>.</p>
+</blockquote>
+</details>
+</section>
+<section id="o-problema-estado-inicial-objetivo-ações-transições-e-custo" class="level3">
+<h3 class="anchored" data-anchor-id="o-problema-estado-inicial-objetivo-ações-transições-e-custo">O problema: estado inicial, objetivo, ações, transições e custo</h3>
+<p>Um problema de busca é descrito por cinco componentes: o <strong>estado inicial</strong>, o <strong>teste de objetivo</strong>, as <strong>ações</strong> disponíveis em cada estado, o <strong>modelo de transição</strong> (o resultado de aplicar uma ação) e o <strong>custo</strong> de cada passo. Aqui, o problema é um dicionário com os três dados fixos (<code>initial</code>, <code>goal</code>, <code>graph</code>) e os demais componentes são funções que recebem esse dicionário.</p>
+<div id="757545d3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038547,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_problem(initial, goal, graph):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cria um problema de busca: um dicionario com estado inicial, objetivo e grafo."""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">'initial'</span>: initial, <span class="st">'goal'</span>: goal, <span class="st">'graph'</span>: graph}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> actions(problem, state):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Acoes disponiveis em um estado = 'irPara' + nome de cada cidade vizinha."""</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [<span class="st">'irPara'</span> <span class="op">+</span> vizinho <span class="cf">for</span> vizinho <span class="kw">in</span> neighbors(problem[<span class="st">'graph'</span>], state).keys()]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> action_city(action):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Extrai o nome da cidade de uma acao no formato 'irParaCIDADE'."""</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> action[<span class="bu">len</span>(<span class="st">'irPara'</span>):]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> result(problem, state, action):</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Modelo de transicao: a acao `action` (ex: 'irParaPipa') leva ao estado 'Pipa'."""</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> action_city(action)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> goal_test(problem, state):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Verifica se o estado e o objetivo."""</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> state <span class="op">==</span> problem[<span class="st">'goal'</span>]</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path_cost(problem, cost_so_far, state1, action, state2):</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Custo acumulado apos aplicar `action` em `state1` e chegar em `state2`."""</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    cost <span class="op">=</span> edge_cost(problem[<span class="st">'graph'</span>], state1, state2)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> cost <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="st">'inf'</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cost_so_far <span class="op">+</span> cost</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def make_problem(initial, goal, graph):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>“Fabrica” um problema. O resultado é apenas um dicionário com três chaves. Para acessar o estado inicial escrevemos <code>problem['initial']</code>, e assim por diante.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>def actions(problem, state):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>As ações possíveis em uma cidade são construídas como <code>'irPara' + vizinha</code>, uma para cada cidade vizinha (as chaves do dicionário devolvido por <code>neighbors</code>). Por exemplo, em Natal, uma das ações é <code>'irParaPipa'</code> (se Pipa fosse vizinha direta). Esse formato deixa os prints mais legíveis do que apenas o nome da cidade.</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong><code>def action_city(action):</code></strong> e <strong><code>def result(problem, state, action):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p><code>action_city</code> extrai o nome da cidade de dentro do texto da ação, removendo o prefixo <code>'irPara'</code>. O modelo de transição (<code>result</code>) usa essa função: como a ação <code>'irParaX'</code> sempre representa “ir para X”, o resultado é a cidade <code>X</code>.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong><code>def goal_test(problem, state):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>O teste de objetivo é uma comparação simples entre o estado e <code>problem['goal']</code>.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong><code>def path_cost(problem, cost_so_far, state1, action, state2):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Soma ao custo acumulado o custo da aresta percorrida. Se a aresta não existir, devolve infinito (<code>float('inf')</code>) para sinalizar que aquele passo é impossível.</p>
+</blockquote>
+</details>
+</section>
+<section id="o-nó-da-árvore-de-busca" class="level3">
+<h3 class="anchored" data-anchor-id="o-nó-da-árvore-de-busca">O nó da árvore de busca</h3>
+<p>Para resolver o problema, transformamos o grafo em uma <strong>árvore de busca</strong>. Cada nó dessa árvore guarda o estado atual, o nó pai, a ação usada para chegar ali, o custo acumulado e a profundidade. Com isso conseguimos, ao final, reconstruir o caminho encontrado pelo agente.</p>
+<p>Um nó é um dicionário criado por <code>make_node</code>; as demais funções recebem um nó e fazem algo com ele.</p>
+<div id="bee948db" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:43,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038589,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_node(state, parent<span class="op">=</span><span class="va">None</span>, action<span class="op">=</span><span class="va">None</span>, path_cost<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cria um no da arvore de busca (um dicionario)."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    depth <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> parent <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> parent[<span class="st">'depth'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'state'</span>: state,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'parent'</span>: parent,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'action'</span>: action,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'path_cost'</span>: path_cost,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'depth'</span>: depth,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> child_node(problem, node, action):</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gera o no filho obtido ao aplicar `action` no no `node`."""</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    next_state <span class="op">=</span> result(problem, node[<span class="st">'state'</span>], action)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    new_cost <span class="op">=</span> path_cost(problem, node[<span class="st">'path_cost'</span>], node[<span class="st">'state'</span>], action, next_state)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> make_node(next_state, node, action, new_cost)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> expand(problem, node):</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Gera todos os nos sucessores de `node`."""</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [child_node(problem, node, action) <span class="cf">for</span> action <span class="kw">in</span> actions(problem, node[<span class="st">'state'</span>])]</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> path(node):</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reconstrui a lista de nos da raiz ate `node`, seguindo os ponteiros `parent`."""</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    path_back <span class="op">=</span> []</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> node <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>        path_back.append(node)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> node[<span class="st">'parent'</span>]</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    path_back.reverse()</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path_back</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solution(node):</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Sequencia de acoes da raiz ate `node` (ignora a raiz, que nao tem acao)."""</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [step[<span class="st">'action'</span>] <span class="cf">for</span> step <span class="kw">in</span> path(node)[<span class="dv">1</span>:]]</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> frontier_states(frontier):</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Lista dos estados que estao atualmente na fronteira."""</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [n[<span class="st">'state'</span>] <span class="cf">for</span> n <span class="kw">in</span> frontier]</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> node_repr(node):</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Representacao curta de um no, util para depuracao."""</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">'&lt;Node </span><span class="sc">{}</span><span class="st">&gt;'</span>.<span class="bu">format</span>(node[<span class="st">'state'</span>])</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def make_node(state, parent=None, action=None, path_cost=0):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Cria um nó. Os campos são o estado atual (<code>state</code>), o nó que o gerou (<code>parent</code>), a ação tomada para alcançá-lo (<code>action</code>) e o custo total acumulado (<code>path_cost</code>).</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>depth = 0 if parent is None else parent['depth'] + 1</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Calcula a profundidade do nó. Se não houver pai, ele é a raiz (nível 0). Caso contrário, sua profundidade é a do pai somada a 1.</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong><code>def child_node(problem, node, action):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Cria um único nó filho. Pede ao problema o resultado da ação (próximo estado), calcula o novo custo acumulado e chama <code>make_node</code> com o nó atual como pai.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong><code>def expand(problem, node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Gera todos os sucessores de um nó: uma <em>list comprehension</em> percorre as ações disponíveis no estado do nó e cria um filho para cada uma.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong><code>def path(node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Reconstrói a trajetória completa. Segue os ponteiros <code>parent</code> de volta até a raiz, guarda os nós em uma lista e depois a inverte (<code>reverse</code>) para ficar na ordem cronológica da viagem.</p>
+</blockquote>
+<ol start="6" type="1">
+<li><strong><code>def solution(node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Extrai a sequência de ações da raiz até o nó. Fatia a lista <code>[1:]</code> para ignorar a raiz, que não possui ação vinculada.</p>
+</blockquote>
+<ol start="7" type="1">
+<li><strong><code>def frontier_states(frontier):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Devolve apenas os estados dos nós que estão na fronteira. Vamos usá-la para checar se uma cidade “já está na fila” sem precisar comparar dicionários inteiros (um nó é considerado igual a outro quando têm o mesmo estado).</p>
+</blockquote>
+<ol start="8" type="1">
+<li><strong><code>def node_repr(node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Devolve um texto curto como <code>&lt;Node Natal&gt;</code>. Imprimir o dicionário inteiro mostraria também o pai, o pai do pai, etc.; esta função é mais legível para <em>debug</em>.</p>
+</blockquote>
+</details>
+</section>
+<section id="o-agente" class="level3">
+<h3 class="anchored" data-anchor-id="o-agente">O agente</h3>
+<p>O agente baseado em objetivos segue um ciclo simples: <strong>perceber</strong> o estado atual, <strong>formular um objetivo</strong>, <strong>formular um problema</strong>, <strong>buscar</strong> uma sequência de ações e <strong>executá-las</strong> uma a uma. Enquanto o plano não termina, o agente apenas devolve a próxima ação da sequência; quando o plano acaba, ele planeja de novo.</p>
+<p>O agente é um dicionário que guarda sua configuração (objetivo, algoritmo de busca, grafo) e sua memória (último estado percebido e plano restante). A função <code>agent_program</code> implementa o ciclo acima.</p>
+<div id="d3dca86f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038597,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_agent(goal, search_algorithm, graph):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Cria um agente baseado em objetivos: um dicionario com sua configuracao e sua memoria."""</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">'goal'</span>: goal,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'search_algorithm'</span>: search_algorithm,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'graph'</span>: graph,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'state'</span>: <span class="va">None</span>,   <span class="co"># ultimo estado percebido</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'seq'</span>: [],       <span class="co"># plano (sequencia de acoes) ainda nao executado</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_state(agent, state, percept):</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Neste ambiente a percepcao e o proprio estado atual."""</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> percept</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> formulate_goal(agent, state):</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""O objetivo e fixo: a cidade destino informada na criacao do agente."""</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> agent[<span class="st">'goal'</span>]</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> formulate_problem(agent, state, goal):</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Constroi o problema de busca a partir do estado atual e do objetivo."""</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> make_problem(state, goal, agent[<span class="st">'graph'</span>])</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search(agent, problem):</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Executa o algoritmo de busca escolhido e converte o no final em um plano."""</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> agent[<span class="st">'search_algorithm'</span>](problem)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> solution(node)</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> agent_program(agent, percept):</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Ciclo do agente: perceber -&gt; (se necessario) planejar -&gt; executar a proxima acao."""</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    agent[<span class="st">'state'</span>] <span class="op">=</span> update_state(agent, agent[<span class="st">'state'</span>], percept)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> agent[<span class="st">'seq'</span>]:</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>        goal <span class="op">=</span> formulate_goal(agent, agent[<span class="st">'state'</span>])</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>        problem <span class="op">=</span> formulate_problem(agent, agent[<span class="st">'state'</span>], goal)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        agent[<span class="st">'seq'</span>] <span class="op">=</span> search(agent, problem)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> agent[<span class="st">'seq'</span>]:</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> agent[<span class="st">'seq'</span>].pop(<span class="dv">0</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+O que é um Problem-solving Agent?
+</summary>
+<p>O <em>problem-solving agent</em> (agente de resolução de problemas) é um agente baseado em objetivo. Quando a ação correta a ser tomada não é imediatamente óbvia, esse tipo de agente precisa planejar com antecedência, avaliando uma sequência de ações que formam um caminho até um <strong>estado objetivo</strong>.</p>
+Uma característica fundamental desses agentes é o uso de <strong>representações atômicas</strong>, o que significa que eles encaram os estados do mundo como um todo indivisível, sem que nenhuma estrutura interna seja visível aos algoritmos envolvidos na resolução do problema. Caso o agente utilize representações fatoradas ou estruturadas dos estados para alcançar suas metas, ele é classificado de forma diferente, sendo chamado de agente de planejamento (<em>planning agent</em>).
+</details>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def make_agent(goal, search_algorithm, graph):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Cria o agente. Repare que <code>search_algorithm</code> é uma <strong>função</strong> (por exemplo <code>breadth_first_graph_search</code>) guardada dentro do dicionário: em Python, funções podem ser armazenadas em variáveis e passadas como argumento como qualquer outro valor.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>def update_state(agent, state, percept):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Neste ambiente totalmente observável, a percepção já é o estado atual; a função apenas o devolve.</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong><code>def formulate_goal(agent, state):</code></strong> e <strong><code>def formulate_problem(agent, state, goal):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>O objetivo é fixo (<code>agent['goal']</code>) e o problema é construído com <code>make_problem</code> a partir do estado atual, do objetivo e do grafo que o agente conhece.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong><code>def search(agent, problem):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Chama o algoritmo de busca guardado no agente (<code>agent['search_algorithm'](problem)</code>) e converte o nó devolvido em uma lista de ações com <code>solution</code>. Se a busca falhar (<code>None</code>), o plano é uma lista vazia.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong><code>def agent_program(agent, percept):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>O ciclo do agente. Atualiza o estado; se não há plano pendente (<code>agent['seq']</code> vazio), formula o objetivo, formula o problema e busca um plano. Em seguida devolve a próxima ação com <code>pop(0)</code>, removendo-a do plano. Como <code>agent</code> é um dicionário, as alterações feitas aqui ficam guardadas entre uma chamada e outra: é assim que o agente “lembra” do plano.</p>
+</blockquote>
+</details>
+</section>
+<section id="funções-auxiliares" class="level3">
+<h3 class="anchored" data-anchor-id="funções-auxiliares">Funções Auxiliares</h3>
+<div id="9f8c3c95" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038607,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> state_path(node):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Reconstroi a lista de estados (cidades) da raiz ate `node`."""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [step[<span class="st">'state'</span>] <span class="cf">for</span> step <span class="kw">in</span> path(node)]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verbose(node):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Formata o resultado de uma busca em um dicionario legivel, com caminho, acoes e custo."""</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">'encontrou'</span>: <span class="va">False</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">'caminho'</span>: <span class="va">None</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">'acoes'</span>: <span class="va">None</span>,</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">'custo'</span>: <span class="va">None</span>,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'encontrou'</span>: <span class="va">True</span>,</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'caminho'</span>: state_path(node),</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">'acoes'</span>: solution(node),</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">'custo'</span>: node[<span class="st">'path_cost'</span>],</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> agent_simulation(agent, initial_state, max_step<span class="op">=</span><span class="dv">20</span>):</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Simula o ciclo do agente chamando `agent_program` varias vezes ate atingir o objetivo ou o limite de passos."""</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    state <span class="op">=</span> initial_state</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    trajectory <span class="op">=</span> [state]</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    actions_taken <span class="op">=</span> []</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_step):</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        action <span class="op">=</span> agent_program(agent, state)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> action <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>        actions_taken.append(action)</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>        state <span class="op">=</span> action_city(action)</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>        trajectory.append(state)</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> state <span class="op">==</span> agent[<span class="st">'goal'</span>]:</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> actions_taken, trajectory</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="exemplo-prático" class="level2">
+<h2 class="anchored" data-anchor-id="exemplo-prático">Exemplo prático</h2>
+<p>Agora vamos aplicar essas estruturas em um ambiente simples, com estado inicial <code>Natal</code> e objetivo <code>Pipa</code>.</p>
+<section id="construção-do-ambiente" class="level3">
+<h3 class="anchored" data-anchor-id="construção-do-ambiente">Construção do Ambiente</h3>
+<div id="7cd89ca4" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:11,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038609,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>environment <span class="op">=</span> {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Natal'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Extremoz'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Parnamirim'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Extremoz'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São Gonçalo do Amarante'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Ceará-Mirim'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Macaíba'</span>: {<span class="st">'Natal'</span>: <span class="dv">1</span>, <span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>, <span class="st">'Ielmo Marinho'</span>: <span class="dv">1</span>, <span class="st">'Vera Cruz'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ceará-Mirim'</span>: {<span class="st">'São Gonçalo do Amarante'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Ielmo Marinho'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vera Cruz'</span>: {<span class="st">'Macaíba'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Monte Alegre'</span>: {<span class="st">'Vera Cruz'</span>: <span class="dv">1</span>, <span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'São José de Mipibu'</span>: {<span class="st">'Parnamirim'</span>: <span class="dv">1</span>, <span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Monte Alegre'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Goianinha'</span>: {<span class="st">'São José de Mipibu'</span>: <span class="dv">1</span>, <span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Tibau do Sul'</span>: {<span class="st">'Goianinha'</span>: <span class="dv">1</span>, <span class="st">'Pipa'</span>: <span class="dv">1</span>},</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Pipa'</span>: {<span class="st">'Tibau do Sul'</span>: <span class="dv">1</span>}</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Como o ambiente já é um dicionário no formato esperado por <code>neighbors</code> e <code>edge_cost</code>, basta passá-lo diretamente para <code>make_problem</code>.</p>
+<div id="06a21625" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:11,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791038610,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> make_problem(<span class="st">'Natal'</span>, <span class="st">'Pipa'</span>, environment)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Estado inicial:'</span>, problem[<span class="st">'initial'</span>])</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Objetivo:'</span>, problem[<span class="st">'goal'</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações possíveis em Natal:'</span>, actions(problem, <span class="st">'Natal'</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estado inicial: Natal
+Objetivo: Pipa
+Ações possíveis em Natal: ['irParaParnamirim', 'irParaExtremoz', 'irParaSão Gonçalo do Amarante', 'irParaMacaíba']</code></pre>
+</div>
+</div>
+<div id="6a68876a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:590,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039216,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title Estrutura do grafo</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.DiGraph()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> origem, destinos <span class="kw">in</span> environment.items():</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> destino <span class="kw">in</span> destinos:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        G.add_edge(origem, destino)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G, seed<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>nx.draw(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    G,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    pos,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    with_labels<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    node_color<span class="op">=</span><span class="st">'#d9e8fb'</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    node_size<span class="op">=</span><span class="dv">1800</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    arrows<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    font_size<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    edgecolors<span class="op">=</span><span class="st">'black'</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Estrutura do grafo do ambiente'</span>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="metodos-de-busca-sem-oo_files/figure-html/cell-14-output-1.png" width="979" height="615" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="explorando-a-árvore-de-busca-manualmente" class="level3">
+<h3 class="anchored" data-anchor-id="explorando-a-árvore-de-busca-manualmente">Explorando a árvore de busca manualmente</h3>
+<p>Antes de rodar os algoritmos, vale a pena criar alguns nós “na mão” para ver como <code>make_node</code>, <code>expand</code>, <code>path</code> e <code>solution</code> funcionam.</p>
+<div id="7f541c1b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:15,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039217,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>problem</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>{'initial': 'Natal',
+ 'goal': 'Pipa',
+ 'graph': {'Natal': {'Parnamirim': 1,
+   'Extremoz': 1,
+   'São Gonçalo do Amarante': 1,
+   'Macaíba': 1},
+  'Parnamirim': {'Natal': 1, 'São José de Mipibu': 1, 'Macaíba': 1},
+  'Extremoz': {'Natal': 1},
+  'São Gonçalo do Amarante': {'Natal': 1, 'Macaíba': 1, 'Ceará-Mirim': 1},
+  'Macaíba': {'Natal': 1,
+   'Parnamirim': 1,
+   'São Gonçalo do Amarante': 1,
+   'Ielmo Marinho': 1,
+   'Vera Cruz': 1},
+  'Ceará-Mirim': {'São Gonçalo do Amarante': 1},
+  'Ielmo Marinho': {'Macaíba': 1},
+  'Vera Cruz': {'Macaíba': 1, 'Monte Alegre': 1},
+  'Monte Alegre': {'Vera Cruz': 1, 'São José de Mipibu': 1},
+  'São José de Mipibu': {'Parnamirim': 1, 'Goianinha': 1, 'Monte Alegre': 1},
+  'Goianinha': {'São José de Mipibu': 1, 'Tibau do Sul': 1},
+  'Tibau do Sul': {'Goianinha': 1, 'Pipa': 1},
+  'Pipa': {'Tibau do Sul': 1}}}</code></pre>
+</div>
+</div>
+<div id="bf1a1c21" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:5,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039221,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>raiz <span class="op">=</span> make_node(problem[<span class="st">'initial'</span>])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Nó raiz:'</span>, node_repr(raiz), <span class="st">'| profundidade:'</span>, raiz[<span class="st">'depth'</span>])</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>filhos <span class="op">=</span> expand(problem, raiz)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Filhos da raiz:'</span>, [node_repr(n) <span class="cf">for</span> n <span class="kw">in</span> filhos])</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>um_filho <span class="op">=</span> filhos[<span class="dv">0</span>]</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Caminho até'</span>, um_filho[<span class="st">'state'</span>], <span class="st">':'</span>, [n[<span class="st">'state'</span>] <span class="cf">for</span> n <span class="kw">in</span> path(um_filho)])</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ações até'</span>, um_filho[<span class="st">'state'</span>], <span class="st">':'</span>, solution(um_filho))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nó raiz: &lt;Node Natal&gt; | profundidade: 0
+Filhos da raiz: ['&lt;Node Parnamirim&gt;', '&lt;Node Extremoz&gt;', '&lt;Node São Gonçalo do Amarante&gt;', '&lt;Node Macaíba&gt;']
+Caminho até Parnamirim : ['Natal', 'Parnamirim']
+Ações até Parnamirim : ['irParaParnamirim']</code></pre>
+</div>
+</div>
+</section>
+<section id="busca-em-largura" class="level3">
+<h3 class="anchored" data-anchor-id="busca-em-largura">Busca em largura</h3>
+<p>A busca em largura é uma estratégia de busca na qual o nó raiz é expandido primeiro, seguido por todos os seus nós sucessores, depois os sucessores destes, e assim por diante, explorando o espaço de estados nível por nível. O algoritmo geralmente utiliza uma estrutura de dados do tipo fila FIFO (primeiro a entrar, primeiro a sair), o que garante que os nós recém-gerados (mais profundos) vão para o final da fila e os nós mais antigos e rasos sejam expandidos primeiro. Por explorar todas as opções de uma profundidade antes de avançar para a próxima, a busca em largura é sistemática, completa e garante encontrar uma solução com o número mínimo de ações necessárias.</p>
+<div id="5d327fac" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039225,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Demonstração de FIFO: o primeiro elemento inserido é o primeiro removido</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fila <span class="op">=</span> [<span class="st">'Natal'</span>, <span class="st">'Macaíba'</span>, <span class="st">'Vera Cruz'</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Fila inicial:'</span>, fila)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> fila:</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    elemento <span class="op">=</span> fila.pop(<span class="dv">0</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Removido:'</span>, elemento)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fila inicial: ['Natal', 'Macaíba', 'Vera Cruz']
+Removido: Natal
+Removido: Macaíba
+Removido: Vera Cruz</code></pre>
+</div>
+</div>
+<div id="8e853cee" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:0,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039227,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> breadth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em largura (BFS): expande os nos nivel por nivel usando uma fila FIFO, garantindo o caminho com o menor numero de acoes."""</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> make_node(problem[<span class="st">'initial'</span>])</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> goal_test(problem, node[<span class="st">'state'</span>]):</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node, [node[<span class="st">'state'</span>]]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> node</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [node]</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop(<span class="dv">0</span>)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node[<span class="st">'state'</span>])</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        visited.add(node[<span class="st">'state'</span>])</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> expand(problem, node):</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> frontier_states(frontier):</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> goal_test(problem, child[<span class="st">'state'</span>]):</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>                    expansion_order.append(child[<span class="st">'state'</span>])</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">return</span> child, expansion_order</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> child</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def breadth_first_graph_search(problem, return_expansion_order=False):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Define a função de busca em largura no grafo. O parâmetro <code>return_expansion_order</code> permite que, além do resultado, a função retorne a lista de cidades na ordem em que foram “visitadas” pelo algoritmo.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>node = make_node(problem['initial'])</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Cria o nó raiz da árvore de busca usando o estado inicial definido no problema (ex: <code>'Natal'</code>).</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong><code>if goal_test(problem, node['state']):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Verifica imediatamente se o ponto de partida já é o destino final (o objetivo). Se for, a busca termina sem nem começar.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong><code>frontier = [node]</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Inicializa a <strong>fronteira</strong> (ou borda) como uma fila (FIFO - <em>First-In, First-Out</em>). Na busca em largura, a fronteira garante que exploraremos todos os vizinhos de um nível antes de passar para o próximo.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong><code>visited = set()</code> e <code>expansion_order = []</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p><code>visited</code> é um conjunto que armazena estados já explorados para evitar ciclos infinitos (ex: ficar indo e voltando entre Natal e Macaíba). <code>expansion_order</code> registra a sequência cronológica da exploração.</p>
+</blockquote>
+<ol start="6" type="1">
+<li><strong><code>while frontier:</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Inicia o laço principal que continuará executando enquanto houver cidades na fronteira para serem exploradas.</p>
+</blockquote>
+<ol start="7" type="1">
+<li><strong><code>node = frontier.pop(0)</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Remove e retorna o <strong>primeiro</strong> elemento da fila. Esse comportamento de “tirar do início” é o que caracteriza a busca em largura, priorizando os nós mais rasos da árvore.</p>
+</blockquote>
+<ol start="8" type="1">
+<li><strong><code>visited.add(node['state'])</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Adiciona a cidade atual ao conjunto de visitados, marcando que já verificamos todos os vizinhos deste local.</p>
+</blockquote>
+<ol start="9" type="1">
+<li><strong><code>for child in expand(problem, node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Expande o nó atual, gerando novos nós para todas as cidades vizinhas conectadas a ele (ex: de Natal, gera Parnamirim, Extremoz, etc.).</p>
+</blockquote>
+<ol start="10" type="1">
+<li><strong><code>if child['state'] not in visited and child['state'] not in frontier_states(frontier):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Filtro de segurança: só processa o vizinho se ele ainda não foi visitado e se já não estiver na fila para ser visitado. Isso economiza memória e tempo.</p>
+</blockquote>
+<ol start="11" type="1">
+<li><strong><code>if goal_test(problem, child['state']):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>O “teste de objetivo” é feito no momento em que o nó filho é gerado. Se o vizinho for o destino (ex: <code>'Pipa'</code>), a busca é interrompida com sucesso.</p>
+</blockquote>
+<ol start="12" type="1">
+<li><strong><code>frontier.append(child)</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Se o vizinho não for o destino, ele é adicionado ao <strong>final</strong> da fila da fronteira para ser explorado posteriormente, após os seus “irmãos”.</p>
+</blockquote>
+<ol start="13" type="1">
+<li><strong><code>return None</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Se a fila da fronteira esvaziar e o objetivo não tiver sido encontrado, a função retorna <code>None</code>, indicando que não há caminho possível entre as cidades no mapa fornecido.</p>
+</blockquote>
+</details>
+<div id="9e53a157" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:3,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039231,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>resultado_bfs, expansoes_bfs <span class="op">=</span> breadth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'BFS didática:'</span>, verbose(resultado_bfs))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão BFS:'</span>, expansoes_bfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>BFS didática: {'encontrou': True, 'caminho': ['Natal', 'Parnamirim', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['irParaParnamirim', 'irParaSão José de Mipibu', 'irParaGoianinha', 'irParaTibau do Sul', 'irParaPipa'], 'custo': 5}
+Ordem de expansão BFS: ['Natal', 'Parnamirim', 'Extremoz', 'São Gonçalo do Amarante', 'Macaíba', 'São José de Mipibu', 'Ceará-Mirim', 'Ielmo Marinho', 'Vera Cruz', 'Goianinha', 'Monte Alegre', 'Tibau do Sul', 'Pipa']</code></pre>
+</div>
+</div>
+</section>
+<section id="busca-em-profundidade" class="level3">
+<h3 class="anchored" data-anchor-id="busca-em-profundidade">Busca em profundidade</h3>
+<p>A busca em profundidade é uma estratégia que expande sempre o nó mais profundo disponível na fronteira de busca. O algoritmo avança imediatamente para o nível mais profundo da árvore e, ao alcançar um nó sem sucessores, ele “retrocede” para o próximo nó mais profundo que ainda possui opções não exploradas. Geralmente implementada com uma estrutura de dados do tipo pilha (último a entrar, primeiro a sair), essa abordagem destaca-se pelo uso muito reduzido de memória. Contudo, ao contrário da busca em largura, ela não garante encontrar a solução de menor custo e pode ser incompleta em espaços de estados infinitos, pois corre o risco de ficar presa indefinidamente em um único caminho.</p>
+<div id="d082c78f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:37,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039271,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Demonstração de LIFO: o último elemento inserido é o primeiro removido</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>pilha <span class="op">=</span> [<span class="st">'Natal'</span>, <span class="st">'Macaíba'</span>, <span class="st">'Vera Cruz'</span>]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Pilha inicial:'</span>, pilha)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> pilha:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    elemento <span class="op">=</span> pilha.pop()</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Removido:'</span>, elemento)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pilha inicial: ['Natal', 'Macaíba', 'Vera Cruz']
+Removido: Vera Cruz
+Removido: Macaíba
+Removido: Natal</code></pre>
+</div>
+</div>
+<div id="e1b39ef7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:1,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039273,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade (DFS): expande sempre o no mais profundo da fronteira usando uma pilha LIFO, sem garantia de menor custo."""</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [make_node(problem[<span class="st">'initial'</span>])]</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop()</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node[<span class="st">'state'</span>])</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> goal_test(problem, node[<span class="st">'state'</span>]):</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>        visited.add(node[<span class="st">'state'</span>])</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> child <span class="kw">in</span> expand(problem, node):</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> frontier_states(frontier):</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>                frontier.append(child)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<details>
+<summary>
+Explicação
+</summary>
+<ol type="1">
+<li><strong><code>def depth_first_graph_search(problem, return_expansion_order=False):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Define a função de busca em profundidade no grafo. O objetivo aqui é explorar um ramo completo da árvore de estados até o fim antes de tentar um caminho alternativo.</p>
+</blockquote>
+<ol start="2" type="1">
+<li><strong><code>frontier = [make_node(problem['initial'])]</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Inicializa a <strong>fronteira</strong> com o nó inicial (ex: <code>'Natal'</code>). Diferente da BFS, aqui a lista será tratada como uma <strong>Pilha</strong> (LIFO - <em>Last-In, First-Out</em>).</p>
+</blockquote>
+<ol start="3" type="1">
+<li><strong><code>visited = set()</code> e <code>expansion_order = []</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Prepara o conjunto <code>visited</code> para rastrear cidades já processadas e a lista <code>expansion_order</code> para registrar a ordem em que os nós são retirados da fronteira.</p>
+</blockquote>
+<ol start="4" type="1">
+<li><strong><code>while frontier:</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Mantém o loop ativo enquanto houver cidades na pilha da fronteira para serem exploradas.</p>
+</blockquote>
+<ol start="5" type="1">
+<li><strong><code>node = frontier.pop()</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Remove e retorna o <strong>último</strong> elemento adicionado à lista. Esse é o “pulo do gato” da DFS: ao pegar sempre o último, o algoritmo mergulha verticalmente no grafo em vez de expandir horizontalmente.</p>
+</blockquote>
+<ol start="6" type="1">
+<li><strong><code>expansion_order.append(node['state'])</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Registra a cidade que acaba de ser retirada da pilha para análise na lista de ordem de expansão.</p>
+</blockquote>
+<ol start="7" type="1">
+<li><strong><code>if goal_test(problem, node['state']):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Realiza o teste de objetivo. Na DFS, o teste é feito apenas quando o nó é <strong>retirado</strong> da fronteira (pop), e não quando é gerado. Se for o destino (ex: <code>'Pipa'</code>), a busca para.</p>
+</blockquote>
+<ol start="8" type="1">
+<li><strong><code>visited.add(node['state'])</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Marca o estado atual como visitado para garantir que o algoritmo não entre em <em>looping</em> caso encontre caminhos cíclicos no mapa do RN.</p>
+</blockquote>
+<ol start="9" type="1">
+<li><strong><code>for child in expand(problem, node):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Gera os vizinhos da cidade atual. Se estivermos em Macaíba, ele gerará Vera Cruz, Ielmo Marinho, etc.</p>
+</blockquote>
+<ol start="10" type="1">
+<li><strong><code>if child['state'] not in visited and child['state'] not in frontier_states(frontier):</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Verifica se o vizinho já foi explorado ou se já está aguardando na pilha. Isso evita redundância e processamento desnecessário.</p>
+</blockquote>
+<ol start="11" type="1">
+<li><strong><code>frontier.append(child)</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Adiciona o nó filho ao <strong>topo</strong> da pilha. Como ele foi o último a entrar, será o primeiro a ser retirado no próximo ciclo do <code>while</code>, forçando a exploração profunda.</p>
+</blockquote>
+<ol start="12" type="1">
+<li><strong><code>return None</code></strong></li>
+</ol>
+<blockquote class="blockquote">
+<p>Se a pilha esvaziar e o objetivo nunca tiver sido alcançado, a função retorna <code>None</code>, indicando que o destino é inacessível a partir da origem.</p>
+</blockquote>
+</details>
+<div id="d5995b8d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:17,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039292,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>resultado_dfs, expansoes_dfs <span class="op">=</span> depth_first_graph_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS didática:'</span>, verbose(resultado_dfs))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão DFS:'</span>, expansoes_dfs)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DFS didática: {'encontrou': True, 'caminho': ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa'], 'acoes': ['irParaMacaíba', 'irParaVera Cruz', 'irParaMonte Alegre', 'irParaSão José de Mipibu', 'irParaGoianinha', 'irParaTibau do Sul', 'irParaPipa'], 'custo': 7}
+Ordem de expansão DFS: ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Tibau do Sul', 'Pipa']</code></pre>
+</div>
+</div>
+<p><strong>Interpretando o resultado da DFS</strong></p>
+<p>A busca em profundidade encontrou o caminho <code>Natal → Macaíba → Vera Cruz → Monte Alegre → São José de Mipibu → Goianinha → Tibau do Sul → Pipa</code>, com custo total <strong>7</strong>. Já a BFS (rodada mais acima) encontrou <code>Natal → Parnamirim → São José de Mipibu → Goianinha → Tibau do Sul → Pipa</code>, com custo <strong>5</strong>.</p>
+<p>Por que os caminhos são diferentes?</p>
+<ul>
+<li>Em Natal, <code>expand</code> gera os filhos na ordem <code>Parnamirim, Extremoz, São Gonçalo do Amarante, Macaíba</code>. Como a fronteira da DFS é uma pilha (<code>frontier.pop()</code> remove o <strong>último</strong> elemento inserido), o algoritmo desce primeiro pelo último filho gerado, <code>Macaíba</code>, e não pelo primeiro.</li>
+<li>A partir de Macaíba, a DFS continua mergulhando no primeiro ramo que encontra (<code>Vera Cruz</code>, depois <code>Monte Alegre</code>, etc.) até alcançar o objetivo, sem nunca comparar esse caminho com alternativas mais curtas, como o que passa por Parnamirim.</li>
+<li>A BFS, por explorar nível por nível com uma fila FIFO, garante encontrar o caminho com o <strong>menor número de ações</strong> primeiro (5 ações), enquanto a DFS apenas garante encontrar <strong>um</strong> caminho válido, que pode ser mais longo ou mais custoso (7 ações, neste caso).</li>
+</ul>
+<p>Em resumo: a DFS tende a usar menos memória e é mais rápida para “chegar a algum lugar”, mas não garante otimalidade; a BFS é sistemática e completa, e garante o caminho mais curto em grafos não ponderados, ao custo de explorar (e guardar) muito mais nós na fronteira.</p>
+</section>
+</section>
+<section id="perguntas" class="level2">
+<h2 class="anchored" data-anchor-id="perguntas">Perguntas</h2>
+<ol type="1">
+<li><p>Neste ambiente, a BFS encontrou um caminho de Natal até Pipa com custo 5, enquanto a DFS encontrou um caminho com custo 7. Por que a BFS garante encontrar o caminho de <strong>menor custo</strong> aqui, mas essa garantia deixaria de valer se as arestas do grafo tivessem custos diferentes de 1 (por exemplo, distâncias reais entre as cidades)?</p></li>
+<li><p>A diferença de custo entre BFS e DFS está relacionada à ordem em que os vizinhos são expandidos e ao tipo de estrutura de dados usada na fronteira (fila FIFO x pilha LIFO). Explique, com suas palavras, por que a DFS “mergulhou” primeiro por Macaíba em vez de Parnamirim, mesmo Parnamirim sendo o primeiro vizinho gerado por <code>expand</code>.</p></li>
+<li><p>Em termos de uso de memória, qual das duas estratégias tende a guardar mais nós na fronteira ao mesmo tempo, e por quê? Isso teria mais impacto em um grafo com poucas cidades (como o do RN usado aqui) ou em um espaço de estados muito maior?</p></li>
+</ol>
+</section>
+<section id="desafio" class="level2">
+<h2 class="anchored" data-anchor-id="desafio">Desafio</h2>
+<p>Implemente uma versão da <strong>busca em profundidade limitada</strong>. Nessa estratégia, a exploração segue em profundidade, mas o algoritmo só pode expandir nós até uma profundidade máxima definida por <code>limit</code>.</p>
+<p>Sua função deve:</p>
+<ol type="1">
+<li>Começar no estado inicial do problema;</li>
+<li>Explorar os nós em profundidade;</li>
+<li>Impedir a expansão de nós com profundidade maior ou igual ao limite;</li>
+<li>Retornar o nó solução se encontrar o objetivo;</li>
+<li>Retornar <code>None</code> se nenhuma solução for encontrada dentro do limite.</li>
+</ol>
+<p>Use o campo <code>node['depth']</code> para controlar a expansão.</p>
+<div id="1dbec207" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:18,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787792337761,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_limited_search(problem, depth<span class="op">=</span><span class="dv">5</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  frontier <span class="op">=</span> [make_node(problem[<span class="st">'initial'</span>])]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  expansion_order <span class="op">=</span> []</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> frontier:</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> frontier.pop()</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    expansion_order.append(node[<span class="st">'state'</span>])</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> goal_test(problem, node[<span class="st">'state'</span>]):</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node, expansion_order</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> node</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    visited.add(node[<span class="st">'state'</span>])</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> node[<span class="st">'depth'</span>] <span class="op">&lt;=</span> depth:</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>      <span class="co">#print(f"Imprimir {node['depth']}")</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> child <span class="kw">in</span> expand(problem, node):</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"O que esta acontecendo aqui </span><span class="sc">{</span>child<span class="sc">}</span><span class="ss">?"</span>)</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> frontier_states(frontier):</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>          frontier.append(child)</span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>          <span class="co">#print(f"Olhe o frontier {frontier}")</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span>, return_expansion_order</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="9076f5a3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:19,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787792339026,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>resultado_dlt, expansoes_dlt <span class="op">=</span> depth_limited_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Extremoz', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaExtremoz', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaParnamirim', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Ielmo Marinho', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaIelmo Marinho', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMacaíba', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Vera Cruz', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaVera Cruz', 'path_cost': 4, 'depth': 4}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}?
+O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaParnamirim', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'Monte Alegre', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaMonte Alegre', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}, 'action': 'irParaSão José de Mipibu', 'path_cost': 6, 'depth': 6}?
+O que esta acontecendo aqui {'state': 'Tibau do Sul', 'parent': {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}, 'action': 'irParaTibau do Sul', 'path_cost': 6, 'depth': 6}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Ielmo Marinho', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaIelmo Marinho', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMacaíba', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaMacaíba', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Ceará-Mirim', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaCeará-Mirim', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Ceará-Mirim', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaCeará-Mirim', 'path_cost': 2, 'depth': 2}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Extremoz', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaExtremoz', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaSão José de Mipibu', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaMacaíba', 'path_cost': 2, 'depth': 2}?</code></pre>
+</div>
+</div>
+<div id="4d26b952" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:28,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787792063702,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>resultado_dlt, expansoes_dlt <span class="op">=</span> depth_limited_search(problem, return_expansion_order<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'DFS didática:'</span>, verbose(resultado_dlt))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Ordem de expansão DLT:'</span>, resultado_dlt)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Extremoz', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaExtremoz', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaParnamirim', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Ielmo Marinho', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaIelmo Marinho', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMacaíba', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Vera Cruz', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaVera Cruz', 'path_cost': 4, 'depth': 4}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}?
+O que esta acontecendo aqui {'state': 'Parnamirim', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaParnamirim', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'Monte Alegre', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaMonte Alegre', 'path_cost': 5, 'depth': 5}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}, 'action': 'irParaSão José de Mipibu', 'path_cost': 6, 'depth': 6}?
+O que esta acontecendo aqui {'state': 'Tibau do Sul', 'parent': {'state': 'Goianinha', 'parent': {'state': 'São José de Mipibu', 'parent': {'state': 'Monte Alegre', 'parent': {'state': 'Vera Cruz', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaVera Cruz', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMonte Alegre', 'path_cost': 3, 'depth': 3}, 'action': 'irParaSão José de Mipibu', 'path_cost': 4, 'depth': 4}, 'action': 'irParaGoianinha', 'path_cost': 5, 'depth': 5}, 'action': 'irParaTibau do Sul', 'path_cost': 6, 'depth': 6}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Ielmo Marinho', 'parent': {'state': 'Macaíba', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaMacaíba', 'path_cost': 1, 'depth': 1}, 'action': 'irParaIelmo Marinho', 'path_cost': 2, 'depth': 2}, 'action': 'irParaMacaíba', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaMacaíba', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Ceará-Mirim', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaCeará-Mirim', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Ceará-Mirim', 'parent': {'state': 'São Gonçalo do Amarante', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 1, 'depth': 1}, 'action': 'irParaCeará-Mirim', 'path_cost': 2, 'depth': 2}, 'action': 'irParaSão Gonçalo do Amarante', 'path_cost': 3, 'depth': 3}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Extremoz', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaExtremoz', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Natal', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaNatal', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'São José de Mipibu', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaSão José de Mipibu', 'path_cost': 2, 'depth': 2}?
+O que esta acontecendo aqui {'state': 'Macaíba', 'parent': {'state': 'Parnamirim', 'parent': {'state': 'Natal', 'parent': None, 'action': None, 'path_cost': 0, 'depth': 0}, 'action': 'irParaParnamirim', 'path_cost': 1, 'depth': 1}, 'action': 'irParaMacaíba', 'path_cost': 2, 'depth': 2}?
+DFS didática: {'encontrou': False, 'caminho': None, 'acoes': None, 'custo': None}
+Ordem de expansão DLT: None</code></pre>
+</div>
+</div>
+<div id="656cb2ac" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039308,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> depth_limited_search(problem, depth<span class="op">=</span><span class="dv">5</span>, return_expansion_order<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Busca em profundidade limitada (DLS): expande em profundidade usando uma pilha LIFO,</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">    mas nao gera nos com profundidade maior que `depth`."""</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    frontier <span class="op">=</span> [make_node(problem[<span class="st">'initial'</span>])]</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    expansion_order <span class="op">=</span> []</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> frontier:</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> frontier.pop()</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        expansion_order.append(node[<span class="st">'state'</span>])</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> goal_test(problem, node[<span class="st">'state'</span>]):</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> node, expansion_order</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> node</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>        visited.add(node[<span class="st">'state'</span>])</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Expanda apenas se o no atual estiver estritamente abaixo do limite de profundidade</span></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> node[<span class="st">'depth'</span>] <span class="op">&lt;</span> depth:</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> child <span class="kw">in</span> expand(problem, node):</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> visited <span class="kw">and</span> child[<span class="st">'state'</span>] <span class="kw">not</span> <span class="kw">in</span> frontier_states(frontier):</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>                    frontier.append(child)</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> return_expansion_order:</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span>, expansion_order</span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="01e16463" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039324,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>resultado_limite, expansion <span class="op">=</span> depth_limited_search(problem, return_expansion_order <span class="op">=</span> <span class="va">True</span>, depth <span class="op">=</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="a6dfddfa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:13,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039350,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Resultado </span><span class="sc">{</span>resultado_limite<span class="sc">}</span><span class="ss"> | Ordem de visita </span><span class="sc">{</span>expansion<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Resultado None | Ordem de visita ['Natal', 'Macaíba', 'Vera Cruz', 'Monte Alegre', 'São José de Mipibu', 'Goianinha', 'Ielmo Marinho', 'São Gonçalo do Amarante', 'Ceará-Mirim', 'Extremoz', 'Parnamirim']</code></pre>
+</div>
+</div>
+<div id="5fd8239f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;executionInfo&quot;,&quot;value&quot;:{&quot;elapsed&quot;:25,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1787791039383,&quot;user&quot;:{&quot;displayName&quot;:&quot;Andre Luis Fonseca Faustino&quot;,&quot;userId&quot;:&quot;03224775235810826368&quot;},&quot;user_tz&quot;:180}}" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>verbose(resultado_limite)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>{'encontrou': False, 'caminho': None, 'acoes': None, 'custo': None}</code></pre>
+</div>
+</div>
+</section>
+<section id="key-takeways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeways">Key takeways</h2>
+<ul>
+<li>Um agente baseado em objetivos precisa formular um problema antes de buscar uma solução.</li>
+<li>BFS e DFS usam a mesma modelagem do problema, mas exploram o espaço de estados de formas diferentes.</li>
+<li>A solução pode ser representada como uma sequência de ações obtida a partir de um nó da árvore de busca (com a função <code>solution</code>).</li>
+<li>Separar ambiente, problema e agente (cada um em seu dicionário, com suas próprias funções) torna o código mais reutilizável, mesmo sem usar classes.</li>
+</ul>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<ol type="1">
+<li>Russell, S. &amp; Norvig, P. (2010). Artificial Intelligence: A Modern Approach. Prentice Hall.</li>
+<li>Implementações clássicas de <code>Problem</code>, <code>Node</code> e agentes baseados em objetivos no ecossistema AIMA.</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/oandrefonseca\.github\.io\/fundamentos-de-ia\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/blob/main/apendices/metodos-de-busca-sem-oo.qmd" class="toc-action"><i class="bi bi-github"></i>Ver o código fonte</a></li><li><a href="https://github.com/oandrefonseca/fundamentos-de-ia/issues/new" class="toc-action"><i class="bi empty"></i>Criar uma issue</a></li></ul></div></div></div></footer></body></html>
